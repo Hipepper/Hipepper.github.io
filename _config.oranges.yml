@@ -38,6 +38,11 @@ gtag:
   enable: true
   gtagkey: G-2B5W7NCXEE
 
+baidu:
+  enable: true
+  track_id: 
+
+
 # 文章评论系统
 comments:
   enable: true
