@@ -1,0 +1,3 @@
+[submodule "themes/oranges"]
+	path = themes/oranges
+	url = https://github.com/Hipepper/hexo-theme-oranges.git
