@@ -1,7 +1,6 @@
 ---
 title: about
-date: 2024-10-21 20:00:03
-type: "about"
+date: 2025-01-24 09:19:58
 ---
 
 
@@ -10,6 +9,3 @@ type: "about"
 `TIPFactory情报工厂`
 
 可以通过公众号联系作者...
-
-## 个人IM
-

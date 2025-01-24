@@ -285,3 +285,13 @@ cdns:
 
 # 主题色
 themeColor: '#808080'
+
+
+
+post_wordcount:
+  enable: true
+  item_text: true
+  wordcount: true
+  min2read: true
+  totalcount: false
+  separated_meta: true
