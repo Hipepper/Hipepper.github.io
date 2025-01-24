@@ -6,6 +6,7 @@ node_modules/
 public/
 .deploy*/
 _multiconfig.yml
+myscripts/
 
 # # 忽略除 public 目录外的所有文件和目录
 # /*
