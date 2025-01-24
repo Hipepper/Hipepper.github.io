@@ -10,4 +10,4 @@ comment: true
 
 `TIPFactory情报工厂`
 
-![image](index/image.png)
+![image](/img/about/image.png)
