@@ -1,6 +1,8 @@
 ---
 title: about
 date: 2025-01-24 09:19:58
+layout: about
+comment: true
 ---
 
 
@@ -8,4 +10,4 @@ date: 2025-01-24 09:19:58
 
 `TIPFactory情报工厂`
 
-可以通过公众号联系作者...
+![image](index/image.png)
