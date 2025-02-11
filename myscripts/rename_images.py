@@ -4,7 +4,7 @@ import re
 
 def main():
     # 请将这里的文件名修改为你要处理的 markdown 文件的实际路径
-    markdown_file_path = r"C:\Users\Hillstone\gitlab\Hipepper.github.io\source\_posts\评估现代网络协议指纹识别技术：加固堡垒机防御.md"
+    markdown_file_path = r"C:\Users\Hillstone\gitlab\Hipepper.github.io\source\_posts\一次渗透过程中的CVE-2022-45460撞洞RCE.md"
     file_dir = os.path.dirname(markdown_file_path)
     file_name = os.path.basename(markdown_file_path).split('.')[0]
     new_dir = os.path.join(file_dir, file_name)
