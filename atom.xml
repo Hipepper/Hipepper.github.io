@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-02-11T09:21:52.553Z</updated>
+  <updated>2025-02-18T03:36:49.686Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>反反rootkit--覆盖驱动与隐藏线程</title>
+    <link href="http://example.com/2025/02/18/%E5%8F%8D%E5%8F%8Drootkit-%E8%A6%86%E7%9B%96%E9%A9%B1%E5%8A%A8%E4%B8%8E%E9%9A%90%E8%97%8F%E7%BA%BF%E7%A8%8B/"/>
+    <id>http://example.com/2025/02/18/%E5%8F%8D%E5%8F%8Drootkit-%E8%A6%86%E7%9B%96%E9%A9%B1%E5%8A%A8%E4%B8%8E%E9%9A%90%E8%97%8F%E7%BA%BF%E7%A8%8B/</id>
+    <published>2025-02-18T03:34:38.000Z</published>
+    <updated>2025-02-18T03:36:49.686Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;覆盖驱动与隐藏线程&quot;&gt;&lt;a href=&quot;#覆盖驱动与隐藏线程&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="rootkit" scheme="http://example.com/categories/rootkit/"/>
+    
+    
+    <category term="内核漏洞" scheme="http://example.com/tags/%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E/"/>
+    
+    <category term="主机安全" scheme="http://example.com/tags/%E4%B8%BB%E6%9C%BA%E5%AE%89%E5%85%A8/"/>
+    
+    <category term="rootkit" scheme="http://example.com/tags/rootkit/"/>
+    
+  </entry>
   
   <entry>
     <title>一次渗透过程中的CVE-2022-45460撞洞RCE</title>
