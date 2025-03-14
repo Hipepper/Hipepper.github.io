@@ -1,0 +1,1166 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/dog2.jpg">
+  <link rel="icon" href="/img/dog2.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jentle">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="评估现代网络协议指纹识别技术：加固堡垒机防御前言多年来，网络防御者一直使用堡垒机来保护信息系统。研究认为，“堡垒机” 这一术语由安全研究员 Marcus J. Ranum 在 1993 年发表的论文《Thinking about Firewalls》中提出（Ranum，1993）。Ranum 将堡垒机描述为 “网络安全中的关键据点”，并指出 “其安全性会受到一定程度的额外关注”（Ranum，199">
+<meta property="og:type" content="article">
+<meta property="og:title" content="评估现代网络协议指纹识别技术：加固堡垒机防御">
+<meta property="og:url" content="http://example.com/2025/02/08/%E8%AF%84%E4%BC%B0%E7%8E%B0%E4%BB%A3%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF%EF%BC%9A%E5%8A%A0%E5%9B%BA%E5%A0%A1%E5%9E%92%E6%9C%BA%E9%98%B2%E5%BE%A1/index.html">
+<meta property="og:site_name" content="TIPFactory">
+<meta property="og:description" content="评估现代网络协议指纹识别技术：加固堡垒机防御前言多年来，网络防御者一直使用堡垒机来保护信息系统。研究认为，“堡垒机” 这一术语由安全研究员 Marcus J. Ranum 在 1993 年发表的论文《Thinking about Firewalls》中提出（Ranum，1993）。Ranum 将堡垒机描述为 “网络安全中的关键据点”，并指出 “其安全性会受到一定程度的额外关注”（Ranum，199">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/postindex/%E5%8A%A0%E5%9B%BA%E5%A0%A1%E5%9E%92%E6%9C%BA.png">
+<meta property="article:published_time" content="2025-02-08T09:50:42.000Z">
+<meta property="article:modified_time" content="2025-02-08T10:14:05.689Z">
+<meta property="article:author" content="Jentle">
+<meta property="article:tag" content="渗透测试">
+<meta property="article:tag" content="技术分析">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/postindex/%E5%8A%A0%E5%9B%BA%E5%A0%A1%E5%9E%92%E6%9C%BA.png">
+  
+  
+  
+  <title>评估现代网络协议指纹识别技术：加固堡垒机防御 - TIPFactory</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="TIPFactory" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TIPFactory</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="评估现代网络协议指纹识别技术：加固堡垒机防御"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-08 17:50" pubdate>
+          February 8, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          95 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">评估现代网络协议指纹识别技术：加固堡垒机防御</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="评估现代网络协议指纹识别技术：加固堡垒机防御"><a href="#评估现代网络协议指纹识别技术：加固堡垒机防御" class="headerlink" title="评估现代网络协议指纹识别技术：加固堡垒机防御"></a>评估现代网络协议指纹识别技术：加固堡垒机防御</h1><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>多年来，网络防御者一直使用堡垒机来保护信息系统。研究认为，“堡垒机” 这一术语由安全研究员 Marcus J. Ranum 在 1993 年发表的论文《Thinking about Firewalls》中提出（Ranum，1993）。Ranum 将堡垒机描述为 “网络安全中的关键据点”，并指出 “其安全性会受到一定程度的额外关注”（Ranum，1993）。传统意义上，堡垒机用于方便对敏感信息系统的访问。美国国家标准与技术研究院（NIST）已废止的特别出版物 800 - 123《通用服务器安全指南》中提到，“对于安全性要求极高的情况，管理员应考虑将操作系统配置为堡垒机”（NIST，2008，第 26 页）。虽然强大的边界控制对于网络防御仍然至关重要，但无论是传统网络还是现代网络，都能从部署堡垒机作为管理敏感系统访问的策略执行点中受益。</p>
+<p>组织在规划信息系统防御时，通常从满足合规性要求开始。支付卡行业必须遵守支付卡行业数据安全标准（PCIDSS）。医疗保健组织必须保护机密的个人健康信息（PHI），以遵守《健康信息隐私责任法案》（HIPAA）的规定。其他组织，如超大规模云服务提供商，可能会参考 NIST 的指导来保障其信息系统的安全。NIST 特别出版物 800 - 53《信息系统和组织的安全与隐私控制》能够满足并超越大多数合规性要求（NIST，2020）。无论合规目标是什么，在现代可防御网络中，使用堡垒机是一种常见的技术控制手段。</p>
+<p>信息系统入侵事件仍在不断发生。2024 年 CrowdStrike 全球威胁报告指出，“未管理的网络设备，尤其是边缘网关设备，在 2023 年仍是最常被观察到的<strong>初始利用访问</strong>向量”（CrowdStrike，2024，第 25 页）。典型的安全架构可能会将堡垒机置于具有强大安全控制的虚拟专用网络（VPN）之后，以限制对可信网络的访问。不幸的是，CrowdStrike 还观察到，复杂的攻击者经常使用窃取的凭证访问 VPN 基础设施，并在整个网络中横向移动（CrowdStrike，2024，第 19 页）。从逻辑上讲，堡垒机是攻击目标，并且可能是攻击者下一步行动的目标。</p>
+<p>推进安全控制是许多信息安全团队的重点工作。许多安全从业者建议，不应仅仅满足于合规性要求，而应不断加强安全态势。威胁情报防御中心鼓励信息安全团队采用 “威胁情报驱动的防御”，即 “系统地运用对攻击者策略和技术的深入理解来改进防御措施”（MITRE ENGENUITY，无日期）。MITRE 的对抗策略、技术和通用知识（ATT&amp;CK）提供了 “基于实际观察的攻击者策略和技术知识库”（MITRE，无日期）。网络防御者广泛研究 MITRE ATT&amp;CK，以了解和描述信息系统网络内的攻击活动。</p>
+<p>本研究始于思考如何加强堡垒机的防御。目的是强化堡垒机的防御能力，以抵御更多的攻击行动。堡垒机是运行现代操作系统的端点，处于网络防御者的控制和影响范围内。互联网安全中心（CIS）提供了强化端点的指导（CIS，2024）。此外，美国国防信息系统局（DISA）发布了《安全技术实施指南》（STIGs）来强化端点（DISA，2024）。对于强化包括堡垒机在内的端点操作系统，已有出色的指导方针。</p>
+<p>MITRE 的检测、拒绝和破坏框架赋能网络防御（D3FEND）是一个防御性网络安全技术的知识图谱或目录（MITRE，无日期）。MITRE D3FEND 提供了从防御技术到 MITRE ATT&amp;CK 所描述的攻击技术的直接映射。规划网络防御需要细致且系统的方法。如果攻击者访问了经过强化且配备完善工具的堡垒机，其他敏感数据和计算资源将面临风险。</p>
+<p>美国国防部作为信息安全领域的专家，发布了多篇关于现代网络零信任战略的出版物。国防部零信任战略的原则包括将所有网络视为敌对网络，并要求在所有通信路径中进行加密。国防部还指出，防御措施最终可能会失效（DOD，2022）。国防部有持续搜索网络入侵的指导方针（DOD，2018）。如果像端点强化这样的防御措施最终可能失败，那么就需要额外的防御手段。审视 MITRE D3FEND 可以发现，“检测” 策略为利用堡垒机识别信息系统网络中的攻击者访问或未经授权活动提供了最多机会（MITRE，无日期）。具体而言，网络流量分析提供了最多用于检测未经授权活动的防御技术（MITRE，无日期）。</p>
+<p><em>“An organization that makes visibility a priority, manned by personnel able to<br>take advantage of that visibility, can be extremely hostile to persistent<br>adversaries”（Bejtlich，2013，第 15 页）。</em></p>
+<p>堡垒机可以对传统网络和现代网络提供强大的控制。本研究将重点探讨如何通过网络流量分析，特别是现代<strong>网络协议指纹识别技术</strong>，来加强堡垒机的防御对策。应用于<strong>加密流量的现代网络协议指纹识别是一种相对较新的防御技术</strong>。堡垒机应得到有力的防御和严格的控制。本研究将调查深入检查协议行为的现代网络协议指纹识别技术是否能够强化堡垒机的防御。</p>
+<h1 id="研究方法"><a href="#研究方法" class="headerlink" title="研究方法"></a>研究方法</h1><p>本研究在虚拟化实验室环境中进行，模拟高度可控的信息系统网络。针对七种模拟堡垒机操作的场景进行现代网络协议指纹识别。前三个场景聚焦于<strong>加密开始前的 SSH 连接</strong>。其余四个场景模拟预期的和未经授权的堡垒机操作。分析过程中考虑了 MITRE ATT&amp;CK 所描述的、可能类似于攻击活动的已知且有记录的活动。通过比较现代协议指纹识别值的结果，应能提供更多见解并展示其有效性。</p>
+<h2 id="建立SSH连接的机制"><a href="#建立SSH连接的机制" class="headerlink" title="建立SSH连接的机制"></a>建立SSH连接的机制</h2><p>理解SSH连接以及相关的现代协议指纹识别方法，需要具备 SSH 连接的基础知识。SSH 由安全研究员 Tatu Ylönen 于 1995 年创建（Ylönen，1996）。1996 年 6 月，Ylönen 向 USENIX 发布了一篇论文《SSH - 互联网上的安全登录连接》。SSH 是在赫尔辛基大学遭受密码嗅探攻击后创建的（SSH，无日期）。它旨在取代诸如 Telnet 和 Rservices 套件（如 rlogin 和 rcp）等不安全协议（Ylönen，1996）。这些不安全协议曾被广泛使用，但按照现代标准，由于缺乏提供保密性和完整性的安全控制措施，它们存在漏洞。</p>
+<p>SSH 协议的最新版本是 SSH Version 2。《安全Shell（SSH）协议架构》在 RFC 4251 中进行了描述（IETF，2006）。该 RFC 描述了三个主要组件，每个组件都有相应的 RFC：传输层协议（RFC 4253）、用户认证协议（RFC 4252）和连接协议（RFC 4254）（IETF，2006）。完成这些步骤后，连接即建立、认证并加密（IETF，2006）。</p>
+<p>RFC 4253《安全Shell（SSH）传输层协议》对 SSH 连接的初始阶段提供了深入见解。RFC 4253 第 4.2 节要求 “双方必须发送一个标识字符串”，并描述了字符串格式（IETF，2006，第 4.2 段）。此外，该 RFC 要求 “发送此标识符后应立即开始密钥交换”（IETF，2006，第 4.2 段）。RFC 4253 的第 7 节描述了 SSH 密钥交换（KEX）。SSH KEX 从双方发送支持的算法命名列表开始。连接双方必须提供的信息规范在 RFC 4253 的第 7.1 节中进行了描述。到目前为止所描述的详细信息都发生在加密之前，可通过数据包分析进行观察和检查（Moore &amp; King，2024，第 7 页）。</p>
+<p>了解 SSH KEX 协商有助于进一步研究 SSH 连接可能用于初始加密密钥交换、加密和消息认证的算法。这些算法直接影响堡垒机发送和接收的 SSH 数据包的属性和行为。观察 SSH 数据包可以深入了解堡垒机上发生的活动以及相关的 SSH 连接情况。</p>
+<p>Trisul 网络分析公司的研究人员在其《安全Shell（SSH）流量分析》博客文章中描述了不同算法对 SSH 数据包的影响。Trisul 指出，在 ASCII 中由一个字节表示的单个keystroke ，根据协商的 SSH KEX 算法，在 SSH 数据包有效负载中可能产生 36 字节、40 字节或 52 字节（Trisul，2017）。正如 Trisul 研究人员所描述的，这是由于不同加密密码的设计机制产生特定的块大小，或者是由于 RFC 4253 要求的哈希消息认证码（HMAC）大小和填充（IETF，2006）。以未加密形式传输的协商 SSH KEX 算法直接影响 SSH 数据包有效负载的大小（Trisul，2017）。</p>
+<p>互联网数字分配机构（IANA）已将端口 22 分配给安全Shell（SSH）协议（IANA，无日期）。虽然 SSH 是一种协议，但最常用的实现 SSH 协议的软件是 OpenSSH（Moore &amp; King，2024，第 4 页）。OpenSSH 的广泛使用使得研究适用于大多数组织的行为成为可能。了解该协议及其实现方式，将有助于网络防御者加强堡垒机的防御。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/02/08/%E8%AF%84%E4%BC%B0%E7%8E%B0%E4%BB%A3%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF%EF%BC%9A%E5%8A%A0%E5%9B%BA%E5%A0%A1%E5%9E%92%E6%9C%BA%E9%98%B2%E5%BE%A1/image.png" class="" title="image">
+
+<p>扩展阅读：<a target="_blank" rel="noopener" href="https://info.support.huawei.com/info-finder/encyclopedia/zh/SSH.html">https://info.support.huawei.com/info-finder/encyclopedia/zh/SSH.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://info.support.huawei.com/info-finder/encyclopedia/zh/SSH.html">什么是SSH？SSH是如何工作的？ - 华为</a></p>
+<h2 id="HASSH-指纹识别简介"><a href="#HASSH-指纹识别简介" class="headerlink" title="HASSH 指纹识别简介"></a><strong>HASSH 指纹识别简介</strong></h2><p>HASSH 是由 Salesforce 检测云团队的 Ben Reardon 开发的一种现代网络协议指纹识别机制。它于 2018 年 9 月开源。Salesforce 发布了一篇博客，为信息安全社区提供了详细的技术规范、原理和用例示例（Reardon，2018）。除博客文章外，还有一个公共 GitHub 存储库可供使用（Salesforce，2018）。</p>
+<p>HASSH 指纹识别检查 RFC 4253 第 7 节中描述的 SSH 密钥交换（KEX）（IETF，2006）。客户端 - 服务器连接的双方都会发送一个支持的算法命名列表。RFC 要求进行此 SSH KEX，以便双方能够为连接建立一致同意的加密方案。Reardon 和 Salesforce 团队检查密钥交换方法、加密算法、消息认证码（MAC）和压缩算法。这些字符串用分号（;）连接和分隔，最后通过 MD5 哈希算法处理。客户端的 MD5 哈希生成 HASSH，而服务器的 MD5 哈希生成 HASSHserver（Reardon，2018）。</p>
+<p>许多安全分析师和网络工程师都熟悉常见的开源网络协议分析器 Wireshark。自 3.6.0 版本起，Wireshark 及其相关的命令行实用程序 Tshark 就已包含 HASSH 和 HASSHserver（Wireshark，无日期）。将这种现代协议指纹识别方法集成到常见的开源协议分析器中，简化了分析过程。</p>
+<p>实施 HASSH 指纹识别包括捕获连接的 HASSH 和 HASSHserver 值。此外，建议记录每个连接支持的算法命名列表。Wireshark 中的 SSH 协议解析器也内置了客户端和服务器连接的算法命名列表。Reardon 认为这对详细分析很有价值（Reardon，2018）。</p>
+<p>在企业环境中，扩展和自动化分析至关重要。手动分析对于学习概念或进行有限的分析很有用；然而，大型环境通常会频繁出现数千个 SSH 连接。Salesforce 团队还将 HASSH 与常见的开源网络安全监测（NSM）解决方案 Zeek（以前称为 Bro）进行了集成。可用的 Zeek 软件包将用 HASSH、HASSHserver 和 SSH KEX 中的算法丰富 ssh.log 文件（Salesforce，2018）。</p>
+<h2 id="JA4-SSH-指纹识别简介"><a href="#JA4-SSH-指纹识别简介" class="headerlink" title="JA4 + SSH 指纹识别简介"></a><strong>JA4 + SSH 指纹识别简介</strong></h2><p>JA4 + SSH 是由安全研究员 John Althouse 创建的一种 SSH 指纹识别方法。JA4 + SSH 旨在深入了解加密开始后 SSH 连接中发生的情况。它是更广泛的现代协议指纹识别套件 JA4 + 的一部分。JA4 + SSH 能够 “确定 SSH 连接内发生的事情，即使流量是加密的，并为分析师提供一组简单的指纹用于分析”（Althouse，2024）。</p>
+<p>JA4 + SSH 之所以可行，有几个原因。SSH KEX 操作以未加密的形式进行，这为特定连接的算法选择提供了重要见解。如 2.1 节所述，了解算法协商以及加密和 HMAC 的密码选择，有助于对加密的 SSH 连接内发生的活动进行指纹识别。对 SSH 协议及其应用的深入理解使得流量分析能够生成高保真的 JA4 + SSH 指纹。</p>
+<p>Althouse 在 JA4 + 博客文章中描述，SSH 不是一个完整的隧道。在每个 SSH 连接中，传输控制协议（TCP）确认（ACK）发生在开放系统互连（OSI）模型的第 4 层，并且按设计不进行加密（Althouse，2024）。JA4 + SSH 指纹识别考虑到这一点，并观察 SSH 数据包的详细信息以及客户端和服务器之间的交互。通过观察第 4 层 TCP ACK 的来源，网络防御者可以确定连接的哪一方负责执行任务（Althouse，2024）。结合对给定 SSH KEX 协商的 SSH 数据包有效负载大小的了解，网络防御者将获得巨大优势。</p>
+<p>在堡垒机防御的用例中，了解 SSH 协议在特定场景（如正向交互式 shell）中的行为，能够生成强大的指纹，无论在 SSH KEX 中协商的算法如何，该指纹都能发挥作用。了解这种指纹识别方法的训练有素的分析师，现在可以更好地保护他们的网络。</p>
+<p>扩展和自动化分析也是一个需要考虑的问题。与 HASSH 工具类似，JA4 + 指纹识别套件（包括 JA4 + SSH）发布了多个工具来简化分析过程。一个 Wireshark 插件可以在 Wireshark 中生成 JA4 + SSH 指纹用于分析（FoxIO - LLC，2024）。FoxIO 团队还发布了一个 Python 脚本 JA4.py 和一个 Zeek 软件包用于自动化（FoxIO - LLC，2024）。这些工具为研究人员提供了详细分析的便利，并将在本研究中使用。</p>
+<h2 id="模拟实验室环境"><a href="#模拟实验室环境" class="headerlink" title="模拟实验室环境"></a><strong>模拟实验室环境</strong></h2><p>收集数据需要模拟实验室环境。目标是使用易于重现、简单且本地虚拟化的环境。Broadcom 为 VMWare Workstation Pro 17.5.2 build23775571 提供的免费个人使用和研究许可证，为虚拟化技术提供了支持。构建并配置了四台虚拟机，具体如下：</p>
+<ul>
+<li>Windows10 客户机（VM）—— 模拟管理员工作站</li>
+<li>Debian12 客户机（VM）—— 模拟堡垒机</li>
+<li>Debian12 客户机（VM）—— 模拟关键任务服务器平台</li>
+<li>Debian12 客户机（VM）—— 用作检查连接的分析机</li>
+</ul>
+<p>除非另有说明，主机均使用默认配置。仅进行了最少的额外软件配置。将在<strong>堡垒机上收集数据包捕获数据</strong>。分析过程将使用常见的开源工具以及为现代协议指纹识别方法提供的工具。分析将在专用的分析机上进行，以展示最佳实践。</p>
+<h1 id="研究结果"><a href="#研究结果" class="headerlink" title="研究结果"></a><strong>研究结果</strong></h1><p>设计这些场景是为了测试和评估预期的和不良的堡垒机操作。每个场景都从在堡垒机上收集数据包开始，并使用伯克利数据包过滤器（Berkley Packet Filter ,BPF）来减小收集数据的大小，最大化分析潜力。为了使用指纹识别方法提取最大价值，需要进行完整的数据包捕获。收集数据包后，使用适当的指纹识别方法进行分析。前三个场景将利用 HASSH 指纹识别，而其余场景将使用 JA4 + SSH 指纹识别进行测量。有关数据包捕获、命令语法和任何配置修改的更多信息，请参见附录 A。</p>
+<h2 id="场景-01——SSH-客户端软件连接到堡垒机"><a href="#场景-01——SSH-客户端软件连接到堡垒机" class="headerlink" title="场景 01——SSH 客户端软件连接到堡垒机"></a><strong>场景 01——SSH 客户端软件连接到堡垒机</strong></h2><p>场景 01 旨在检查用于建立到堡垒机的 SSH 连接的 SSH 客户端软件。使用 HASSH 指纹识别方法进行分析。</p>
+<p>使用两个典型的 SSH 客户端（MS Terminal SSH 和 PuTTY）从用户工作站建立到堡垒机的连接。使用的组件如下：</p>
+<ul>
+<li>用户工作站 ——192.168.91.132（Windows 10）</li>
+<li>堡垒机 ——192.168.91.129（Debian 12）</li>
+</ul>
+<p>自 3.6.0 版本发布以来，Wireshark 和 Tshark 就具备了计算 HASSH 指纹值的能力（Wireshark，无日期）。下图展示了检查 PuTTY 连接的 HASSH 的能力。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/02/08/%E8%AF%84%E4%BC%B0%E7%8E%B0%E4%BB%A3%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF%EF%BC%9A%E5%8A%A0%E5%9B%BA%E5%A0%A1%E5%9E%92%E6%9C%BA%E9%98%B2%E5%BE%A1/image1.png" class="" title="image1">
+
+<p>wireshark ssh client HASSH</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/02/08/%E8%AF%84%E4%BC%B0%E7%8E%B0%E4%BB%A3%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF%EF%BC%9A%E5%8A%A0%E5%9B%BA%E5%A0%A1%E5%9E%92%E6%9C%BA%E9%98%B2%E5%BE%A1/image2.png" class="" title="image2">
+
+<p>Tshark ssh client HASSH of PuTTY connection</p>
+<p>使用 MS Terminal SSH 客户端软件进行了相同的测试。从该连接收集的 PCAP 文件中计算出 HASSH，结果显示如下图：</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/02/08/%E8%AF%84%E4%BC%B0%E7%8E%B0%E4%BB%A3%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF%EF%BC%9A%E5%8A%A0%E5%9B%BA%E5%A0%A1%E5%9E%92%E6%9C%BA%E9%98%B2%E5%BE%A1/image3.png" class="" title="image3">
+
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/02/08/%E8%AF%84%E4%BC%B0%E7%8E%B0%E4%BB%A3%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF%EF%BC%9A%E5%8A%A0%E5%9B%BA%E5%A0%A1%E5%9E%92%E6%9C%BA%E9%98%B2%E5%BE%A1/image4.png" class="" title="image4">
+
+<p>使用 Tshark 提取 HASSH 值可以加快分析速度。在两个 PCAP 文件中，HASSH 指纹均根据 SSH 密钥交换（KEX）数据包中指定的算法列表计算得出。</p>
+<table>
+<thead>
+<tr>
+<th><strong>HASSH 值</strong></th>
+<th><strong>SSH 客户端软件</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1dd4d89cd6b7a1f7b06acf808260c130</td>
+<td>PuTTY</td>
+</tr>
+<tr>
+<td>ec7378c1a92f5a8dde7e8b7a1ddf33d1</td>
+<td>MS Terminal SSH</td>
+</tr>
+</tbody></table>
+<p>两个 SSH 客户端的 HASSH 指纹值不同。分析师<strong>现在可以深入了解正在使用的 SSH 客户端软件</strong>。通过对受管端点（如连接到堡垒机的用户工作站）进行管理或技术控制来严格控制安装软件的组织，现在有机会对到堡垒机的 SSH 连接进行测量。</p>
+<p>在本研究的数据收集阶段，观察到为模拟用户工作站的虚拟机发布了操作系统软件更新 KB5044273（Microsoft，2024）。操作系统补丁影响了 MS Terminal SSH 连接，产生了新的 HASSH 值。操作系统补丁引入了新的 SSH 客户端密码，从而影响了 HASSH 指纹值。查看微软的操作系统补丁详细信息并未明确表明引入了新密码。</p>
+<p>组织可能有政策或配置要求，规定信息系统内必须使用特定密码。组织也可能有一份批准的加密密码授权列表。NIST 最近批准了新的抗量子密码（NIST，2024）。这些密码在整个计算堆栈中实施只是时间问题。如此处所示，新密码可能会通过操作系统补丁或第三方软件更新启用。实施特定密码会改变 HASSH 指纹值，从而使指纹适应独特的网络环境。</p>
+<p>在大型环境中分析 HASSH 指纹值可能会很麻烦。用户可能拥有许多运行不同操作系统的不同类型工作站。如本研究中所经历的，SSH 客户端软件会受到生命周期更新或补丁的影响。在某些环境中，由于有效管理所需的开销，跟踪这些变化是一个劣势。</p>
+<h2 id="场景-02——-服务器对客户端连接的响应"><a href="#场景-02——-服务器对客户端连接的响应" class="headerlink" title="场景 02—— 服务器对客户端连接的响应"></a><strong>场景 02—— 服务器对客户端连接的响应</strong></h2><p>场景 02 旨在检查用于从用户工作站建立 SSH 连接的 SSH 服务器软件。HASSH 指纹识别方法还会考虑 SSH 服务器的响应，从而提供 HASSHserver 指纹。检查与场景 01 相同的连接，但重点关注 SSH 连接请求中的 SSH 服务器响应。将使用相同的 SSH 客户端（PuTTY 和 MS Terminal SSH）来建立到堡垒机的连接。使用 Wireshark 和 Tshark 计算 HASSHserver 指纹值。使用的组件如下：</p>
+<ul>
+<li>用户工作站 ——192.168.91.132（Windows 10）</li>
+<li>堡垒机 ——192.168.91.129（Debian 12）</li>
+</ul>
+<p>HASSHserver ：</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/02/08/%E8%AF%84%E4%BC%B0%E7%8E%B0%E4%BB%A3%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF%EF%BC%9A%E5%8A%A0%E5%9B%BA%E5%A0%A1%E5%9E%92%E6%9C%BA%E9%98%B2%E5%BE%A1/image5.png" class="" title="image5">
+
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/02/08/%E8%AF%84%E4%BC%B0%E7%8E%B0%E4%BB%A3%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF%EF%BC%9A%E5%8A%A0%E5%9B%BA%E5%A0%A1%E5%9E%92%E6%9C%BA%E9%98%B2%E5%BE%A1/image6.png" class="" title="image6">
+
+<p>最后的结果：</p>
+<table>
+<thead>
+<tr>
+<th>HASSHserver</th>
+<th>SSH Client</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a65c3b91f743d3f246e72172e77288f1</td>
+<td>PuTTY</td>
+</tr>
+<tr>
+<td>a65c3b91f743d3f246e72172e77288f1</td>
+<td>MS Terminal</td>
+</tr>
+</tbody></table>
+<p>PuTTY 和 MS Terminal SSH 连接的 HASSHserver 指纹值相同。指纹值恒定是因为堡垒机的 OpenSSH 服务器及其相关配置决定了连接支持的密码套件的顺序和类型。从传输层安全（TLS）连接到 Web 服务的过程中也可以观察到类似行为。Web 服务器基础架构被配置为支持特定的一组密码套件以用于客户端连接。</p>
+<p>恒定的指纹值提供了一个强有力的指标，也为增强信息系统的安全基线提供了机会。堡垒机 OpenSSH 服务器的配置文件不应经常更改。OpenSSH 二进制文件和配置文件可能已包含在诸如文件完整性监控（FIM）或配置管理解决方案等防御策略中。已知攻击者会植入带有后门的 OpenSSH 二进制文件。ESET 的研究人员将 Kessel 描述为一种先进的 OpenSSH 后门，用于窃取凭证和实现僵尸网络功能（ESET，2018）。将 HASSHserver 指纹值纳入信息系统基线可以识别未经授权的配置更改，包括意外的密码设置以及恶意或受损的 SSH 守护进程的安装。</p>
+<p>与可以为给定连接请求指定所需算法的 SSH 客户端配置类似，SSH 服务器也有类似功能。在某些环境中，修改 OpenSSH 的配置是常见做法。美国国防信息系统局（DISA）提供的《安全技术实施指南》（STIGs）要求组织实施特定的 NIST 批准的密码（DISA，无日期）。管理员也可能在其 SSH 客户端软件中实施特定配置。本研究并非旨在实现特定的合规目标。然而，研究人员必须认识到，SSH 客户端和服务器软件可以指定要使用的一组密码。修改 SSH 客户端或服务器配置将改变观察到的指纹值。</p>
+<h2 id="场景-03——-从堡垒机发起的连接"><a href="#场景-03——-从堡垒机发起的连接" class="headerlink" title="场景 03—— 从堡垒机发起的连接"></a><strong>场景 03—— 从堡垒机发起的连接</strong></h2><p>场景 03 旨在检查堡垒机与关键任务服务器之间 SSH 连接的两端。堡垒机旨在方便连接到受保护的网络。将检查由 Tshark 计算的 HASSH 和 HASSHserver 指纹值。具体检查的连接是堡垒机与关键任务服务器之间的连接。在 Tshark 中添加了一个新过滤器，以限制仅捕获堡垒机与关键任务服务器之间的连接。使用的组件如下：</p>
+<ul>
+<li>用户工作站 ——192.168.91.132（Windows 10）</li>
+<li>堡垒机 ——192.168.91.129（Debian 12）</li>
+<li>关键任务服务器 ——192.168.91.133（Debian 12）</li>
+</ul>
+<p>下图是堡垒机和关键服务机器的连接HASSH值：</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/02/08/%E8%AF%84%E4%BC%B0%E7%8E%B0%E4%BB%A3%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF%EF%BC%9A%E5%8A%A0%E5%9B%BA%E5%A0%A1%E5%9E%92%E6%9C%BA%E9%98%B2%E5%BE%A1/image7.png" class="" title="image7">
+
+<p>在这个场景中，从堡垒机发起的连接中观察到客户端 HASSH 指纹值。堡垒机的 SSH 客户端软件是 OpenSSH。到目前为止检查的 HASSH 值汇总如下图：</p>
+<table>
+<thead>
+<tr>
+<th>HASSH</th>
+<th>SSH Client</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1dd4d89cd6b7a1f7b06acf808260c130</td>
+<td>PuTTY</td>
+</tr>
+<tr>
+<td>ec7378c1a92f5a8dde7e8b7a1ddf33d1</td>
+<td>MS Terminal</td>
+</tr>
+<tr>
+<td>aae6b9604f6f3356543709a376d7f657</td>
+<td>OpenSSH Client 堡垒机</td>
+</tr>
+</tbody></table>
+<p>到目前为止HASSHserver:</p>
+<table>
+<thead>
+<tr>
+<th>HASSHserver</th>
+<th>SSH Client</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a65c3b91f743d3f246e72172e77288f1</td>
+<td>场景2</td>
+</tr>
+<tr>
+<td>a65c3b91f743d3f246e72172e77288f1</td>
+<td>场景3 关键任务主机返回的</td>
+</tr>
+</tbody></table>
+<p>堡垒机和关键任务服务器运行<strong>相同的操作系统和 SSH 服务器</strong>（OpenSSH）配置。在这个场景中，预计 HASSHserver 指纹值会相同。这个指标对网络防御者的价值巨大。MITRE ATT&amp;CK 中的 T1562告诉我们，攻击者可能会试图破坏技术端点控制。在这种情况下，HASSH 和 HASSHserver 指纹值可以作为一种主机外的指标，用于检测意外活动。</p>
+<p>MITRE ATT&amp;CK 的 T1554 描述了攻击者可能如何破坏主机软件二进制文件（MITRE，无日期）。然而，<strong>HASSH 和 HASSHserver 指纹值的变化并不一定表明存在攻击活动。场景 01 表明，操作系统补丁启用了新密码，从而改变了 HASSH 值</strong>。不过，新的 HASSH 指纹值可能作为可疑活动的早期指标。Booz Allen Hamilton 描述了 2015 年乌克兰电力攻击中被修改的 DropBear SSH 客户端（Booz Allen Hamilton，2015）。MITRE ATT&amp;CK 和 Booz Allen Hamilton 描述了现实世界中攻击者在入侵期间攻击 SSH 客户端和 SSH 服务器软件及配置的场景。</p>
+<p>使用堡垒机的环境可能会采用额外的特殊配置，以减轻可信用户的操作负担。其中一种配置可能涉及使用 SSH ProxyJump（以前称为 ProxyCommand）选项，以方便通过堡垒机进行连接。</p>
+<p>使用 SSH ProxyJump 时，会建立两个 SSH 连接：首先是从用户工作站到堡垒机的连接，然后是从堡垒机到关键任务服务器的连接。需要注意的是，在这种情况下 HASSH 指纹值仍然有效。如场景 01 所述，如果可信用户使用 SSH ProxyJump 选项，也可以在 SSH 客户端的配置中指定密码。深入了解 SSH 客户端软件的变化可以帮助网络防御者识别环境中的变化。业界都知道攻击者会以授权用户为目标。美国网络安全与基础设施安全局（CISA）记录了针对 SSH 客户端软件的高级持续威胁（APTs）。在一个案例中，PuTTY SSH 客户端保存的配置文件中的凭证被窃取（CISA，2024）。在 Mandiant 研究人员描述的另一次入侵中，一个带有后门的 SSH 客户端实现了持久化访问（Maclachlan 等人，2022）。HASSH 指纹识别方法使网络防御者有更多机会识别其防御网络内的攻击活动。</p>
+<h2 id="场景-04——-正向交互式堡垒机-Shell"><a href="#场景-04——-正向交互式堡垒机-Shell" class="headerlink" title="场景 04—— 正向交互式堡垒机 Shell"></a><strong>场景 04—— 正向交互式堡垒机 Shell</strong></h2><p>场景 04 检查正向交互式 Shell 的预期正常行为。从用户工作站建立到堡垒机的连接。在交互式 Shell 中发出典型的管理命令，模拟管理员对堡垒机进行日常维护。将使用 FoxIO 团队创建的 JA4.py 脚本进行分析（FoxIO - LLC，无日期）。与前面的场景类似，在堡垒机上收集完整的数据包捕获。使用的组件如下：</p>
+<ul>
+<li>用户工作站 ——192.168.91.132（Windows 10）</li>
+<li>堡垒机 ——192.168.91.129（Debian 12）</li>
+</ul>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/02/08/%E8%AF%84%E4%BC%B0%E7%8E%B0%E4%BB%A3%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF%EF%BC%9A%E5%8A%A0%E5%9B%BA%E5%A0%A1%E5%9E%92%E6%9C%BA%E9%98%B2%E5%BE%A1/image8.png" class="" title="image8">
+
+<p>JA4.py 脚本展示了这个正向交互式 Shell 的 JA4 + SSH 指纹。输出以 JavaScript 对象表示法（JSON）格式显示，以便于阅读。为了使该场景易于重现，对 JA4.py 脚本的第 406 行进行了轻微修改，将分析的 SSH 数据包数量从默认的每 200 个减少到 20 个（FoxIO - LLC，无日期）。</p>
+<p>在输出中，此连接的加密和哈希算法是 chacha20 - poly1305，这是 SSH 客户端请求的算法（IETF，2006）。2.3 节描述了每个用户keystroke 在客户端加密并发送到服务器的过程。一旦 SSH 服务器接收到包含keystroke 的加密消息，相同的keystroke 会被加密并返回给客户端。最后，keystroke 会显示在 SSH 客户端中，SSH 客户端通过发送 TCP ACK 进行确认（Althouse，2024）。正如预期的那样，加密算法 chacha20 - poly1305 对每个keystroke 进行加密，并将 SSH 有效负载填充到至少 36 字节（Trisul，2017）。</p>
+<p>由可信用户发起的到堡垒机的正向交互式会话通常是良性的。可信用户登录是为了执行某些功能，如系统维护、故障排除或其他授权活动。过去，收集和观察加密的 SSH 连接并没有提供太多价值。毕竟这些会话是加密的，对 SSH 连接的可见性有限。组织可能会在堡垒机上实施额外的日志记录措施来捕获keystroke 操作。但捕获keystroke 操作并非没有风险，每个环境都应仔细评估。现代协议指纹识别方法 JA4 + SSH 能够帮助理解 SSH 连接内发生的事情。</p>
+<p>JA4 + SSH 指纹识别方法使分析更加高效。训练有素的分析师可以快速观察到 SSH 连接内可能发生的事情。这表明了正常行为，特别是与堡垒机日志、HASSH 指纹和其他遥测数据结合时。</p>
+<h2 id="场景-05——-未经授权向堡垒机复制文件"><a href="#场景-05——-未经授权向堡垒机复制文件" class="headerlink" title="场景 05—— 未经授权向堡垒机复制文件"></a><strong>场景 05—— 未经授权向堡垒机复制文件</strong></h2><p>场景 05 假设严格控制的网络不允许授权用户将文件从其工作站复制到受保护的网络。假定存在额外严格的流程，以受控且安全的方式将软件、脚本、补丁或其他必需品引入环境。许多组织会扫描内部存储库以查找恶意内容，并考虑许可证使用要求。</p>
+<p>场景 05 考虑了 MITRE ATT&amp;CK 中的 T1570：横向工具转移和 T1105：入口工具转移，通过复制一个在 Linux 端点上执行自动枚举以查找弱点的常见实用程序来进行模拟（MITRE，无日期）。具体的实用程序是 Linpeas.sh，这是一个常见的脚本，用于枚举 Linux 端点以查找配置弱点（PEASS - ng，无日期）。使用安全复制（SCP）功能将 linpeas.sh 脚本从用户工作站复制到堡垒机。Shell 输出显示 linpeas.sh 文件大小为 824,745 字节。未使用任何混淆或编码。在堡垒机上收集完整的数据包捕获。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/02/08/%E8%AF%84%E4%BC%B0%E7%8E%B0%E4%BB%A3%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF%EF%BC%9A%E5%8A%A0%E5%9B%BA%E5%A0%A1%E5%9E%92%E6%9C%BA%E9%98%B2%E5%BE%A1/image9.png" class="" title="image9">
+
+<p>使用相同的 JA4.py 工具进行分析，但未使用场景 03 中对第 406 行的修改。在这个场景中，SSH 客户端的有效负载明显大于正向交互式 Shell 会话中观察到的 36 字节。客户端发送了 1460 字节，开始接近这个虚拟化网络的最大传输单元（MTU）（Althouse，2024）。额外的数据包分析显示，IP 头部为 20 字节，因为未使用 IP 选项。同样，TCP 头部也是 20 字节，符合预期。数据包中剩余的有效负载，尽管使用 chacha20 - poly1305 算法进行了加密，但大小为 1460 字节。</p>
+<p>JA4 + SSH 指纹识别简化了分析过程。训练有素的分析师可以快速准确地识别此 SSH 连接期间发生的事情。JA4 + SSH 指纹表明用户没有执行预期的正向交互式 Shell 操作。与堡垒机日志和其他遥测数据结合，这强烈表明存在未经授权的活动。</p>
+<h2 id="场景-06——-从堡垒机进行数据泄露"><a href="#场景-06——-从堡垒机进行数据泄露" class="headerlink" title="场景 06—— 从堡垒机进行数据泄露"></a><strong>场景 06—— 从堡垒机进行数据泄露</strong></h2><p>场景 06 旨在模拟通过安全复制（SCP）过程进行的数据泄露。与场景 05 类似，但这次数据被泄露到用户工作站。MITRE ATT&amp;CK 的技术战术程序（TTPs），如 T1041：通过 C2 通道泄露数据，在此处相关（MITRE，无日期）。这个场景的特殊之处在于，是一个授权用户在执行复制功能。即使是最好的数据丢失防护（DLP）解决方案也难以识别这种行为。</p>
+<p>在堡垒机上生成了一个模拟文件，以保持 PCAP 文件大小较小，便于快速分析。该文件使用 Linux 上的 ‘dd’ 命令生成，并使用来自 ‘&#x2F;dev&#x2F;urandom’ 的流生成一个一兆字节的文件。然后使用 gzip 实用程序对其进行压缩，并通过 SCP 从堡垒机安全地复制到用户工作站。</p>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/02/08/%E8%AF%84%E4%BC%B0%E7%8E%B0%E4%BB%A3%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF%EF%BC%9A%E5%8A%A0%E5%9B%BA%E5%A0%A1%E5%9E%92%E6%9C%BA%E9%98%B2%E5%BE%A1/image10.png" class="" title="image10">
+
+<p>使用相同的 <a target="_blank" rel="noopener" href="http://ja4.py/">JA4.py</a> 工具进行分析并生成指纹值。在这个场景中，SSH 服务器的有效负载明显大于正向交互式 Shell 会话中观察到的 36 字节。服务器发送 1460 字节，开始接近虚拟化网络的 MTU。与场景 05 类似，IP 头部和 TCP 头部的大小均为 20 字节。数据包中剩余的有效负载，尽管使用 chacha20 - poly1305 算法进行了加密，但大小为 1460 字节。</p>
+<table>
+<thead>
+<tr>
+<th>JA4+SSH</th>
+<th>活动</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>c36s36_c10s10_c10s0</td>
+<td>连接</td>
+</tr>
+<tr>
+<td>c1460s36_c185s15_c4s131</td>
+<td>复制文件去堡垒机</td>
+</tr>
+<tr>
+<td>c36s1460_c3s197_c10s0</td>
+<td>数据传输出堡垒机</td>
+</tr>
+</tbody></table>
+<p>传统的分析方法也可以成功识别这个场景。这种分析会考虑数据的传输方向和整体传输情况。在 Wireshark 或类似工具中进行相对简单的统计分析，就可以表明大约有一兆字节的数据被传输。对 NetFlow 日志的分析也会显示发生了连接，数据通过指定端口传输，并且涉及一定数量的数据包。虽然进行这种分析并非不可能，但它需要详细的分析、自定义的检测逻辑，并且可能需要另一个数据源。传统分析不太可能像 JA4 + SSH 方法那样快速洞察加密的 SSH 连接。</p>
+<p>JA4 + SSH 实施了详细的特定于 SSH 协议的分析，生成高保真的指纹，便于进行简单分析。JA4 + SSH 指纹表明用户没有执行预期的正向交互式 Shell 操作。与堡垒机日志和其他遥测数据结合，这强烈表明存在未经授权的活动。</p>
+<h2 id="场景-07——-识别反向-Shell"><a href="#场景-07——-识别反向-Shell" class="headerlink" title="场景 07—— 识别反向 Shell"></a><strong>场景 07—— 识别反向 Shell</strong></h2><p>最后一个场景模拟堡垒机上的反向 Shell。除非明确纳入信息系统设计，否则在大多数网络中，反向 Shell 显然表明存在未经授权的活动。在堡垒机的 2222 端口上建立反向 Shell，连接到关键任务服务器。然后从用户工作站发起连接到堡垒机上的反向 Shell，最终在关键任务服务器上建立连接。在捕获数据包的同时执行一系列按键操作。使用 <a target="_blank" rel="noopener" href="http://ja4.py/">JA4.py</a> 脚本进行分析并生成 JA4 + SSH 指纹。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs nasm">analyst@watchingu:~ ja4 scenario07v2.pcap-J<br>&quot;stream:0, &quot;s&quot;192.168.91.133<br>&quot;dst:&quot;192.168.91.129&quot;,<br>&quot;cport:&quot;599&quot;<br>&quot;dstport:&quot;22&quot;, &quot;client_tt1&quot;:&quot;64&quot;<br>&quot;sever:&quot;64&quot;,<br>&quot;JA4L-&quot;:&quot;964&quot;<br>&quot;JA4L-C&quot;:&quot;54964&quot; &quot;sh_extras:&#123; &quot;hassh&quot;:&quot;e6b9604f6f3356543709a376d7f657&quot;<br>&quot;hashrve&quot;a65c3b91f743d3246e72172e77288f1, &quot;shprotocol-client:-2.0-0pen.2p1ebian-2deb12u3 &quot;s_protocolserver:&quot;SSH-2.0-0enS9.2p1 Debian-2+deb12u3&quot;<br>&quot;encyption_algorith&quot;chacha0-poly1305@openssh.com<br>&#125;,<br>&quot;JA4SSH.1:&quot;c44s40_c10s109s5&quot;, &quot;JA4SSH.2&quot;: &quot;JA4SSH.3&quot;: &quot;C84s52_11s9_c7s5&quot; &quot;C76s76-c10s10Os10<br>&quot;JA4SSH.4&quot;: &quot;c76s76-c10s10-0s10&quot;<br>&quot;JA4SSH.5&quot;: &quot;c76s76-c10s10-c0s10&quot;<br>&quot;JA4SSH.6&quot;: &quot;c76s76-c10s10_cOs10&quot;<br>&quot;JA4SSH.7&quot;: &quot;JA4SSH.8&quot;: &quot;JASSH.9&quot;: &quot;c76s76-c10s10cs10&quot; &quot;c76s76_c10s10-0s10&quot; &quot;c76s76-c10s10-0s10&quot;<br>&quot;JA4SSH.10:&quot;C76s76c10510_01,<br>&quot;JA4SSH.11&quot;:&quot;c7676-c10s100s10&quot;<br>&quot;JA4SSH.12:&quot;c7s76c10s100s10&quot; &quot;JA4SSH.13&quot;:&quot;c76s76-c0s0-c0s1<br>&quot;stream&quot;:1, &quot;sc:&quot;192.168.91.132&quot;<br>&quot;dst&quot;:&quot;192.168.91.129&quot;,<br>&quot;scport&quot;:&quot;51477&quot;, &quot;dstport:&quot;2222&quot;,<br>&quot;client_tt1&quot;:&quot;128 &quot;sever:6&quot;<br>&quot;JA4L-S&quot;:&quot;9_64&quot;<br>&quot;JA4L-C&quot;:&quot;2325_128&quot;<br></code></pre></td></tr></table></figure>
+
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/02/08/%E8%AF%84%E4%BC%B0%E7%8E%B0%E4%BB%A3%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF%EF%BC%9A%E5%8A%A0%E5%9B%BA%E5%A0%A1%E5%9E%92%E6%9C%BA%E9%98%B2%E5%BE%A1/image11.png" class="" title="image11">
+
+<p>场景 04 展示了堡垒机上正向交互式 Shell 的指纹识别结果。2.3 节还描述了 SSH 连接的算法如何影响单个按键的大小以及在数据包捕获中观察到的加密 SSH 有效负载。场景 04 生成的 JA4 + SSH 指纹为 c36s36_c10s10_c10s0，而反向 Shell 生成的 JA4 + SSH 指纹为 c76s76_c10s10_c0s10。</p>
+<p>反向 Shell 的 JA4 + SSH 指纹的第一部分，客户端和服务器均为 76，这表明在堡垒机上捕获时，SSH 有效负载为 76 字节。在授权的正向交互式 Shell 中，使用相同的 SSH KEX 连接算法时，这个值应为 36 字节。在反向 Shell 的情况下，这个连接是通过第二个 SSH 连接进行的 SSH 连接，包括填充，因此产生 76 字节。使用不同算法的连接会产生不同的值（Althouse，2024）。</p>
+<p>加密的反向 Shell 可能很难识别。即使是最先进的结合了端点遥测数据的下一代防火墙（NGFWs），虽然能够识别反向 Shell，但也常常难以准确检测到它们。符合协议规范的连接可能不会被标记为恶意。虽然这对分析师来说是一项强大的功能，但攻击者可以按照 MITRE ATT&amp;CK 中的 T1562：削弱防御及相关子技术所述，破坏端点日志记录或安全软件。</p>
+<p>反向 Shell 通常可以突破防火墙防御，并在网络中实现灵活的横向移动（MITRE，无日期）。MITRE ATT&amp;CK 将 T1059：命令和脚本解释器及相关子技术描述为建立命令和控制的一种手段，并特别提到 SSH 连接可实现交互式 Shell。CISA 发布了一份关于美国关键基础设施部门内红队活动的公告。关键发现 #2 指出，“该组织过于依赖其基于主机的工具，缺乏网络层保护”，并且还描述了 “从工作站到团队云服务器的异常出站 SSH 连接”（CISA，2024）。JA4 + SSH 指纹识别使得识别反向 Shell 变得简单，使训练有素的分析师能够快速做出响应。下图展示了收集到的 JA4 + SSH 指纹和模拟活动的总结。</p>
+<table>
+<thead>
+<tr>
+<th>JA4+SSH</th>
+<th>活动</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>c36s36_c10s10_c10s0</td>
+<td>正向合法shell连接</td>
+</tr>
+<tr>
+<td>c1460s36_c185s15_c4s131</td>
+<td>复制文件去堡垒机</td>
+</tr>
+<tr>
+<td>c36s1460_c3s197_c10s0</td>
+<td>数据传输出堡垒机</td>
+</tr>
+<tr>
+<td>c76s76_c10s10_c0s10</td>
+<td>反弹shell通过ssh</td>
+</tr>
+</tbody></table>
+<h1 id="建议与启示"><a href="#建议与启示" class="headerlink" title="建议与启示"></a><strong>建议与启示</strong></h1><p>对 SSH 协议机制的详细研究有助于为每个连接获取更多背景信息。前三个场景的研究结果使我们对发起或响应 SSH 连接请求的软件有了更深入的了解。</p>
+<p>在应用 HASSH 指纹识别技术时，仔细检查 SSH 密钥交换（KEX）中支持的算法列表，这一做法超越了仅观察客户端和服务器识别字符串的层面。通过多种方式控制 SSH KEX，能够为信息系统基线增添价值。知晓 SSH 连接双方所采用的算法，有助于网络防御者更迅速地识别异常情况。</p>
+<p>一旦建立到堡垒机的 SSH 连接，授权用户便能访问敏感数据和网络资源。当端点安全控制措施失效时，诸如 JA4 + SSH 这类现代网络协议指纹识别技术，能够在严格管控的环境中发挥监督作用。场景 04 通过建立预期行为基线开启研究，场景 05 和 06 分别识别出未经授权的文件传入和传出情况，场景 07 则成功识别出隐藏在 SSH 反向 Shell 中的未经授权活动。</p>
+<p>现代网络协议指纹识别技术在强化堡垒机防御方面成效显著。所研究的场景以及协议指纹识别方法，为推进防御对策提供了契机。部署堡垒机的现代网络，借助现代网络协议指纹识别技术，能够突破传统分析方法的局限，对加密连接有更深入的洞察。加密连接不再是难以窥探的盲点。网络防御者如今能够识别 SSH 客户端软件的类型和属性，并针对高度管控的网络优化细粒度基线。此外，对 SSH 协议行为的深入研究以及与堡垒机预期行为的比对，能让网络防御者更敏锐地察觉加密连接内的活动。持续应用防御对策，将使优势不断向网络防御者倾斜。</p>
+<h2 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h2><p>对于网络防御者而言，设计敏感关键任务网络时，如何合理投入时间、精力和资源至关重要。正如 Chris Sanders 所说：“人类分析师是组织的核心。正是分析师们在仔细钻研数据包捕获信息，寻找哪怕一个错位的比特位。”（Sanders &amp; Smith，2014，第 12 页）随着现代网络日益复杂，且加密通信成为强制要求，在部署额外防御对策时必须审慎考虑。</p>
+<p>掌握现代网络协议指纹识别技术的专业分析师，在对抗攻击者时具备明显优势。深入研究加密通信的细节以及其中发生的活动，有助于推进和强化堡垒机的防御能力。攻击者必须保证每一个数据包都不出现差错，而训练有素且部署了强大防御对策的分析师则在积极守护他们的网络。</p>
+<p>如果存在带外（OOB）网络安全监测（NSM）的条件，像 Zeek 这样强大的开源入侵检测系统（IDS），能够出色地对这些协议指纹识别机制进行自动化分析。CISA 在对美国政府红队活动的分析中，提出的一项关键建议便是部署带外调查和防御能力（CISA，2024）。如果网络划分细致且具备广泛的过滤机制，那么通过集成分路器将数据传输至 NSM 传感器将易于实现。若不存在带外 NSM 条件，本研究表明，利用针对性的 BPF 进行数据包捕获，也能实现类似功能。</p>
+<h2 id="启示"><a href="#启示" class="headerlink" title="启示"></a>启示</h2><p>未来研究仍有诸多方向，其中包括对现代网络协议指纹识别技术的进一步探索。JA4 + 套件有望为进入防御网络的连接类型提供更多有价值的信息。此外，研究不同类型的身份验证方式下的 SSH 协议行为，也颇具潜力，例如 SSH 密钥对、公共 SSH 密钥的数量（Moore &amp; King，2024）、基于证书颁发机构（CA）的身份验证，以及多因素身份验证（MFA）的类型或缺失情况。这些身份验证方式可能为指纹识别提供新的思路，并在强化堡垒机防御方面发挥作用。</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><table>
+<thead>
+<tr>
+<th>描述</th>
+<th>链接</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JA4+网络指纹识别博客文章</td>
+<td><a target="_blank" rel="noopener" href="https://blog.foxio.io/ja4+-network-fingerprinting">https://blog.foxio.io/ja4+-network-fingerprinting</a></td>
+</tr>
+<tr>
+<td>《网络安全监测实践：理解事件检测与响应》书籍相关信息</td>
+<td>无（原内容未明确书籍购买或详细介绍链接，仅列出书名及出版社等基础信息）</td>
+</tr>
+<tr>
+<td>《乌克兰电网遭受的网络攻击：灯光熄灭之时》报告</td>
+<td><a target="_blank" rel="noopener" href="https://www.boozallen.com/content/dam/boozallen/documents/2016/09/ukrainereport-when-the-lights-went-out.pdf">https://www.boozallen.com/content/dam/boozallen/documents/2016/09/ukrainereport-when-the-lights-went-out.pdf</a></td>
+</tr>
+<tr>
+<td>互联网安全中心（CIS）基准页面</td>
+<td><a target="_blank" rel="noopener" href="https://www.cisecurity.org/cis-benchmarks">https://www.cisecurity.org/cis-benchmarks</a></td>
+</tr>
+<tr>
+<td>CrowdStrike 2024年全球威胁报告</td>
+<td><a target="_blank" rel="noopener" href="https://go.crowdstrike.com/global-threat-report-2024.html">https://go.crowdstrike.com/global-threat-report-2024.html</a></td>
+</tr>
+<tr>
+<td>美国网络安全与基础设施安全局（CISA）关于中国国家支持的行为者入侵美国关键基础设施的公告</td>
+<td><a target="_blank" rel="noopener" href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-038a">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-038a</a></td>
+</tr>
+<tr>
+<td>CISA对联邦文职行政部门组织的红队行动报告，强调深度防御的必要性</td>
+<td><a target="_blank" rel="noopener" href="https://www.cisa.gov/newsevents/cybersecurity-advisories/aa24-193a">https://www.cisa.gov/newsevents/cybersecurity-advisories/aa24-193a</a></td>
+</tr>
+<tr>
+<td>CISA对美国关键基础设施部门组织的红队评估报告，增强网络弹性的见解</td>
+<td><a target="_blank" rel="noopener" href="https://www.cisa.gov/newsevents/cybersecurity-advisories/aa24-326a">https://www.cisa.gov/newsevents/cybersecurity-advisories/aa24-326a</a></td>
+</tr>
+<tr>
+<td>美国国防信息系统局（DISA）的STIGs页面</td>
+<td><a target="_blank" rel="noopener" href="https://public.cyber.mil/stigs/">https://public.cyber.mil/stigs/</a></td>
+</tr>
+<tr>
+<td>ESET关于“ForSSHe的黑暗面”报告</td>
+<td><a target="_blank" rel="noopener" href="https://webassets.esetstatic.com/wls/2018/12/ESET-The_Dark_Side_of_the_ForSSHe.pdf">https://webassets.esetstatic.com/wls/2018/12/ESET-The_Dark_Side_of_the_ForSSHe.pdf</a></td>
+</tr>
+<tr>
+<td>FoxIO - LLC的ja4项目GitHub页面</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/FoxIO-LLC/ja4">https://github.com/FoxIO-LLC/ja4</a></td>
+</tr>
+<tr>
+<td>互联网数字分配机构（IANA）关于SSH服务名称和端口号的页面</td>
+<td><a target="_blank" rel="noopener" href="https://www.iana.org/assignments/service-names-port-numbers/servicenames-port-numbers.xhtml?search=ssh">https://www.iana.org/assignments/service-names-port-numbers/servicenames-port-numbers.xhtml?search=ssh</a></td>
+</tr>
+<tr>
+<td>互联网工程任务组（IETF）RFC流程页面</td>
+<td><a target="_blank" rel="noopener" href="https://www.ietf.org/process/rfcs/">https://www.ietf.org/process/rfcs/</a></td>
+</tr>
+<tr>
+<td>IETF的RFC 4251：SSH协议架构文档</td>
+<td><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc4251">https://datatracker.ietf.org/doc/html/rfc4251</a></td>
+</tr>
+<tr>
+<td>IETF的RFC 4252：SSH认证协议文档</td>
+<td><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc4252">https://datatracker.ietf.org/doc/html/rfc4252</a></td>
+</tr>
+<tr>
+<td>IETF的RFC 4253：SSH传输层协议文档</td>
+<td><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc4253">https://datatracker.ietf.org/doc/html/rfc4253</a></td>
+</tr>
+<tr>
+<td>IETF的RFC 4254：SSH连接协议文档</td>
+<td><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc4254">https://datatracker.ietf.org/doc/html/rfc4254</a></td>
+</tr>
+<tr>
+<td>Mandiant关于朝鲜通过WhatsApp进行钓鱼攻击的报告</td>
+<td><a target="_blank" rel="noopener" href="https://cloud.google.com/blog/topics/threat-intelligence/dprk-whatsapp-phishing/">https://cloud.google.com/blog/topics/threat-intelligence/dprk-whatsapp-phishing/</a></td>
+</tr>
+<tr>
+<td>MITRE ATT&amp;CK框架页面</td>
+<td><a target="_blank" rel="noopener" href="https://attack.mitre.org/">https://attack.mitre.org</a></td>
+</tr>
+<tr>
+<td>MITRE D3FEND的检测策略页面</td>
+<td><a target="_blank" rel="noopener" href="https://d3fend.mitre.org/tactic/d3f:Detect/">https://d3fend.mitre.org/tactic/d3f:Detect/</a></td>
+</tr>
+<tr>
+<td>MITRE D3FEND的网络流量分析技术页面</td>
+<td><a target="_blank" rel="noopener" href="https://d3fend.mitre.org/technique/d3f:NetworkTrafficAnalysis/">https://d3fend.mitre.org/technique/d3f:NetworkTrafficAnalysis/</a></td>
+</tr>
+<tr>
+<td>MITRE D3FEND框架页面</td>
+<td><a target="_blank" rel="noopener" href="https://d3fend.mitre.org/">https://d3fend.mitre.org</a></td>
+</tr>
+<tr>
+<td>MITRE ATT&amp;CK中的T1041：通过C2通道渗出数据技术页面</td>
+<td><a target="_blank" rel="noopener" href="https://attack.mitre.org/techniques/T1041/">https://attack.mitre.org/techniques/T1041/</a></td>
+</tr>
+<tr>
+<td>MITRE ATT&amp;CK中的T1105：入口工具转移技术页面</td>
+<td><a target="_blank" rel="noopener" href="https://attack.mitre.org/techniques/T1105/">https://attack.mitre.org/techniques/T1105/</a></td>
+</tr>
+<tr>
+<td>MITRE ATT&amp;CK中的T1554：破坏主机软件二进制文件技术页面</td>
+<td><a target="_blank" rel="noopener" href="https://attack.mitre.org/techniques/T1554/">https://attack.mitre.org/techniques/T1554/</a></td>
+</tr>
+<tr>
+<td>MITRE ATT&amp;CK中的T1562：削弱防御技术页面</td>
+<td><a target="_blank" rel="noopener" href="https://attack.mitre.org/techniques/T1562/">https://attack.mitre.org/techniques/T1562/</a></td>
+</tr>
+<tr>
+<td>MITRE ATT&amp;CK中的T1570：横向工具转移技术页面</td>
+<td><a target="_blank" rel="noopener" href="https://attack.mitre.org/techniques/T1570/">https://attack.mitre.org/techniques/T1570/</a></td>
+</tr>
+<tr>
+<td>MITRE ATT&amp;CK中的T1573：加密通道技术页面</td>
+<td><a target="_blank" rel="noopener" href="https://attack.mitre.org/techniques/T1573/">https://attack.mitre.org/techniques/T1573/</a></td>
+</tr>
+<tr>
+<td>MITRE ATT&amp;CK中的横向移动策略页面</td>
+<td><a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/TA0008/">https://attack.mitre.org/tactics/TA0008/</a></td>
+</tr>
+<tr>
+<td>MITRE ENGENUITY的威胁情报驱动的防御页面</td>
+<td><a target="_blank" rel="noopener" href="https://mitre-engenuity.org/cybersecurity/center-for-threat-informed-defense/threat-informed-defense/">https://mitre-engenuity.org/cybersecurity/center-for-threat-informed-defense/threat-informed-defense/</a></td>
+</tr>
+<tr>
+<td>微软关于2024年10月8日KB5044273更新（OS版本19044.5011和19045.5011）的页面</td>
+<td><a target="_blank" rel="noopener" href="https://support.microsoft.com/en-us/topic/october-82024-kb5044273-os-builds-19044-5011-and-19045-5011-a07551f8-e20d-4fd487f3-01145a3cd494">https://support.microsoft.com/en-us/topic/october-82024-kb5044273-os-builds-19044-5011-and-19045-5011-a07551f8-e20d-4fd487f3-01145a3cd494</a></td>
+</tr>
+<tr>
+<td>Black Hat USA 2024会议中关于“SecureShells in shambles”的演讲</td>
+<td><a target="_blank" rel="noopener" href="https://i.blackhat.com/BH-US-24/Presentations/REVISED02US24_Moore_Secure_Shells_in_Shambles_Wednesday.pdf">https://i.blackhat.com/BH-US-24/Presentations/REVISED02US24_Moore_Secure_Shells_in_Shambles_Wednesday.pdf</a></td>
+</tr>
+<tr>
+<td>美国国家标准与技术研究院（NIST）的《通用服务器安全指南》（特别出版物800 - 123）</td>
+<td><a target="_blank" rel="noopener" href="https://nvlpubs.nist.gov/nistpubs/legacy/sp/nistspecialpublication800-123.pdf">https://nvlpubs.nist.gov/nistpubs/legacy/sp/nistspecialpublication800-123.pdf</a></td>
+</tr>
+<tr>
+<td>NIST的《信息系统和组织的安全与隐私控制》（特别出版物800 - 53）</td>
+<td><a target="_blank" rel="noopener" href="https://doi.org/10.6028/NIST.SP.800-53r5">https://doi.org/10.6028/NIST.SP.800-53r5</a></td>
+</tr>
+<tr>
+<td>NIST发布首批3个最终确定的后量子加密标准的新闻页面</td>
+<td><a target="_blank" rel="noopener" href="https://www.nist.gov/newsevents/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryptionstandards">https://www.nist.gov/newsevents/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryptionstandards</a></td>
+</tr>
+<tr>
+<td>PEASS - ng的linPEAS项目GitHub页面</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/peass-ng/PEASSng/tree/master/linPEAS">https://github.com/peass-ng/PEASSng/tree/master/linPEAS</a></td>
+</tr>
+<tr>
+<td>Salesforce关于开源HASSH的博客文章</td>
+<td><a target="_blank" rel="noopener" href="https://engineering.salesforce.com/open-sourcing-hassh-abed3ae5044c/">https://engineering.salesforce.com/open-sourcing-hassh-abed3ae5044c/</a></td>
+</tr>
+<tr>
+<td>Marcus J. Ranum的《思考防火墙》论文</td>
+<td><a target="_blank" rel="noopener" href="https://web.cs.ucla.edu/~miodrag/cs259security/ranum94thinking.pdf">https://web.cs.ucla.edu/~miodrag&#x2F;cs259security&#x2F;ranum94thinking.pdf</a></td>
+</tr>
+<tr>
+<td>Salesforce的hassh项目GitHub页面</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/salesforce/hassh">https://github.com/salesforce/hassh</a></td>
+</tr>
+<tr>
+<td>《应用网络安全监测：收集、检测和分析》书籍相关信息</td>
+<td>无（原内容未明确书籍购买或详细介绍链接，仅列出书名及出版社等基础信息）</td>
+</tr>
+<tr>
+<td>SSH历史页面</td>
+<td><a target="_blank" rel="noopener" href="https://www.ssh.com/about/history/">https://www.ssh.com/about/history/</a></td>
+</tr>
+<tr>
+<td>Trisul Network Analytics关于安全外壳（SSH）流量分析的博客页面</td>
+<td><a target="_blank" rel="noopener" href="https://www.trisul.org/blog/traffic-analysis-of-secure-shell-ssh/">https://www.trisul.org/blog/traffic-analysis-of-secure-shell-ssh/</a></td>
+</tr>
+<tr>
+<td>美国国防部关于持续搜索网络入侵的文档</td>
+<td><a target="_blank" rel="noopener" href="https://media.defense.gov/2019/Sep/09/2002180360/-1/1/0/Continuously%20Hunt%20for%20Network%20Intrusions%20-%20Copy.pdf">https://media.defense.gov/2019/Sep/09/2002180360/-1/1/0/Continuously Hunt for Network Intrusions - Copy.pdf</a></td>
+</tr>
+<tr>
+<td>美国国防部（DoD）零信任参考架构文档</td>
+<td><a target="_blank" rel="noopener" href="https://dodcio.defense.gov/Portals/0/Documents/Library/(U)ZT_RA_v2.0(U)_Sep">https://dodcio.defense.gov/Portals/0/Documents/Library/(U)ZT_RA_v2.0(U)_Sep</a> 22.pdf</td>
+</tr>
+<tr>
+<td>Verizon 2024年数据泄露调查报告</td>
+<td><a target="_blank" rel="noopener" href="https://www.verizon.com/dbir">https://www.verizon.com/dbir</a></td>
+</tr>
+<tr>
+<td>Wireshark关于SSH（安全外壳）协议的文档页面</td>
+<td><a target="_blank" rel="noopener" href="https://www.wireshark.org/docs/dfref/s/ssh.html">https://www.wireshark.org/docs/dfref/s/ssh.html</a></td>
+</tr>
+<tr>
+<td>Tatu Ylönen的《SSH - 互联网上的安全登录连接》论文</td>
+<td><a target="_blank" rel="noopener" href="http://www.cs.hut.fi/ssh">http://www.cs.hut.fi/ssh</a></td>
+</tr>
+<tr>
+<td>本研究相关数据包捕获及命令等内容的GitHub存储库</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/safepackets/modern_network_fingerprinting">https://github.com/safepackets/modern_network_fingerprinting</a></td>
+</tr>
+<tr>
+<td>包报文</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/safepackets/modern_network_fingerprinting">https://github.com/safepackets/modern_network_fingerprinting</a></td>
+</tr>
+</tbody></table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/web%E5%AE%89%E5%85%A8/" class="category-chain-item">web安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" class="print-no-link">#渗透测试</a>
+      
+        <a href="/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/" class="print-no-link">#技术分析</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>评估现代网络协议指纹识别技术：加固堡垒机防御</div>
+      <div>http://example.com/2025/02/08/评估现代网络协议指纹识别技术：加固堡垒机防御/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jentle</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 8, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/02/11/%E4%B8%80%E6%AC%A1%E6%B8%97%E9%80%8F%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84CVE-2022-45460%E6%92%9E%E6%B4%9ERCE/" title="一次渗透过程中的CVE-2022-45460撞洞RCE">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">一次渗透过程中的CVE-2022-45460撞洞RCE</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/01/23/Exploit-Sets/" title="Exploit Sets">
+                        <span class="hidden-mobile">Exploit Sets</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Hipepper/UtterancBlog');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/Hipepper" target="_blank" rel="nofollow noopener"><span>Github</span></a> <i class="iconfont icon-love"></i> <a href="https://mp.weixin.qq.com/s/WZSeu6y5ckuo958f-yV3Kg" target="_blank" rel="nofollow noopener"><span>公众号</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>
