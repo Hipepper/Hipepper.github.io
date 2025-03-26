@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-03-14T07:47:47.984Z</updated>
+  <updated>2025-03-26T02:54:13.131Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,32 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>AI安全-如何攻击LLM 和AI Agent</title>
+    <link href="http://example.com/2025/03/26/AI%E5%AE%89%E5%85%A8-%E5%A6%82%E4%BD%95%E6%94%BB%E5%87%BBLLM-%E5%92%8CAI-Agent/"/>
+    <id>http://example.com/2025/03/26/AI%E5%AE%89%E5%85%A8-%E5%A6%82%E4%BD%95%E6%94%BB%E5%87%BBLLM-%E5%92%8CAI-Agent/</id>
+    <published>2025-03-26T02:49:00.000Z</published>
+    <updated>2025-03-26T02:54:13.131Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;面向白帽子的几个重要概念&quot;&gt;&lt;a href=&quot;#面向白帽子的几个重要概念&quot; class=&quot;headerlink&quot; title=&quot;面向白帽子的几个重要概念&quot;&gt;&lt;/a&gt;面向白帽子的几个重要概念&lt;/h1&gt;&lt;h2 id=&quot;系统提示词（system-prompt）&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
     <title>CDN资产检测技术(2025)</title>
     <link href="http://example.com/2025/03/14/CDN%E8%B5%84%E4%BA%A7%E6%A3%80%E6%B5%8B%E6%8A%80%E6%9C%AF-2025/"/>
     <id>http://example.com/2025/03/14/CDN%E8%B5%84%E4%BA%A7%E6%A3%80%E6%B5%8B%E6%8A%80%E6%9C%AF-2025/</id>
     <published>2025-03-14T06:36:59.000Z</published>
-    <updated>2025-03-14T07:47:47.984Z</updated>
+    <updated>2025-03-14T08:35:31.600Z</updated>
     
     
       
