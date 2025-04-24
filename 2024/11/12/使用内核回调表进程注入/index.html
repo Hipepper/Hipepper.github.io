@@ -21,12 +21,12 @@
   <meta name="author" content="Jentle">
   <meta name="keywords" content="">
   
-    <meta name="description" content="目录[toc]  介绍攻击者可以劫持进程环境块 （PEB） 中的内核回调表，以重定向进程的执行流，从而使他们能够执行恶意负载。此方法允许攻击者通过将合法函数指针替换为恶意函数指针（通常由 Windows 消息触发）来保持持久性。 这种方法被 MITRE 认定为劫持执行流程和持久性技术，已被 FinFisher&#x2F;FinSpy 和 Lazarus 等威胁组织使用。 在这篇博客中，我们将探">
+    <meta name="description" content="目录[toc]  介绍攻击者可以劫持进程环境块 （PEB） 中的内核回调表，以重定向进程的执行流，从而使他们能够执行恶意负载。此方法允许攻击者通过将合法函数指针替换为恶意函数指针（通常由 Windows 消息触发）来保持持久性。 这种方法被 MITRE 认定为劫持执行流程和持久性技术，已被 FinFisher&#x2F;FinSpy 和 Lazarus 等威胁组织使用。 在这篇博客中，我们将探讨">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用内核回调表进程注入">
 <meta property="og:url" content="http://example.com/2024/11/12/%E4%BD%BF%E7%94%A8%E5%86%85%E6%A0%B8%E5%9B%9E%E8%B0%83%E8%A1%A8%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/index.html">
 <meta property="og:site_name" content="TIPFactory">
-<meta property="og:description" content="目录[toc]  介绍攻击者可以劫持进程环境块 （PEB） 中的内核回调表，以重定向进程的执行流，从而使他们能够执行恶意负载。此方法允许攻击者通过将合法函数指针替换为恶意函数指针（通常由 Windows 消息触发）来保持持久性。 这种方法被 MITRE 认定为劫持执行流程和持久性技术，已被 FinFisher&#x2F;FinSpy 和 Lazarus 等威胁组织使用。 在这篇博客中，我们将探">
+<meta property="og:description" content="目录[toc]  介绍攻击者可以劫持进程环境块 （PEB） 中的内核回调表，以重定向进程的执行流，从而使他们能够执行恶意负载。此方法允许攻击者通过将合法函数指针替换为恶意函数指针（通常由 Windows 消息触发）来保持持久性。 这种方法被 MITRE 认定为劫持执行流程和持久性技术，已被 FinFisher&#x2F;FinSpy 和 Lazarus 等威胁组织使用。 在这篇博客中，我们将探讨">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2024/11/12/%E4%BD%BF%E7%94%A8%E5%86%85%E6%A0%B8%E5%9B%9E%E8%B0%83%E8%A1%A8%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/POC.png">
 <meta property="og:image" content="http://example.com/2024/11/12/%E4%BD%BF%E7%94%A8%E5%86%85%E6%A0%B8%E5%9B%9E%E8%B0%83%E8%A1%A8%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/image.png">
@@ -283,8 +283,7 @@
             
               <div class="markdown-body">
                 
-                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2024/11/12/%E4%BD%BF%E7%94%A8%E5%86%85%E6%A0%B8%E5%9B%9E%E8%B0%83%E8%A1%A8%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/POC.png" class="" title="POC">
-
+                <p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2024/11/12/%E4%BD%BF%E7%94%A8%E5%86%85%E6%A0%B8%E5%9B%9E%E8%B0%83%E8%A1%A8%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/POC.png" alt="POC"></p>
 <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p>[toc]</p>
 <hr>
 <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>攻击者可以劫持进程环境块 （PEB） 中的内核回调表，以重定向进程的执行流，从而使他们能够执行恶意负载。此方法允许攻击者通过将合法函数指针替换为恶意函数指针（通常由 Windows 消息触发）来保持持久性。</p>
@@ -324,7 +323,8 @@
 <p>dt ntdll！PEB系列</p>
 </li>
 <li><p>这将显示 PEB 结构及其字段，包括偏移量 +0x058 处的 KernelCallbackTable，显示 Kernel Callback Table 指针所在的位置。</p>
-<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2024/11/12/%E4%BD%BF%E7%94%A8%E5%86%85%E6%A0%B8%E5%9B%9E%E8%B0%83%E8%A1%A8%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/image.png" class="" title="PEB structure"></li>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2024/11/12/%E4%BD%BF%E7%94%A8%E5%86%85%E6%A0%B8%E5%9B%9E%E8%B0%83%E8%A1%A8%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/image.png" alt="PEB structure"></p>
+</li>
 </ul>
 <ol start="2">
 <li><strong>找到内核回调表地址</strong></li>
