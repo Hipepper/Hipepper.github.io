@@ -30,5 +30,29 @@ def main():
         file.write(new_content)
 
 
+
+def rename_all_paste():
+    import os
+
+    # 指定目标目录
+    directory = r"D:\github\Hipepper.github.io\source\_posts\揭露天鹅向量（Swan-Vector）APT组织：针对中国台湾和日本的多阶段DLL植入攻击"
+
+    # 遍历目录下的所有文件
+    for filename in os.listdir(directory):
+        # 检查文件是否以 "Pasted image " 开头
+        if filename.startswith("Pasted image "):
+            # 构造新文件名
+            new_filename = filename.replace("Pasted image ", "")
+            
+            # 获取完整路径并进行重命名
+            old_file_path = os.path.join(directory, filename)
+            new_file_path = os.path.join(directory, new_filename)
+            
+            os.rename(old_file_path, new_file_path)
+            print(f"已重命名: {filename} -> {new_filename}")
+
+
+
 if __name__ == "__main__":
-    main()
+    # main()
+    rename_all_paste()
