@@ -1,0 +1,942 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/dog2.jpg">
+  <link rel="icon" href="/img/dog2.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jentle">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1 CDN是什么CDN（内容分发网络，Content Delivery Network）是一种通过分布式服务器集群，将内容（如网页、视频、图片等）“近距离” 交付给用户的网络优化技术。它的核心逻辑是 “化整为零，就近服务”，可以理解为在全国甚至全球部署 “内容便利店”，让用户无需长途跋涉到 “中央仓库”（源服务器）取货。 1.1 🔍 CDN 的工作原理（通俗版） 内容 “铺货”：网站将内容提前复">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CDN资产检测技术(2025)">
+<meta property="og:url" content="http://example.com/2025/03/14/CDN%E8%B5%84%E4%BA%A7%E6%A3%80%E6%B5%8B%E6%8A%80%E6%9C%AF-2025/index.html">
+<meta property="og:site_name" content="TIPFactory">
+<meta property="og:description" content="1 CDN是什么CDN（内容分发网络，Content Delivery Network）是一种通过分布式服务器集群，将内容（如网页、视频、图片等）“近距离” 交付给用户的网络优化技术。它的核心逻辑是 “化整为零，就近服务”，可以理解为在全国甚至全球部署 “内容便利店”，让用户无需长途跋涉到 “中央仓库”（源服务器）取货。 1.1 🔍 CDN 的工作原理（通俗版） 内容 “铺货”：网站将内容提前复">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/postindex/cdn-resp-header.png">
+<meta property="article:published_time" content="2025-03-14T06:36:59.000Z">
+<meta property="article:modified_time" content="2025-10-23T01:07:21.041Z">
+<meta property="article:author" content="Jentle">
+<meta property="article:tag" content="CDN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/postindex/cdn-resp-header.png">
+  
+  
+  
+  <title>CDN资产检测技术(2025) - TIPFactory</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="TIPFactory" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TIPFactory</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CDN资产检测技术(2025)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-14 14:36" pubdate>
+          March 14, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CDN资产检测技术(2025)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="1-CDN是什么"><a href="#1-CDN是什么" class="headerlink" title="1 CDN是什么"></a>1 CDN是什么</h1><p>CDN（内容分发网络，Content Delivery Network）是一种通过分布式服务器集群，将内容（如网页、视频、图片等）“近距离” 交付给用户的网络优化技术。它的核心逻辑是 <strong>“化整为零，就近服务”</strong>，可以理解为在全国甚至全球部署 “内容便利店”，让用户无需长途跋涉到 “中央仓库”（源服务器）取货。</p>
+<h2 id="1-1-🔍-CDN-的工作原理（通俗版）"><a href="#1-1-🔍-CDN-的工作原理（通俗版）" class="headerlink" title="1.1 🔍 CDN 的工作原理（通俗版）"></a>1.1 🔍 <strong>CDN 的工作原理（通俗版）</strong></h2><ol>
+<li><strong>内容 “铺货”</strong>：网站将内容提前复制到分布在各地的 CDN 节点（类似缓存服务器）。</li>
+<li><strong>智能 “指路”</strong>：用户访问时，CDN 根据地理位置、网络质量等，自动分配最近的节点提供服务。</li>
+<li><strong>实时 “补货”</strong>：节点内容过期或更新时，自动从源站同步最新内容。</li>
+</ol>
+<p><strong>举个栗子</strong>：苏州用户看北京的短视频，传统方式需从北京服务器传输（可能卡顿）；通过 CDN，上海 &#x2F; 南京的节点已缓存视频，用户直接秒加载。</p>
+<h2 id="1-2-🌟-为什么要用-CDN？4-大核心价值"><a href="#1-2-🌟-为什么要用-CDN？4-大核心价值" class="headerlink" title="1.2 🌟 为什么要用 CDN？4 大核心价值"></a>1.2 🌟 <strong>为什么要用 CDN？4 大核心价值</strong></h2><ol>
+<li><p><strong>快！快！快！</strong></p>
+<ul>
+<li><strong>提升加载速度</strong>：减少数据传输距离，延迟降低 50%-80%（比如网页打开从 5 秒→1 秒）。</li>
+<li><strong>典型场景</strong>：电商大促（避免首页崩溃）、直播 &#x2F; 短视频（卡顿率下降）、游戏更新（分片下载加速）。</li>
+</ul>
+</li>
+<li><p><strong>帮源站 “减压”</strong></p>
+<ul>
+<li>90% 以上的请求由 CDN 节点处理，源服务器只需应对动态内容和缓存更新，节省带宽成本 30%-70%。</li>
+<li><strong>案例</strong>：某新闻网站启用 CDN 后，源站带宽从 10G 降至 3G，服务器成本大幅降低。</li>
+</ul>
+</li>
+<li><p><strong>稳定抗 “黑天鹅”</strong></p>
+<ul>
+<li><strong>高可用性</strong>：单个节点故障时，自动切换其他节点，避免全站瘫痪。</li>
+<li><strong>抗攻击</strong>：CDN 节点分布式架构可稀释 DDoS 攻击流量，比源站直接暴露更安全。</li>
+</ul>
+</li>
+<li><p><strong>覆盖 “最后一公里”</strong></p>
+<ul>
+<li>尤其针对复杂网络环境（如乡镇、海外），CDN 通过接入电信、联通、移动等多运营商节点，打破网络壁垒。</li>
+<li><strong>数据</strong>：中国 CDN 节点已超 2000 个，乡镇覆盖率超 95%，海外节点覆盖主要国家。</li>
+</ul>
+</li>
+</ol>
+<h2 id="1-3-📢-一句话总结"><a href="#1-3-📢-一句话总结" class="headerlink" title="1.3 📢 一句话总结"></a>1.3 📢 <strong>一句话总结</strong></h2><p>CDN 是互联网的 “前置仓库”，用 “物理距离缩短 + 智能调度” 解决用户体验的核心痛点 ——<strong>让内容更快、更稳、更省</strong>。无论是刷短视频、抢火车票，还是企业降本增效，CDN 都是底层的 “隐形功臣”。</p>
+<p>（2025 年的今天，CDN 已深度融入 AI 模型推理加速、元宇宙场景渲染等新领域，成为数字世界的基础设施之一～）</p>
+<h1 id="2-域名是否开启CDN"><a href="#2-域名是否开启CDN" class="headerlink" title="2 域名是否开启CDN"></a>2 域名是否开启CDN</h1><h2 id="2-1-快速判断是否开启-CDN"><a href="#2-1-快速判断是否开启-CDN" class="headerlink" title="2.1 快速判断是否开启 CDN"></a>2.1 快速判断是否开启 CDN</h2><h3 id="2-1-1-DNS-解析法（核心判断）"><a href="#2-1-1-DNS-解析法（核心判断）" class="headerlink" title="2.1.1  DNS 解析法（核心判断）"></a>2.1.1  <strong>DNS 解析法（核心判断）</strong></h3><ul>
+<li><strong>操作</strong>：<code>nslookup 域名</code>（Windows）或<code>dig 域名</code>（Mac&#x2F;Linux）</li>
+<li><strong>特征</strong>：<br>  ✅ 开启 CDN：解析出多个不同 IP（如 119.8.xxx&#x2F;101.226.xxx 等跨地域段），或域名含 CDN 服务商特征（如<code>*.cdn.dnsv1.com</code>→腾讯云，<code>*.edgekey.net</code>→Akamai）。<br>  ❌ 未开启：仅 1 个 IP，且归属地与网站主服务器一致（如苏州网站解析到北京 IP 可能异常）。</li>
+<li><strong>案例</strong>：<code>nslookup www.bilibili.com</code> → 解析出多个上海 &#x2F; 广州 &#x2F; 香港 IP（B 站用腾讯云 + 阿里云混合 CDN）。</li>
+</ul>
+<p>下面列表给出了一些CDN服务商的域名特征（SLD）：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/4ft35t/cdn/src/cdn.yml">https://cdn.jsdelivr.net/gh/4ft35t/cdn/src/cdn.yml</a></li>
+<li><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/4ft35t/cdn/master/src/cdn.yml">https://raw.githubusercontent.com/4ft35t/cdn/master/src/cdn.yml</a></li>
+<li><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/SukkaLab/cdn/master/src/cdn.yml">https://raw.githubusercontent.com/SukkaLab/cdn/master/src/cdn.yml</a></li>
+</ul>
+<p>CNAME是CDN的一个强有力指纹。因为<strong>CDN 强制要求</strong>：</p>
+<blockquote>
+<p>几乎所有 CDN 服务商（如阿里云、腾讯云、Cloudflare）都会要求用户将域名<strong>CNAME 到其专属加速域名</strong>（如<code>www.example.com → www.example.com.cdn.dnsv1.com</code>（腾讯云））。这是因为CDN 需要通过自有域名调度全球节点，CNAME 是必经路径。</p>
+</blockquote>
+<p>同时<strong>CNAME 的 “间接指向” 特性</strong>，CNAME 不直接解析 IP，而是指向另一个域名（如 CDN 节点域名），最终由该域名的 A 记录解析到 IP。因此，若域名存在<strong>非用户自有的 CNAME 后缀</strong>（如含<code>cdn</code>、<code>edge</code>、<code>cloudflare</code>等关键词），基本可判定为 CDN。示例：  <code>nslookup www.taobao.com</code> → 解析结果为<code>www.taobao.com.cdn.aliyuncs.com</code>（CNAME），再进一步解析该 CNAME 得到多个阿里云 IP 段，确认 CDN。</p>
+<p>注意：</p>
+<ol>
+<li>解析 CNAME 后的域名，通过<a target="_blank" rel="noopener" href="https://www.ipip.net/">IPIP.NET</a>查询 IP 归属，若匹配 CDN 厂商（如阿里云、腾讯云），确认 CDN。</li>
+<li>阿里云 SLB、腾讯云 CLB 等负载均衡服务也会生成 CNAME（如<code>lb-xxx.cnslb.com</code>），但 IP 通常集中在单一云厂商地域，而非 CDN 的全球节点。（云服务负载均衡）</li>
+</ol>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/03/14/CDN%E8%B5%84%E4%BA%A7%E6%A3%80%E6%B5%8B%E6%8A%80%E6%9C%AF-2025/1741937736918.png" alt="1741937736918">]</p>
+<h3 id="2-1-2-PING-多节点法（辅助验证）"><a href="#2-1-2-PING-多节点法（辅助验证）" class="headerlink" title="2.1.2 PING 多节点法（辅助验证）"></a>2.1.2 <strong>PING 多节点法（辅助验证）</strong></h3><ul>
+<li><strong>工具</strong>：<a target="_blank" rel="noopener" href="https://ping.chinaz.com/">站长工具 - 超级 PING</a>（选全国 10 + 城市节点）</li>
+<li><strong>特征</strong>：<br>  ✅ 开启 CDN：不同城市 PING 值差异小（如均 &lt; 50ms），IP 归属地分散（覆盖电信 &#x2F; 联通 &#x2F; 移动）。<br>  ❌ 未开启：异地 PING 值飙升（如苏州→乌鲁木齐延迟 300ms+），IP 集中在单一地区。</li>
+</ul>
+<p>同时可以用来辅助DNS指纹的CNAME 解析IP判断。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/03/14/CDN%E8%B5%84%E4%BA%A7%E6%A3%80%E6%B5%8B%E6%8A%80%E6%9C%AF-2025/20250314150031.png" alt="20250314150031"></p>
+<h3 id="2-1-3-HTTP-头信息（精准验证）"><a href="#2-1-3-HTTP-头信息（精准验证）" class="headerlink" title="2.1.3 HTTP 头信息（精准验证）"></a>2.1.3 <strong>HTTP 头信息（精准验证）</strong></h3><ul>
+<li><strong>操作</strong>：浏览器 F12→Network→刷新页面→选任意资源→查看 Response Headers</li>
+<li><strong>关键字段</strong>：<br>  ✅ <code>X-Cache</code>：值为<code>HIT</code>（CDN 缓存命中），<code>MISS</code>（回源）<br>  ✅ <code>Server</code>：含 CDN 服务商名（如<code>TencentCdn</code>→腾讯云，<code>cloudflare</code>→Cloudflare）</li>
+<li><strong>案例</strong>：淘宝图片<code>img.alicdn.com</code>的 Header 含<code>AliyunCDN</code>，确认使用阿里云 CDN。</li>
+</ul>
+<p>示例：<br><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/03/14/CDN%E8%B5%84%E4%BA%A7%E6%A3%80%E6%B5%8B%E6%8A%80%E6%9C%AF-2025/cdn-resp-header.png" alt="cdn-resp-header"></p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>值</th>
+<th>解读（CDN 相关）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong><code>x-tos-cs-type</code></strong></td>
+<td><strong>CDN</strong></td>
+<td>直接声明使用<strong>内容分发网络</strong>（TOS：字节跳动对象存储，全称为 Toutiao Object Storage）</td>
+</tr>
+<tr>
+<td><strong><code>x-response-cache</code></strong></td>
+<td><strong>edge_hit</strong></td>
+<td>内容从<strong>CDN 边缘节点</strong>命中，非源站回源（证明 CDN 生效）</td>
+</tr>
+<tr>
+<td><strong><code>age</code></strong></td>
+<td>1891025（约 22 天）</td>
+<td>缓存存活时间，CDN 典型长缓存策略（源站<code>cache-control: max-age=2592000</code>&#x3D;30 天）</td>
+</tr>
+<tr>
+<td><strong><code>via</code></strong></td>
+<td>cache06.jsyangzhou-ct58</td>
+<td>CDN 节点标识：江苏扬州（jsyangzhou）电信（ct）第 58 号节点（符合分布式部署特征）</td>
+</tr>
+<tr>
+<td><strong><code>server</code></strong></td>
+<td><strong>Byte-nginx</strong></td>
+<td>字节跳动自研 Web 服务器（区别于通用 nginx），<strong>强指向字节系 CDN</strong>（如字节云 CDN）</td>
+</tr>
+</tbody></table>
+<h2 id="2-2-定位-CDN-服务商（3-步溯源）"><a href="#2-2-定位-CDN-服务商（3-步溯源）" class="headerlink" title="2.2 定位 CDN 服务商（3 步溯源）"></a>2.2 定位 CDN 服务商（3 步溯源）</h2><h3 id="2-2-1-IP-反查法（最直接）"><a href="#2-2-1-IP-反查法（最直接）" class="headerlink" title="2.2.1  IP 反查法（最直接）"></a>2.2.1  <strong>IP 反查法（最直接）</strong></h3><ul>
+<li><strong>工具</strong>：<a target="_blank" rel="noopener" href="https://www.ipip.net/">IPIP.NET</a>（推荐）、<a target="_blank" rel="noopener" href="https://censys.io/">Censys</a>（需技术基础）</li>
+<li><strong>操作</strong>：<br>  ① 获取域名解析 IP（如<code>dig +short www.taobao.com</code>）<br>  ② 逐个查询 IP 归属：<br>  ▶ 101.226.xxx → 阿里云（中国内地主力段）<br>  ▶ 119.28.xxx → 腾讯云（常见 CDN 段）<br>  ▶ 180.163.xxx → 百度云（百度系专属段）</li>
+<li><strong>2025 新趋势</strong>：部分 CDN 隐藏真实 IP（如 Cloudflare 的 Argo 隧道），需结合 DNS 指纹判断。</li>
+</ul>
+<h3 id="2-2-2-DNS-指纹识别（进阶）"><a href="#2-2-2-DNS-指纹识别（进阶）" class="headerlink" title="2.2.2 DNS 指纹识别（进阶）"></a>2.2.2 <strong>DNS 指纹识别（进阶）</strong></h3><p>同CNAME一致，[[CDN 判断#<strong>DNS 解析法（核心判断）</strong>]]</p>
+<p> <strong>特征域名后缀</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>服务商</th>
+<th>特征后缀</th>
+<th>案例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>阿里云</td>
+<td>*.<a target="_blank" rel="noopener" href="https://alicdn.com/">alicdn.com</a></td>
+<td><a target="_blank" rel="noopener" href="https://img.alicdn.com/">img.alicdn.com</a></td>
+</tr>
+<tr>
+<td>腾讯云</td>
+<td>*.<a target="_blank" rel="noopener" href="https://cdn.dnsv1.com/">cdn.dnsv1.com</a></td>
+<td><a target="_blank" rel="noopener" href="https://cdn-1253793123.cdn.dnsv1.com/">cdn-1253793123.cdn.dnsv1.com</a></td>
+</tr>
+<tr>
+<td>Cloudflare</td>
+<td><em>.<a target="_blank" rel="noopener" href="https://cf.net/">cf.net&#x2F;</a></em>.<a target="_blank" rel="noopener" href="https://cdn.cloudflare.net/">cdn.cloudflare.net</a></td>
+<td><a target="_blank" rel="noopener" href="https://cdn.example.com.cdn.cloudflare.net/">cdn.example.com.cdn.cloudflare.net</a></td>
+</tr>
+<tr>
+<td>华为云</td>
+<td>*.<a target="_blank" rel="noopener" href="https://myhuaweicloud.com/">myhuaweicloud.com</a></td>
+<td><a target="_blank" rel="noopener" href="https://static.myhuaweicloud.com/">static.myhuaweicloud.com</a></td>
+</tr>
+</tbody></table>
+<h3 id="2-2-3-在线工具集"><a href="#2-2-3-在线工具集" class="headerlink" title="2.2.3 在线工具集"></a>2.2.3 <strong>在线工具集</strong></h3><ul>
+<li><strong><a target="_blank" rel="noopener" href="https://www.cdnradar.com/">CDN 雷达</a></strong>：输入域名自动识别服务商、节点分布（需注册）</li>
+<li><strong><a target="_blank" rel="noopener" href="https://whatcdn.org/">WhatCDN</a></strong>：通过 JS 指纹识别（对 Cloudflare、Akamai 精准）</li>
+<li><strong>2025 新工具</strong>：<a target="_blank" rel="noopener" href="https://edgedb.com/">EdgeDB</a>（基于全球 10 万 + 节点探测，支持 AI 识别多云 CDN）</li>
+</ul>
+<h2 id="2-3-一些特殊场景处理"><a href="#2-3-一些特殊场景处理" class="headerlink" title="2.3 一些特殊场景处理"></a>2.3 一些特殊场景处理</h2><ol>
+<li><p><strong>子域名差异化 CDN</strong><br> 主站（www）用 A 服务商，图片（img）用 B 服务商（如抖音主站腾讯云，CDN 图片用字节云）。需分别解析子域名。</p>
+</li>
+<li><p><strong>CDN 隐藏真实 IP</strong></p>
+<ul>
+<li>场景：源站 IP 被 CDN 完全隐藏（如 Cloudflare 的 Full SSL）</li>
+<li>破解：找未被 CDN 覆盖的资源（如<code>robots.txt</code>、管理后台路径），直接 PING 获取源 IP。</li>
+</ul>
+</li>
+<li><p><strong>多云 CDN（2025 主流）</strong></p>
+<ul>
+<li>特征：解析出多服务商 IP 段（如阿里云 + 腾讯云混合）</li>
+<li>判断：通过 IP 反查组合结果，或用<a target="_blank" rel="noopener" href="https://cdnview.com/">CDNView</a>可视化节点归属。</li>
+</ul>
+</li>
+</ol>
+<h2 id="2-4-注意事项"><a href="#2-4-注意事项" class="headerlink" title="2.4 注意事项"></a>2.4 注意事项</h2><ul>
+<li>❗ <strong>误判场景</strong>：<br>  ① 大站自建 CDN（如字节跳动、美团），IP 段可能无服务商标识<br>  ② 动态内容（如 API 接口）未走 CDN，需验证静态资源（JS&#x2F;CSS&#x2F; 图片）</li>
+<li>💡 <strong>经验口诀</strong>：<br>  “解析多 IP，PING 值稳，头含服务商，IP 段对号 —— 四者一致可确诊。”</li>
+</ul>
+<p>示例：判断<code>www.suzhou.gov.cn</code>是否用 CDN</p>
+<ol>
+<li><code>nslookup</code>解析→3 个 IP：114.215.xxx（江苏电信）、180.163.xxx（百度云）、47.93.xxx（阿里云）</li>
+<li>超级 PING→全国节点延迟均 &lt; 30ms，IP 覆盖江苏 &#x2F; 北京 &#x2F; 杭州</li>
+<li>HTTP 头→<code>X-Cache: HIT from BDCDN</code>（百度云 CDN 标识）<br> <strong>结论</strong>：开启 CDN，服务商为百度云 + 阿里云（政务云常见混合部署）。</li>
+</ol>
+<p>通过以上方法，90% 以上的 CDN 均可精准识别。复杂场景建议结合 2-3 种工具交叉验证～</p>
+<h1 id="3-IP是否是CDN"><a href="#3-IP是否是CDN" class="headerlink" title="3 IP是否是CDN"></a>3 IP是否是CDN</h1><h2 id="3-1-IP归属"><a href="#3-1-IP归属" class="headerlink" title="3.1 IP归属"></a>3.1 IP归属</h2><p>通过一些商用API，会收集一些互联IP的资产归属，运营商或者用途。下面是工具示例，只是参考：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>操作步骤</th>
+<th>工具 &#x2F; 数据来源</th>
+<th>示例（部分 CDN IP 段）</th>
+<th>注意事项</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>IP 库查询</strong></td>
+<td>输入 IP，查看 “运营商” 或 “用途” 字段</td>
+<td>IP2Location、<a target="_blank" rel="noopener" href="https://ipip.net/">IPIP.net</a>、IPinfo.io</td>
+<td>阿里云：118.178.0.0&#x2F;16  <br>腾讯云：119.29.0.0&#x2F;16</td>
+<td>需付费库获取精准 CDN 标识</td>
+</tr>
+<tr>
+<td><strong>WHOIS 查询</strong></td>
+<td>解析 IP 的注册信息，看是否含 “CDN”“Content Delivery” 等关键词</td>
+<td><a target="_blank" rel="noopener" href="https://whois.arin.net/">whois.arin.net</a>、<a target="_blank" rel="noopener" href="https://whois.apnic.net/">whois.apnic.net</a></td>
+<td>百度云 IP：WHOIS 含 “Beijing Baidu Netcom Science”</td>
+<td>部分 IP 归属云厂商（非 CDN）需排除</td>
+</tr>
+</tbody></table>
+<h2 id="分地PING-TRACERT"><a href="#分地PING-TRACERT" class="headerlink" title="分地PING&#x2F;TRACERT"></a>分地PING&#x2F;TRACERT</h2><p>CDN 节点覆盖全球，同一 IP 若在多地 PING 返回不同地理位置，或 TRACERT 显示 CDN 服务商 AS 号，可判定为 CDN。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>操作步骤</th>
+<th>工具 &#x2F; 数据来源</th>
+<th>示例现象</th>
+<th>注意事项</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>多地 PING</strong></td>
+<td>用工具（如<a target="_blank" rel="noopener" href="https://www.cloudping.co/">Cloudping</a>）从不同地区 PING 目标 IP</td>
+<td>Cloudping、站长工具 - 超级 PING</td>
+<td>北京 Ping 返回河北 IP，上海 Ping 返回江苏 IP</td>
+<td>需排除动态 IP 或 BGP 多线机房</td>
+</tr>
+<tr>
+<td><strong>TRACERT 路由追踪</strong></td>
+<td>执行<code>tracert IP</code>，看最后几跳跃点是否含 CDN 服务商名称或 AS 号</td>
+<td>系统命令行（Windows: tracert，Linux: traceroute）</td>
+<td>路由末端显示<code>aliyun-cdn.com</code>或 AS9009（阿里云）</td>
+<td>部分 CDN 节点隐藏真实 IP（需结合其他方法）</td>
+</tr>
+</tbody></table>
+<h2 id="响应头"><a href="#响应头" class="headerlink" title="响应头"></a>响应头</h2><p>CDN 节点的 HTTP 响应头常含专属字段（即使通过 IP 直接访问）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -I http://&#123;IP&#125;/index.html  <span class="hljs-comment"># 替换为实际可访问路径</span><br><span class="hljs-comment"># 若返回`X-Tengine`（阿里云）或`Server: yunjiasu-nginx`（又拍云），判定为CDN</span><br></code></pre></td></tr></table></figure>
+
+<p>参考上文示例。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/web%E5%AE%89%E5%85%A8/" class="category-chain-item">web安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CDN/" class="print-no-link">#CDN</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CDN资产检测技术(2025)</div>
+      <div>http://example.com/2025/03/14/CDN资产检测技术-2025/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jentle</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>March 14, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/26/AI%E5%AE%89%E5%85%A8-%E5%A6%82%E4%BD%95%E6%94%BB%E5%87%BBLLM-%E5%92%8CAI-Agent/" title="AI安全-如何攻击LLM 和AI Agent">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">AI安全-如何攻击LLM 和AI Agent</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/02/18/%E5%8F%8D%E5%8F%8Drootkit-%E8%A6%86%E7%9B%96%E9%A9%B1%E5%8A%A8%E4%B8%8E%E9%9A%90%E8%97%8F%E7%BA%BF%E7%A8%8B/" title="反反rootkit--覆盖驱动与隐藏线程">
+                        <span class="hidden-mobile">反反rootkit--覆盖驱动与隐藏线程</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Hipepper/UtterancBlog');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/Hipepper" target="_blank" rel="nofollow noopener"><span>Github</span></a> <i class="iconfont icon-love"></i> <a href="https://mp.weixin.qq.com/s/WZSeu6y5ckuo958f-yV3Kg" target="_blank" rel="nofollow noopener"><span>公众号</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>

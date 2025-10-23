@@ -1,0 +1,1723 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/dog2.jpg">
+  <link rel="icon" href="/img/dog2.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jentle">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言 Russian GRU: 主要情报局（俄罗斯军队） Russian SVR: 俄罗斯联邦外国情报局 Russian FSB: 俄罗斯联邦安全局  技战术远程监控和管理（RMM）工具 提示  RMM（远程监控和管理）工具是 IT 专业人员和托管服务提供商 （MSP） 用来远程监控、管理和维护 IT 系统、网络和设备的一种软件。 这些工具旨在提高 IT 运营效率，使技术人员能够从集中位置处理任务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="俄罗斯APT组织技战术情报">
+<meta property="og:url" content="http://example.com/2024/11/05/%E4%BF%84%E7%BD%97%E6%96%AFAPT%E7%BB%84%E7%BB%87%E6%8A%80%E6%88%98%E6%9C%AF%E6%83%85%E6%8A%A5/index.html">
+<meta property="og:site_name" content="TIPFactory">
+<meta property="og:description" content="前言 Russian GRU: 主要情报局（俄罗斯军队） Russian SVR: 俄罗斯联邦外国情报局 Russian FSB: 俄罗斯联邦安全局  技战术远程监控和管理（RMM）工具 提示  RMM（远程监控和管理）工具是 IT 专业人员和托管服务提供商 （MSP） 用来远程监控、管理和维护 IT 系统、网络和设备的一种软件。 这些工具旨在提高 IT 运营效率，使技术人员能够从集中位置处理任务">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-11-05T10:19:11.000Z">
+<meta property="article:modified_time" content="2025-10-23T01:07:21.054Z">
+<meta property="article:author" content="Jentle">
+<meta property="article:tag" content="APT">
+<meta property="article:tag" content="RussiaAPT">
+<meta property="article:tag" content="CTI">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>俄罗斯APT组织技战术情报 - TIPFactory</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="TIPFactory" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TIPFactory</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="俄罗斯APT组织技战术情报"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-05 18:19" pubdate>
+          November 5, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">俄罗斯APT组织技战术情报</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><ul>
+<li>Russian GRU: 主要情报局（俄罗斯军队）</li>
+<li>Russian SVR: 俄罗斯联邦外国情报局</li>
+<li>Russian FSB: 俄罗斯联邦安全局</li>
+</ul>
+<h1 id="技战术"><a href="#技战术" class="headerlink" title="技战术"></a>技战术</h1><h2 id="远程监控和管理（RMM）工具"><a href="#远程监控和管理（RMM）工具" class="headerlink" title="远程监控和管理（RMM）工具"></a>远程监控和管理（RMM）工具</h2><p> 提示</p>
+<ul>
+<li>RMM（远程监控和管理）工具是 IT 专业人员和托管服务提供商 （MSP） 用来远程监控、管理和维护 IT 系统、网络和设备的一种软件。</li>
+<li>这些工具旨在提高 IT 运营效率，使技术人员能够从集中位置处理任务，而无需对客户端设备进行物理访问。</li>
+</ul>
+<p>通过合法的 RMM 渠道进行操作，攻击者可以通过混入常规 IT 活动来逃避检测，并且由于这些工具提供的特权提升，可能会绕过安全措施。</p>
+<table>
+<thead>
+<tr>
+<th>Tool Name</th>
+<th>Threat Group Usage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>InnoSetup</td>
+<td>UAC-0020</td>
+</tr>
+<tr>
+<td>IntelliAdmin</td>
+<td>Turla</td>
+</tr>
+<tr>
+<td>RemCom</td>
+<td>Sandworm</td>
+</tr>
+<tr>
+<td>Remote Manipulator System (RMS)</td>
+<td>Gamaredon</td>
+</tr>
+<tr>
+<td>RemoteUtilities</td>
+<td>UAC-0050</td>
+</tr>
+<tr>
+<td>SyncThing</td>
+<td>UAC-0020</td>
+</tr>
+<tr>
+<td>TeamViewer</td>
+<td>BERSERK BEAR</td>
+</tr>
+<tr>
+<td>UltraVNC</td>
+<td>Gamaredon</td>
+</tr>
+</tbody></table>
+<h2 id="渗透工具"><a href="#渗透工具" class="headerlink" title="渗透工具"></a>渗透工具</h2><p> 提示</p>
+<p>文件同步和管理工具旨在促进跨各种平台和云存储服务高效传输、备份和同步文件。</p>
+<p> 重要</p>
+<ul>
+<li>这些工具可能被滥用，将被盗数据上传到攻击者控制的云帐户或目标服务器。</li>
+<li>通过利用加密数据传输，攻击者可以向网络监控系统隐藏他们的活动，将恶意行为与合法操作混合在一起。</li>
+<li>这些工具的合法性通常会阻止安全系统立即检测到。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Tool Name</th>
+<th>Threat Group Usage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>4Shared</td>
+<td>Turla</td>
+</tr>
+<tr>
+<td>Dropbox</td>
+<td>COZY BEAR, Turla</td>
+</tr>
+<tr>
+<td>Firebase</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>Gmail</td>
+<td>Turla</td>
+</tr>
+<tr>
+<td>GMX</td>
+<td>Turla</td>
+</tr>
+<tr>
+<td>Google Drive</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>Notion</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>MEGA</td>
+<td>EMBER BEAR</td>
+</tr>
+<tr>
+<td>OneDrive</td>
+<td>COZY BEAR, Turla</td>
+</tr>
+<tr>
+<td>Telegram</td>
+<td>Gamaredon</td>
+</tr>
+<tr>
+<td>Trello</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>Rclone</td>
+<td>EMBER BEAR, Gamaredon</td>
+</tr>
+<tr>
+<td>VFEmail</td>
+<td>Turla</td>
+</tr>
+</tbody></table>
+<h2 id="凭证盗窃工具"><a href="#凭证盗窃工具" class="headerlink" title="凭证盗窃工具"></a>凭证盗窃工具</h2><p>提示</p>
+<ul>
+<li>有许多免费的密码恢复工具可用，旨在帮助用户恢复存储在自己的系统中丢失或忘记的密码。</li>
+<li>这些工具可以提取保存在网络浏览器、电子邮件客户端和其他应用程序中的密码。</li>
+<li>IT 专业人员可以使用这些工具来恢复系统维护或故障排除所需的凭据。</li>
+</ul>
+<p>重要的</p>
+<p>如果攻击者在未经所有者许可的情况下在计算机上运行这些工具，则它们可能会被非法利用获取密码，从而导致未经授权访问敏感信息。</p>
+<table>
+<thead>
+<tr>
+<th>Tool Name</th>
+<th>Threat Group Usage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CookieEditor</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>Mimikatz</td>
+<td>COZY BEAR, FANCY BEAR, BERSERK BEAR, Gamaredon, Turla</td>
+</tr>
+<tr>
+<td>ProcDump</td>
+<td>BERSERK BEAR</td>
+</tr>
+<tr>
+<td>SharpChromium</td>
+<td>COZY BEAR</td>
+</tr>
+</tbody></table>
+<h2 id="防御规避工具"><a href="#防御规避工具" class="headerlink" title="防御规避工具"></a>防御规避工具</h2><p>提示</p>
+<ul>
+<li>各种免费的恶意软件检测工具专门用于识别和删除像 rootkit 这样的隐秘威胁。</li>
+<li>它们提供扫描隐藏进程、文件和驱动程序、分析系统内存中的恶意模块以及监控系统挂钩以查找未经授权的修改等功能。</li>
+<li>这些工具提供了对系统内部的详细了解，有助于发现标准防病毒程序可能错过的深层嵌入的恶意软件。</li>
+</ul>
+<p>重要的</p>
+<ul>
+<li>恶意行为者可以滥用这些 rootkit 检测工具来干扰安全工具、篡改文件和注册表以破坏工具功能以及破坏内存以阻止检测。</li>
+<li>通过使用这些工具进行权限提升，对手可以禁用或改变安全软件的运行，从而消除系统用于检测或预防威胁的方法。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Tool Name</th>
+<th>Threat Group Usage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>EDRSandBlast</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>libprocesshider</td>
+<td>Sandworm</td>
+</tr>
+<tr>
+<td>PowerShellRunner</td>
+<td>Turla</td>
+</tr>
+<tr>
+<td>SDelete</td>
+<td>Sandworm</td>
+</tr>
+<tr>
+<td>VirtualBox Driver</td>
+<td>Turla</td>
+</tr>
+</tbody></table>
+<h2 id="网络工具"><a href="#网络工具" class="headerlink" title="网络工具"></a>网络工具</h2><p>提示</p>
+<ul>
+<li>网上有许多网络隧道工具可用于管理和与不同环境中的系统交互。</li>
+<li>它们允许用户通过可以绕过网络限制和防火墙的加密通道安全地连接到远程服务器或服务。</li>
+<li>这些工具还可以将本地开发服务器暴露到互联网上以进行测试和共享。</li>
+<li>它们广泛用于远程管理和开发工作流程等任务，为网络管理提供灵活性。</li>
+</ul>
+<p>重要的</p>
+<ul>
+<li>网络犯罪分子可以利用网络隧道工具创建加密隧道、逃避检测并访问受限网络。</li>
+<li>这些工具本质上为对手提供了指挥和控制的便利，帮助他们站稳脚跟并策划进一步的恶意活动。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Tool Name</th>
+<th>Threat Group Usage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Chisel</td>
+<td>Sandworm</td>
+</tr>
+<tr>
+<td>Cloudflared</td>
+<td>Gamaredon</td>
+</tr>
+<tr>
+<td>dnscat2</td>
+<td>EMBER BEAR</td>
+</tr>
+<tr>
+<td>Dropbear</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>FortiClient</td>
+<td>BERSERK BEAR</td>
+</tr>
+<tr>
+<td>GOST</td>
+<td>EMBER BEAR</td>
+</tr>
+<tr>
+<td>Iodine</td>
+<td>EMBER BEAR</td>
+</tr>
+<tr>
+<td>Ngrok</td>
+<td>Gamaredon</td>
+</tr>
+<tr>
+<td>OpenSSH</td>
+<td>FANCY BEAR</td>
+</tr>
+<tr>
+<td>Pivotnacci</td>
+<td>Sandworm</td>
+</tr>
+<tr>
+<td>ProxyChains</td>
+<td>EMBER BEAR</td>
+</tr>
+<tr>
+<td>ReGeorg</td>
+<td>COZY BEAR, FANCY BEAR, EMBER BEAR, Sandworm</td>
+</tr>
+<tr>
+<td>Rsockstun</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>SSHDoor</td>
+<td>FANCY BEAR</td>
+</tr>
+</tbody></table>
+<h2 id="发现和爆破工具"><a href="#发现和爆破工具" class="headerlink" title="发现和爆破工具"></a>发现和爆破工具</h2><p>提示</p>
+<ul>
+<li>网上有许多网络扫描和分析工具，旨在帮助管理员和 IT 专业人员完成诸如发现和映射网络设备、执行 IP 地址和开放端口的详细扫描以及查询 Active Directory 等网络服务等任务。</li>
+</ul>
+<p>重要的</p>
+<ul>
+<li>恶意对手利用这些网络管理工具进行侦察并收集有关目标网络的详细信息。</li>
+<li>他们可以使用这些工具来识别活动设备、开放端口和漏洞，然后利用这些漏洞来获取访问权限。</li>
+<li>此外，查询活动目录服务的工具可以让他们收集有关用户、群组和权限的敏感信息，从而发起有针对性的攻击或内部威胁。</li>
+<li>本质上，这些工具虽然对于合法的网络管理很有价值，但却可能被滥用来规划和利用网络基础设施来达到邪恶的目的。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Tool Name</th>
+<th>Threat Group Usage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Acunetix</td>
+<td>EMBER BEAR</td>
+</tr>
+<tr>
+<td>Amass</td>
+<td>EMBER BEAR</td>
+</tr>
+<tr>
+<td>AADInternals</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>AdFind</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>Adminer</td>
+<td>EMBER BEAR</td>
+</tr>
+<tr>
+<td>Angry IP Scanner</td>
+<td>BERSERK BEAR</td>
+</tr>
+<tr>
+<td>Bloodhound</td>
+<td>COZY BEAR, EMBER BEAR</td>
+</tr>
+<tr>
+<td>Droopescan</td>
+<td>EMBER BEAR</td>
+</tr>
+<tr>
+<td>DSInternals</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>JoomScan</td>
+<td>EMBER BEAR</td>
+</tr>
+<tr>
+<td>LdapDomainDump</td>
+<td>EMBER BEAR</td>
+</tr>
+<tr>
+<td>NBTScan</td>
+<td>Turla</td>
+</tr>
+<tr>
+<td>Nmap</td>
+<td>EMBER BEAR</td>
+</tr>
+<tr>
+<td>Masscan</td>
+<td>EMBER BEAR</td>
+</tr>
+<tr>
+<td>RoadTools</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>SScan</td>
+<td>Turla</td>
+</tr>
+<tr>
+<td>WPScan</td>
+<td>EMBER BEAR</td>
+</tr>
+</tbody></table>
+<h2 id="CC工具"><a href="#CC工具" class="headerlink" title="CC工具"></a>CC工具</h2><p>提示</p>
+<ul>
+<li>攻击性安全工具由专业的道德黑客开发，用于模拟网络攻击并评估组织的防御能力。</li>
+<li>这些工具为后开发活动提供了强大的功能，例如隐秘通信、横向移动以及高级指挥和控制功能。</li>
+<li>一些工具专注于绕过现代安全防御的规避技术，从而实现真实的威胁模拟和有效载荷开发。</li>
+</ul>
+<p>重要的</p>
+<ul>
+<li>网络犯罪分子可以通过各种方式获取攻击性安全工具，通常利用合法渠道或采取非法手段来获取。</li>
+<li>这些工具还允许攻击者自动执行部分攻击，从而使攻击更加高效、范围更加广泛。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Tool Name</th>
+<th>Threat Group Usage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Brute Ratel C4</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>Cobalt Strike</td>
+<td>COZY BEAR, Sandworm</td>
+</tr>
+<tr>
+<td>CrackMapExec</td>
+<td>EMBER BEAR, BERSERK BEAR</td>
+</tr>
+<tr>
+<td>Empyre</td>
+<td>FANCY BEAR, Sandworm</td>
+</tr>
+<tr>
+<td>EvilGinx</td>
+<td>COLDRIVER</td>
+</tr>
+<tr>
+<td>Evil-WinRM</td>
+<td>Turla</td>
+</tr>
+<tr>
+<td>Hydra</td>
+<td>BERSERK BEAR</td>
+</tr>
+<tr>
+<td>Impacket</td>
+<td>COZY BEAR, FANCY BEAR, EMBER BEAR, Sandworm, BERSERK BEAR</td>
+</tr>
+<tr>
+<td>JuicyPotatoNG</td>
+<td>Sandworm</td>
+</tr>
+<tr>
+<td>Koadic</td>
+<td>FANCY BEAR</td>
+</tr>
+<tr>
+<td>LinPEAS</td>
+<td>EMBER BEAR</td>
+</tr>
+<tr>
+<td>NetCat</td>
+<td>EMBER BEAR</td>
+</tr>
+<tr>
+<td>Nishang</td>
+<td>FANCY BEAR</td>
+</tr>
+<tr>
+<td>Metasploit</td>
+<td>FANCY BEAR, EMBER BEAR, Sandworm, Turla</td>
+</tr>
+<tr>
+<td>Meterpreter</td>
+<td>EMBER BEAR, Sandworm</td>
+</tr>
+<tr>
+<td>PAS Web Shell</td>
+<td>EMBER BEAR, Sandworm</td>
+</tr>
+<tr>
+<td>Phishery</td>
+<td>BERSERK BEAR</td>
+</tr>
+<tr>
+<td>PoshC2</td>
+<td>Sandworm</td>
+</tr>
+<tr>
+<td>PowerSploit</td>
+<td>COZY BEAR, Turla</td>
+</tr>
+<tr>
+<td>PowerShell Empire</td>
+<td>FANCY BEAR, Sandworm, Turla</td>
+</tr>
+<tr>
+<td>Responder</td>
+<td>FANCY BEAR, EMBER BEAR</td>
+</tr>
+<tr>
+<td>RottenPotatoNG</td>
+<td>Sandworm</td>
+</tr>
+<tr>
+<td>Rubeus</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>Sliver</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>Weevely Web Shell</td>
+<td>Sandworm</td>
+</tr>
+<tr>
+<td>WinPEAS</td>
+<td>COZY BEAR</td>
+</tr>
+<tr>
+<td>WSO Web Shell</td>
+<td>EMBER BEAR, Sandworm</td>
+</tr>
+</tbody></table>
+<h2 id="持久化文件"><a href="#持久化文件" class="headerlink" title="持久化文件"></a>持久化文件</h2><p>提示</p>
+<ul>
+<li>Windows 环境配备了各种各样的命令行实用程序。</li>
+<li>这些工具共同为高效的系统管理、故障排除和优化提供了强大的支持，帮助管理员维护安全、稳定和高性能的 Windows 环境。</li>
+</ul>
+<p>重要的</p>
+<ul>
+<li>网络犯罪分子经常利用合法的 Windows 管理工具执行恶意操作，同时逃避检测。</li>
+<li>这些工具用于远程执行、文件传输和系统管理等任务，允许攻击者在网络中横向移动、下载和执行恶意软件、操纵日志并收集敏感信息。</li>
+<li>通过利用这些内置实用程序，攻击者可以秘密地开展活动，将他们的行为与正常的管理操作混合在一起。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Tool Name</th>
+<th>Threat Group Usage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BITSAdmin</td>
+<td>BERSERK BEAR</td>
+</tr>
+<tr>
+<td>MiniDump</td>
+<td>FANCY BEAR</td>
+</tr>
+<tr>
+<td>PsExec</td>
+<td>COZY BEAR, EMBER BEAR, BERSERK BEAR, Gamaredon, Turla</td>
+</tr>
+<tr>
+<td>Windows Event Utility (wevtutil)</td>
+<td>FANCY BEAR</td>
+</tr>
+<tr>
+<td>WMIC</td>
+<td>COZY BEAR</td>
+</tr>
+</tbody></table>
+<h1 id="总TTPs"><a href="#总TTPs" class="headerlink" title="总TTPs"></a>总TTPs</h1><table>
+<thead>
+<tr>
+<th>Discovery</th>
+<th>RMM Tools</th>
+<th>Defense Evasion</th>
+<th>Credential Theft</th>
+<th>OffSec</th>
+<th>Networking</th>
+<th>LOLBAS</th>
+<th>Exfiltration</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Acunetix</td>
+<td>InnoSetup</td>
+<td>EDRSandBlast</td>
+<td>CookieEditor</td>
+<td>Brute Ratel C4</td>
+<td>Chisel</td>
+<td>BITSAdmin</td>
+<td>4Shared</td>
+</tr>
+<tr>
+<td>Amass</td>
+<td>IntelliAdmin</td>
+<td>libprocesshider</td>
+<td>Mimikatz</td>
+<td>Cobalt Strike</td>
+<td>dnscat2</td>
+<td>MiniDump</td>
+<td>Dropbox</td>
+</tr>
+<tr>
+<td>AADInternals</td>
+<td>RemCom</td>
+<td>PowerShellRunner</td>
+<td>ProcDump</td>
+<td>CrackMapExec</td>
+<td>Dropbear</td>
+<td>PsExec</td>
+<td>Firebase</td>
+</tr>
+<tr>
+<td>AdFind</td>
+<td>Remote Manipulator System (RMS)</td>
+<td>SDelete</td>
+<td>SharpChromium</td>
+<td>Empyre</td>
+<td>FortiClient</td>
+<td>Windows Event Utility (wevtutil)</td>
+<td>Gmail</td>
+</tr>
+<tr>
+<td>Adminer</td>
+<td>RemoteUtilities</td>
+<td>VirtualBox Driver</td>
+<td></td>
+<td>EvilGinx</td>
+<td>GOST</td>
+<td>WMIC</td>
+<td>GMX</td>
+</tr>
+<tr>
+<td>Angry IP Scanner</td>
+<td>SyncThing</td>
+<td></td>
+<td></td>
+<td>Evil-WinRM</td>
+<td>Iodine</td>
+<td></td>
+<td>Google Drive</td>
+</tr>
+<tr>
+<td>Bloodhound</td>
+<td>TeamViewer</td>
+<td></td>
+<td></td>
+<td>Hydra</td>
+<td>OpenSSH</td>
+<td></td>
+<td>Notion</td>
+</tr>
+<tr>
+<td>Droopescan</td>
+<td>UltraVNC</td>
+<td></td>
+<td></td>
+<td>Impacket</td>
+<td>Pivotnacci</td>
+<td></td>
+<td>MEGA</td>
+</tr>
+<tr>
+<td>DSInternals</td>
+<td></td>
+<td></td>
+<td></td>
+<td>JuicyPotatoNG</td>
+<td>ProxyChains</td>
+<td></td>
+<td>OneDrive</td>
+</tr>
+<tr>
+<td>JoomScan</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Koadic</td>
+<td>ReGeorg</td>
+<td></td>
+<td>Trello</td>
+</tr>
+<tr>
+<td>LdapDomainDump</td>
+<td></td>
+<td></td>
+<td></td>
+<td>LinPEAS</td>
+<td>Rsockstun</td>
+<td></td>
+<td>Rclone</td>
+</tr>
+<tr>
+<td>NBTScan</td>
+<td></td>
+<td></td>
+<td></td>
+<td>NetCat</td>
+<td>SSHDoor</td>
+<td></td>
+<td>VFEmail</td>
+</tr>
+<tr>
+<td>Nmap</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Nishang</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Masscan</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Metasploit</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>RoadTools</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Meterpreter</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>SScan</td>
+<td></td>
+<td></td>
+<td></td>
+<td>PAS Web Shell</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>WPScan</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Phishery</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>PoshC2</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>PowerSploit</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>PowerShell Empire</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Responder</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>RottenPotatoNG</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Rubeus</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Sliver</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Weevely Web Shell</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>WinPEAS</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>WSO Web Shell</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id="一些发现"><a href="#一些发现" class="headerlink" title="一些发现"></a>一些发现</h1><p>在最近的威胁分析中，观察到不同的俄罗斯威胁组织对公共可用资源的显著依赖，尤其是在入侵活动中使用各种攻击性安全工具（OST）。以下是一些主要发现：</p>
+<ol>
+<li><strong>使用扫描仪的主要对手</strong>：隶属于 GRU 的 EMBER BEAR 组织在使用扫描仪方面最为活跃。</li>
+<li><strong>其他 GRU 威胁组</strong>：如 FANCY BEAR 和 Sandworm，通常依赖多种攻击性安全工具来支持其入侵活动。</li>
+<li><strong>SVR 组织的多样化工具使用</strong>：隶属于 SVR 的 COZY BEAR 是使用不同工具总数最多的俄罗斯威胁组。</li>
+<li><strong>工具依赖性</strong>：记录显示，俄罗斯威胁组织对攻击性安全工具的严重依赖，累计使用多达 27 种不同的工具。</li>
+<li><strong>共同使用的工具</strong>：<ul>
+<li><strong>Mimikatz</strong>：被 COZY BEAR、FANCY BEAR、BERSERK BEAR、GAMAREDON 和 Turla 使用。</li>
+<li><strong>Impacket</strong>：被 COZY BEAR、FANCY BEAR、EMBER BEAR、Sandworm 和 BERSERK BEAR 使用。</li>
+<li><strong>PsExec</strong>：被 COZY BEAR、EMBER BEAR、BERSERK BEAR、GAMAREDON 和 Turla 使用。</li>
+<li><strong>Metasploit</strong>：被 FANCY BEAR、EMBER BEAR、Sandworm 和 Turla 使用。</li>
+<li><strong>ReGeorg</strong>：被 COZY BEAR、FANCY BEAR、EMBER BEAR 和 Sandworm 使用。</li>
+</ul>
+</li>
+<li><strong>入侵识别</strong>：如果在一次入侵中观察到上述工具的组合，这可能表明该入侵是由俄罗斯国家支持的威胁组织进行的，并且可能与勒索活动有关。</li>
+</ol>
+<p>这些观察为我们理解俄罗斯威胁组织的战术和工具选择提供了宝贵的洞见，有助于更好地防范潜在的网络威胁。</p>
+<h1 id="报告来源"><a href="#报告来源" class="headerlink" title="报告来源"></a>报告来源</h1><table>
+<thead>
+<tr>
+<th>Date Published</th>
+<th>Russian APT</th>
+<th>Report</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>26 September 2024</td>
+<td>Gamaredon</td>
+<td><a target="_blank" rel="noopener" href="https://www.welivesecurity.com/en/eset-research/cyberespionage-gamaredon-way-analysis-toolset-used-spy-ukraine-2022-2023">https://www.welivesecurity.com/en/eset-research/cyberespionage-gamaredon-way-analysis-toolset-used-spy-ukraine-2022-2023</a></td>
+</tr>
+<tr>
+<td>5 September 2024</td>
+<td>EMBER BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a</a></td>
+</tr>
+<tr>
+<td>14 August 2024</td>
+<td>Star Blizzard</td>
+<td><a target="_blank" rel="noopener" href="https://citizenlab.ca/2024/08/sophisticated-phishing-targets-russias-perceived-enemies-around-the-globe/">https://citizenlab.ca/2024/08/sophisticated-phishing-targets-russias-perceived-enemies-around-the-globe/</a></td>
+</tr>
+<tr>
+<td>19 June 2024</td>
+<td>COZY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://www.cert.ssi.gouv.fr/cti/CERTFR-2024-CTI-006/">https://www.cert.ssi.gouv.fr/cti/CERTFR-2024-CTI-006/</a></td>
+</tr>
+<tr>
+<td>5 June 2024</td>
+<td>UAC-0020</td>
+<td><a target="_blank" rel="noopener" href="https://cert.gov.ua/article/6279600">https://cert.gov.ua/article/6279600</a></td>
+</tr>
+<tr>
+<td>1 May 2024</td>
+<td>FANCY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://www.trendmicro.com/en_us/research/24/e/router-roulette.html">https://www.trendmicro.com/en_us/research/24/e/router-roulette.html</a></td>
+</tr>
+<tr>
+<td>19 April 2024</td>
+<td>Sandworm</td>
+<td><a target="_blank" rel="noopener" href="https://cert.gov.ua/article/6278706">https://cert.gov.ua/article/6278706</a></td>
+</tr>
+<tr>
+<td>17 April 2024</td>
+<td>Sandworm</td>
+<td><a target="_blank" rel="noopener" href="https://services.google.com/fh/files/misc/apt44-unearthing-sandworm.pdf">https://services.google.com/fh/files/misc/apt44-unearthing-sandworm.pdf</a></td>
+</tr>
+<tr>
+<td>21 March 2024</td>
+<td>Turla</td>
+<td><a target="_blank" rel="noopener" href="https://blog.talosintelligence.com/tinyturla-full-kill-chain/">https://blog.talosintelligence.com/tinyturla-full-kill-chain/</a></td>
+</tr>
+<tr>
+<td>22 January 2024</td>
+<td>UAC-0050</td>
+<td><a target="_blank" rel="noopener" href="https://cert.gov.ua/article/6277285">https://cert.gov.ua/article/6277285</a></td>
+</tr>
+<tr>
+<td>28 December 2023</td>
+<td>FANCY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://cert.gov.ua/article/6276894">https://cert.gov.ua/article/6276894</a></td>
+</tr>
+<tr>
+<td>13 December 2023</td>
+<td>COZY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-347a">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-347a</a></td>
+</tr>
+<tr>
+<td>8 December 2023</td>
+<td>FANCY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://securityintelligence.com/x-force/itg05-ops-leverage-israel-hamas-conflict-lures-to-deliver-headlace-malware/">https://securityintelligence.com/x-force/itg05-ops-leverage-israel-hamas-conflict-lures-to-deliver-headlace-malware/</a></td>
+</tr>
+<tr>
+<td>27 January 2023</td>
+<td>COZY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://go.recordedfuture.com/hubfs/reports/cta-2023-0127.pdf">https://go.recordedfuture.com/hubfs/reports/cta-2023-0127.pdf</a></td>
+</tr>
+<tr>
+<td>2 May 2022</td>
+<td>COZY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://cloud.google.com/blog/topics/threat-intelligence/unc3524-eye-spy-email/">https://cloud.google.com/blog/topics/threat-intelligence/unc3524-eye-spy-email/</a></td>
+</tr>
+<tr>
+<td>27 January 2022</td>
+<td>COZY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://www.crowdstrike.com/blog/observations-from-the-stellarparticle-campaign/">https://www.crowdstrike.com/blog/observations-from-the-stellarparticle-campaign/</a></td>
+</tr>
+<tr>
+<td>4 November 2021</td>
+<td>Gamaredon</td>
+<td>[<a target="_blank" rel="noopener" href="https://ssu.gov.ua/uploads/files/DKIB/Technical%20report%20Armagedon.pdf]">https://ssu.gov.ua/uploads/files/DKIB/Technical%20report%20Armagedon.pdf]</a>(<a target="_blank" rel="noopener" href="https://ssu.gov.ua/uploads/files/DKIB/Technical">https://ssu.gov.ua/uploads/files/DKIB/Technical</a> report Armagedon.pdf)</td>
+</tr>
+<tr>
+<td>25 October 2021</td>
+<td>COZY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/security/blog/2021/10/25/nobelium-targeting-delegated-administrative-privileges-to-facilitate-broader-attacks/">https://www.microsoft.com/en-us/security/blog/2021/10/25/nobelium-targeting-delegated-administrative-privileges-to-facilitate-broader-attacks/</a></td>
+</tr>
+<tr>
+<td>1 July 2021</td>
+<td>FANCY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://media.defense.gov/2021/Jul/01/2002753896/-1/-1/1/CSA_GRU_GLOBAL_BRUTE_FORCE_CAMPAIGN_UOO158036-21.PDF">https://media.defense.gov/2021/Jul/01/2002753896/-1/-1/1/CSA_GRU_GLOBAL_BRUTE_FORCE_CAMPAIGN_UOO158036-21.PDF</a></td>
+</tr>
+<tr>
+<td>27 May 2021</td>
+<td>COZY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/security/blog/2021/05/27/new-sophisticated-email-based-attack-from-nobelium/">https://www.microsoft.com/en-us/security/blog/2021/05/27/new-sophisticated-email-based-attack-from-nobelium/</a></td>
+</tr>
+<tr>
+<td>18 December 2020</td>
+<td>COZY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/">https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/</a></td>
+</tr>
+<tr>
+<td>2 December 2020</td>
+<td>Turla</td>
+<td><a target="_blank" rel="noopener" href="https://www.welivesecurity.com/2020/12/02/turla-crutch-keeping-back-door-open/">https://www.welivesecurity.com/2020/12/02/turla-crutch-keeping-back-door-open/</a></td>
+</tr>
+<tr>
+<td>10 September 2020</td>
+<td>FANCY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/security/blog/2020/09/10/strontium-detecting-new-patters-credential-harvesting/">https://www.microsoft.com/en-us/security/blog/2020/09/10/strontium-detecting-new-patters-credential-harvesting/</a></td>
+</tr>
+<tr>
+<td>15 June 2020</td>
+<td>Turla</td>
+<td><a target="_blank" rel="noopener" href="https://web-assets.esetstatic.com/wls/2020/05/ESET_Turla_ComRAT.pdf">https://web-assets.esetstatic.com/wls/2020/05/ESET_Turla_ComRAT.pdf</a></td>
+</tr>
+<tr>
+<td>24 July 2019</td>
+<td>BERSERK BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://www.secureworks.com/research/resurgent-iron-liberty-targeting-energy-sector">https://www.secureworks.com/research/resurgent-iron-liberty-targeting-energy-sector</a></td>
+</tr>
+<tr>
+<td>20 June 2019</td>
+<td>Turla</td>
+<td><a target="_blank" rel="noopener" href="https://symantec-enterprise-blogs.security.com/threat-intelligence/waterbug-espionage-governments">https://symantec-enterprise-blogs.security.com/threat-intelligence/waterbug-espionage-governments</a></td>
+</tr>
+<tr>
+<td>17 August 2018</td>
+<td>Turla</td>
+<td><a target="_blank" rel="noopener" href="https://web-assets.esetstatic.com/wls/2018/08/Eset-Turla-Outlook-Backdoor.pdf">https://web-assets.esetstatic.com/wls/2018/08/Eset-Turla-Outlook-Backdoor.pdf</a></td>
+</tr>
+<tr>
+<td>6 June 2018</td>
+<td>FANCY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://unit42.paloaltonetworks.com/unit42-sofacy-groups-parallel-attacks/">https://unit42.paloaltonetworks.com/unit42-sofacy-groups-parallel-attacks/</a></td>
+</tr>
+<tr>
+<td>22 May 2018</td>
+<td><a target="_blank" rel="noopener" href="https://www.welivesecurity.com/2018/05/22/turla-mosquito-shift-towards-generic-tools/">https://www.welivesecurity.com/2018/05/22/turla-mosquito-shift-towards-generic-tools/</a></td>
+<td></td>
+</tr>
+<tr>
+<td>18 April 2018</td>
+<td>FANCY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-108">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-108</a></td>
+</tr>
+<tr>
+<td>16 March 2018</td>
+<td>BERSERK BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://www.cisa.gov/news-events/alerts/2018/03/15/russian-government-cyber-activity-targeting-energy-and-other-critical-infrastructure-sectors">https://www.cisa.gov/news-events/alerts/2018/03/15/russian-government-cyber-activity-targeting-energy-and-other-critical-infrastructure-sectors</a></td>
+</tr>
+<tr>
+<td>20 October 2017</td>
+<td>BERSERK BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://symantec-enterprise-blogs.security.com/threat-intelligence/dragonfly-energy-sector-cyber-attacks">https://symantec-enterprise-blogs.security.com/threat-intelligence/dragonfly-energy-sector-cyber-attacks</a></td>
+</tr>
+<tr>
+<td>11 August 2017</td>
+<td>FANCY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://web.archive.org/web/20170811181009/https://www.fireeye.com/blog/threat-research/2017/08/apt28-targets-hospitality-sector.html">https://web.archive.org/web/20170811181009/https://www.fireeye.com/blog/threat-research/2017/08/apt28-targets-hospitality-sector.html</a></td>
+</tr>
+<tr>
+<td>4 December 2015</td>
+<td>FANCY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://securelist.com/sofacy-apt-hits-high-profile-targets-with-updated-toolset/72924/">https://securelist.com/sofacy-apt-hits-high-profile-targets-with-updated-toolset/72924/</a></td>
+</tr>
+<tr>
+<td>18 April 2015</td>
+<td>FANCY BEAR</td>
+<td><a target="_blank" rel="noopener" href="https://cloud.google.com/blog/topics/threat-intelligence/probable-apt28-useo/">https://cloud.google.com/blog/topics/threat-intelligence/probable-apt28-useo/</a></td>
+</tr>
+</tbody></table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/APT/" class="category-chain-item">APT</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/APT/" class="print-no-link">#APT</a>
+      
+        <a href="/tags/RussiaAPT/" class="print-no-link">#RussiaAPT</a>
+      
+        <a href="/tags/CTI/" class="print-no-link">#CTI</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>俄罗斯APT组织技战术情报</div>
+      <div>http://example.com/2024/11/05/俄罗斯APT组织技战术情报/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jentle</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>November 5, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/11/12/%E4%BD%BF%E7%94%A8%E5%86%85%E6%A0%B8%E5%9B%9E%E8%B0%83%E8%A1%A8%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5/" title="使用内核回调表进程注入">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">使用内核回调表进程注入</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/23/%E5%88%A9%E7%94%A8-SSPI-%E6%95%B0%E6%8D%AE%E6%8A%A5%E4%B8%8A%E4%B8%8B%E6%96%87%E7%BB%95%E8%BF%87-UAC/" title="利用 SSPI 数据报上下文绕过 UAC">
+                        <span class="hidden-mobile">利用 SSPI 数据报上下文绕过 UAC</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Hipepper/UtterancBlog');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/Hipepper" target="_blank" rel="nofollow noopener"><span>Github</span></a> <i class="iconfont icon-love"></i> <a href="https://mp.weixin.qq.com/s/WZSeu6y5ckuo958f-yV3Kg" target="_blank" rel="nofollow noopener"><span>公众号</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>
