@@ -156,7 +156,7 @@ search:
 # # Mermaid 图表配置
 # mermaid:
 #   enable: true
-#   version: "11.4.1"  # 指定 Mermaid 版本（需与 CDN 一致）
+#   version: "8.14.0"  # 指定 Mermaid 版本（需与 CDN 一致）
 #   options:
 #     theme: "default"  # 可选主题：default/dark/forest/neutral
 #     startOnLoad: true
