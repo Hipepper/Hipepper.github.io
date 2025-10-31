@@ -1,0 +1,796 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/dog2.jpg">
+  <link rel="icon" href="/img/dog2.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jentle">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在-Windows-平台上，操作系统实现了一套独有的异常处理机制 —— 结构化异常处理（SEH） 和 向量化异常处理（VEH），这可以看作是对传统 C&#x2F;C++ 语言异常处理机制的扩展，用于在运行时处理错误。  这些机制仅适用于-Windows-可执行文件，因为它们依赖于-Windows-内核来捕获异常并将控制权转移回程序！  这种独特的异常处理方式使得我们在逆向工程或追踪程序控制流时，如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入解析现代-Windows-结构化异常处理（SEH）（x64）">
+<meta property="og:url" content="http://example.com/2025/10/31/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E7%8E%B0%E4%BB%A3-Windows-%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%88SEH%EF%BC%89%EF%BC%88x64%EF%BC%89/index.html">
+<meta property="og:site_name" content="TIPFactory">
+<meta property="og:description" content="在-Windows-平台上，操作系统实现了一套独有的异常处理机制 —— 结构化异常处理（SEH） 和 向量化异常处理（VEH），这可以看作是对传统 C&#x2F;C++ 语言异常处理机制的扩展，用于在运行时处理错误。  这些机制仅适用于-Windows-可执行文件，因为它们依赖于-Windows-内核来捕获异常并将控制权转移回程序！  这种独特的异常处理方式使得我们在逆向工程或追踪程序控制流时，如">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2025/10/31/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E7%8E%B0%E4%BB%A3-Windows-%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%88SEH%EF%BC%89%EF%BC%88x64%EF%BC%89/image.png">
+<meta property="og:image" content="http://example.com/2025/10/31/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E7%8E%B0%E4%BB%A3-Windows-%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%88SEH%EF%BC%89%EF%BC%88x64%EF%BC%89/image1.png">
+<meta property="og:image" content="http://example.com/2025/10/31/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E7%8E%B0%E4%BB%A3-Windows-%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%88SEH%EF%BC%89%EF%BC%88x64%EF%BC%89/image2.png">
+<meta property="og:image" content="http://example.com/2025/10/31/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E7%8E%B0%E4%BB%A3-Windows-%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%88SEH%EF%BC%89%EF%BC%88x64%EF%BC%89/image3.png">
+<meta property="og:image" content="http://example.com/2025/10/31/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E7%8E%B0%E4%BB%A3-Windows-%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%88SEH%EF%BC%89%EF%BC%88x64%EF%BC%89/image4.png">
+<meta property="article:published_time" content="2025-10-31T01:08:26.000Z">
+<meta property="article:modified_time" content="2025-10-31T01:15:00.705Z">
+<meta property="article:author" content="Jentle">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2025/10/31/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E7%8E%B0%E4%BB%A3-Windows-%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%88SEH%EF%BC%89%EF%BC%88x64%EF%BC%89/image.png">
+  
+  
+  
+  <title>深入解析现代-Windows-结构化异常处理（SEH）（x64） - TIPFactory</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="TIPFactory" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TIPFactory</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="深入解析现代-Windows-结构化异常处理（SEH）（x64）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-10-31 09:08" pubdate>
+          October 31, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.6k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">深入解析现代-Windows-结构化异常处理（SEH）（x64）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在-Windows-平台上，操作系统实现了一套独有的异常处理机制 —— <strong>结构化异常处理（SEH）</strong> 和 <strong>向量化异常处理（VEH）</strong>，这可以看作是对传统 C&#x2F;C++ 语言异常处理机制的扩展，用于在运行时处理错误。</p>
+<blockquote>
+<p>这些机制仅适用于-Windows-可执行文件，因为它们依赖于-Windows-内核来捕获异常并将控制权转移回程序！</p>
+</blockquote>
+<p>这种独特的异常处理方式使得我们在逆向工程或追踪程序控制流时，如果不理解异常处理器的安装与实现方式，就会变得异常复杂。</p>
+<p>本文将深入底层，探究这些异常处理器是如何实现的。</p>
+<hr>
+<h2 id="x64-架构下的结构化异常处理（SEH）"><a href="#x64-架构下的结构化异常处理（SEH）" class="headerlink" title="x64 架构下的结构化异常处理（SEH）"></a>x64 架构下的结构化异常处理（SEH）</h2><p>SEH 在 <strong>32 位与 64 位程序中的实现差异巨大</strong>。</p>
+<p>本文将主要研究 <strong>64 位程序中 SEH 的工作原理</strong>，随后简要对比 32 位实现及 VEH。</p>
+<p>为了更好地理解 SEH 在编译后的程序中是如何呈现的，我们可以编译一个简单的程序并在 IDA 中查看其汇编代码。以下是示例程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;windows.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>    __try &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;__try block\\n&quot;</span>);<br>    &#125;<br>    __except (EXCEPTION_EXECUTE_HANDLER) &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;__except block\\n&quot;</span>);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>在 IDA 中查看其汇编代码，我们可以识别出 <code>try</code> 和 <code>except</code> 代码块。然而，<strong>控制流似乎从未跳转到 except 块</strong>。那么程序是如何知道异常处理器的位置的呢？</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/10/31/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E7%8E%B0%E4%BB%A3-Windows-%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%88SEH%EF%BC%89%EF%BC%88x64%EF%BC%89/image.png" alt="image"></p>
+<p>接下来，我们将深入探究程序是如何追踪这些异常处理器的。</p>
+<hr>
+<h3 id="在-x64-中如何定位异常处理器？"><a href="#在-x64-中如何定位异常处理器？" class="headerlink" title="在 x64 中如何定位异常处理器？"></a>在 x64 中如何定位异常处理器？</h3><p>在 PE 文件中，有多个目录用于存储映像信息。例如，如果映像包含导出函数，就会有一个导出目录来描述这些导出。</p>
+<p>对于 x64 映像，存在一个<strong>异常目录（Exception Directory）</strong>，我们可以使用如 CFF Explorer 这类工具查看：</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/10/31/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E7%8E%B0%E4%BB%A3-Windows-%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%88SEH%EF%BC%89%EF%BC%88x64%EF%BC%89/image1.png" alt="image1"></p>
+<p>异常目录中包含多个 <code>RUNTIME_FUNCTION</code> 结构体，其定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">RUNTIME_FUNCTION</span> &#123;</span><br>    ULONG BeginAddress;<br>    ULONG EndAddress;<br>    ULONG UnwindData;<br>&#125; RUNTIME_FUNCTION, *PRUNTIME_FUNCTION;<br><br></code></pre></td></tr></table></figure>
+
+<p>我们可以简单理解为：</p>
+<blockquote>
+<p>每个 RUNTIME_FUNCTION 条目通过 UnwindData 字段定义了一组指令，用于处理在 BeginAddress 和 EndAddress 之间发生的异常。</p>
+</blockquote>
+<p>为了更深入地查看异常目录的内容，我们可以在 IDA 中使用快捷键 <code>g</code> 跳转到 <code>ExceptionDir</code>。在那里，我们可以立即看到 <code>main</code> 函数的条目！</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/10/31/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E7%8E%B0%E4%BB%A3-Windows-%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%88SEH%EF%BC%89%EF%BC%88x64%EF%BC%89/image2.png" alt="image2"></p>
+<p>我们可以看到 <code>RUNTIME_FUNCTION</code> 结构体的各个字段以及它如何与实际的 try-except 块对应：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">RUNTIME_FUNCTION</span> &#123;</span><br>    ULONG BeginAddress = main;<br>    ULONG EndAddress = end;<br>    ULONG UnwindData = unwind_data;<br>&#125;;<br><br></code></pre></td></tr></table></figure>
+
+<p>我们还可以通过查看 <code>unwind_data</code> 指向的 <code>UNWIND_INFO</code> 结构体来了解异常是如何被处理的。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/10/31/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E7%8E%B0%E4%BB%A3-Windows-%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%88SEH%EF%BC%89%EF%BC%88x64%EF%BC%89/image3.png" alt="image3"></p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2025/10/31/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E7%8E%B0%E4%BB%A3-Windows-%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%88SEH%EF%BC%89%EF%BC%88x64%EF%BC%89/image4.png" alt="image4"></p>
+<p>如你所见，unwind 数据确实包含一个指向异常处理器的指针，当异常发生时会调用它。然而，<code>UNWIND_INFO</code> 中的其他字段是做什么的呢？</p>
+<hr>
+<h3 id="在-NTDLL-中查看异常处理器的实现"><a href="#在-NTDLL-中查看异常处理器的实现" class="headerlink" title="在 NTDLL 中查看异常处理器的实现"></a>在 NTDLL 中查看异常处理器的实现</h3><p>到目前为止，我们已经简要介绍了 64 位程序中 SEH 异常的处理方式。然而，实际上背后发生的事情远不止这些。为了深入了解，我们需要查看异常处理的源代码。</p>
+<blockquote>
+<p>我最初是通过在 IDA 中逆向分析 ntdll.dll 开始的 😅</p>
+<p>不过为了大家的 sanity，我们将尽可能引用 ReactOS（一个开源的-Windows-实现）中的代码片段，只有在 ReactOS 不足以说明问题时才会回到 ntdll。</p>
+</blockquote>
+<p>一旦异常被触发（无论是 VEH 还是 SEH），内核会捕获异常并将控制权传递给 <code>ntdll!KiUserExceptionDispatcher</code> 函数，该函数会找到合适的异常处理器来处理异常。</p>
+<p>以下是从异常调度器出发的一些重要函数调用链：</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs clean">KiUserExceptionDispatcher <span class="hljs-comment">//-Windows-内核内部 API</span><br>  -&gt; RtlDispatchException <span class="hljs-comment">// 异常处理的主逻辑</span><br>    -&gt; RtlpCallVectoredHandlers <span class="hljs-comment">// 调用任何 VEH</span><br>    -&gt; RtlLookupFunctionEntry <span class="hljs-comment">// 在 ExceptionDirectory 中查找有效的 PRUNTIME_FUNCTION 条目</span><br>      -&gt; RtlpLookupDynamicFunctionEntry <span class="hljs-comment">// 如果没有找到有效的 PRUNTIME_FUNCTION，则运行动态回调</span><br>    -&gt; RtlVirtualUnwind / RtlpxVirtualUnwind <span class="hljs-comment">// 执行栈帧展开</span><br>    -&gt; RtlpExecuteHandlerForException <span class="hljs-comment">// 执行异常处理器！</span><br><br></code></pre></td></tr></table></figure>
+
+<p>我们将详细解释 <code>RtlLookupFunctionEntry</code> 和 <code>RtlpxVirtualUnwind</code>。</p>
+<hr>
+<h3 id="ContextRecord"><a href="#ContextRecord" class="headerlink" title="ContextRecord"></a>ContextRecord</h3><p>从 <code>KiUserExceptionDispatcher</code> 传递到 <code>RtlDispatchException</code> 的一个重要数据结构是 <code>CONTEXT</code> 结构体。</p>
+<p>该结构体包含了异常发生时寄存器的状态信息。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">CONTEXT</span> &#123;</span><br>    DWORD64 P1Home;<br>    DWORD64 P2Home;<br>    DWORD64 P3Home;<br>    DWORD64 P4Home;<br>    DWORD64 P5Home;<br>    DWORD64 P6Home;<br>    DWORD   ContextFlags;<br>    DWORD   MxCsr;<br>    WORD    SegCs;<br>    WORD    SegDs;<br>    WORD    SegEs;<br>    WORD    SegFs;<br>    WORD    SegGs;<br>    WORD    SegSs;<br>    DWORD   EFlags;<br>    DWORD64 Dr0;<br>    DWORD64 Dr1;<br>    DWORD64 Dr2;<br>    DWORD64 Dr3;<br>    DWORD64 Dr6;<br>    DWORD64 Dr7;<br>    DWORD64 Rax;<br>    DWORD64 Rcx;<br>    DWORD64 Rdx;<br>    DWORD64 Rbx;<br>    DWORD64 Rsp;<br>    DWORD64 Rbp;<br>    DWORD64 Rsi;<br>    DWORD64 Rdi;<br>    DWORD64 R8;<br>    DWORD64 R9;<br>    DWORD64 R10;<br>    DWORD64 R11;<br>    DWORD64 R12;<br>    DWORD64 R13;<br>    DWORD64 R14;<br>    DWORD64 R15;<br>    DWORD64 Rip;<br>    <span class="hljs-class"><span class="hljs-keyword">union</span> &#123;</span><br>        XMM_SAVE_AREA32 FltSave;<br>        NEON128         Q[<span class="hljs-number">16</span>];<br>        ULONGLONG       D[<span class="hljs-number">32</span>];<br>        <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>            M128A Header[<span class="hljs-number">2</span>];<br>            M128A Legacy[<span class="hljs-number">8</span>];<br>            M128A Xmm0;<br>            M128A Xmm1;<br>            M128A Xmm2;<br>            M128A Xmm3;<br>            M128A Xmm4;<br>            M128A Xmm5;<br>            M128A Xmm6;<br>            M128A Xmm7;<br>            M128A Xmm8;<br>            M128A Xmm9;<br>            M128A Xmm10;<br>            M128A Xmm11;<br>            M128A Xmm12;<br>            M128A Xmm13;<br>            M128A Xmm14;<br>            M128A Xmm15;<br>        &#125; DUMMYSTRUCTNAME;<br>        DWORD           S[<span class="hljs-number">32</span>];<br>    &#125; DUMMYUNIONNAME;<br>    M128A   VectorRegister[<span class="hljs-number">26</span>];<br>    DWORD64 VectorControl;<br>    DWORD64 DebugControl;<br>    DWORD64 LastBranchToRip;<br>    DWORD64 LastBranchFromRip;<br>    DWORD64 LastExceptionToRip;<br>    DWORD64 LastExceptionFromRip;<br>&#125; CONTEXT, *PCONTEXT;<br><br></code></pre></td></tr></table></figure>
+
+<p>例如，<code>Context-&gt;Rip</code> 会保存导致异常的指令指针。</p>
+<hr>
+<h3 id="RtlLookupFunctionEntry"><a href="#RtlLookupFunctionEntry" class="headerlink" title="RtlLookupFunctionEntry"></a>RtlLookupFunctionEntry</h3><p>该函数遍历异常目录中的 <code>RUNTIME_FUNCTION</code> 结构体，查找满足 <code>BeginAddress</code> &lt; <code>Context-&gt;Rip</code> &lt; <code>EndAddress</code> 的条目。</p>
+<p>如果找不到有效条目，它会调用 <code>RtlpLookupDynamicFunctionEntry</code> 来查找动态函数条目。</p>
+<hr>
+<h3 id="RtlpLookupDynamicFunctionEntry"><a href="#RtlpLookupDynamicFunctionEntry" class="headerlink" title="RtlpLookupDynamicFunctionEntry"></a>RtlpLookupDynamicFunctionEntry</h3><p>之前我们提到，<code>RUNTIME_FUNCTION</code> 条目存储在编译时嵌入到可执行文件中的 <code>ExceptionDir</code> 中。</p>
+<p>然而，为了支持动态生成或即时编译的代码，Windows 提供了两个 API 用于在运行时添加更多的 <code>RUNTIME_FUNCTION</code> 条目：</p>
+<blockquote>
+<p>注意，这只有在可执行文件的 ExceptionDir 中找不到有效的 RUNTIME_FUNCTION 时才会被调用。</p>
+</blockquote>
+<p>第一种方式是使用 <code>RtlInstallFunctionTableCallback</code>，它接受一个回调函数作为参数。</p>
+<p>该回调函数将被调用，并期望返回一个 <code>RUNTIME_FUNCTION</code> 结构体。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c">BOOLEAN <span class="hljs-title function_">RtlInstallFunctionTableCallback</span><span class="hljs-params">(</span><br><span class="hljs-params">    DWORD64 TableIdentifier,          <span class="hljs-comment">// 最低 3 位必须为 0x3</span></span><br><span class="hljs-params">    DWORD64 BaseAddress,              <span class="hljs-comment">// 代码的基地址</span></span><br><span class="hljs-params">    DWORD Length,                     <span class="hljs-comment">// 代码区域的长度</span></span><br><span class="hljs-params">    PGET_RUNTIME_FUNCTION_CALLBACK Callback,  <span class="hljs-comment">// 你的回调函数</span></span><br><span class="hljs-params">    PVOID Context,                    <span class="hljs-comment">// 可选的上下文参数</span></span><br><span class="hljs-params">    PCWSTR OutOfProcessCallbackDll    <span class="hljs-comment">// 通常为 NULL，表示进程内回调</span></span><br><span class="hljs-params">)</span>;<br><br></code></pre></td></tr></table></figure>
+
+<p>第二种方式是使用 <code>RtlAddFunctionTable</code> 或 <code>RtlAddGrowableFunctionTable</code>。与前者不同，你需要提前提供 <code>RUNTIME_FUNCTION</code> 条目，这些条目会被添加到一个数组中，在异常发生时被查找。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c">NTSTATUS <span class="hljs-title function_">RtlAddGrowableFunctionTable</span><span class="hljs-params">(</span><br><span class="hljs-params">    PVOID *DynamicTable,              <span class="hljs-comment">// 输出参数，接收表句柄</span></span><br><span class="hljs-params">    PRUNTIME_FUNCTION FunctionTable,  <span class="hljs-comment">// 初始的 RUNTIME_FUNCTION 条目数组</span></span><br><span class="hljs-params">    DWORD EntryCount,                 <span class="hljs-comment">// 当前条目数量</span></span><br><span class="hljs-params">    DWORD MaximumEntryCount,          <span class="hljs-comment">// 表可增长到的最大条目数</span></span><br><span class="hljs-params">    ULONG_PTR RangeBase,              <span class="hljs-comment">// 代码范围的基地址</span></span><br><span class="hljs-params">    ULONG_PTR RangeEnd                <span class="hljs-comment">// 代码范围的结束地址</span></span><br><span class="hljs-params">)</span>;<br><br></code></pre></td></tr></table></figure>
+
+<p>酷！能够在运行时安装 <code>RUNTIME_FUNCTION</code> 条目（尤其是通过调用我们自己的函数）无疑会让逆向工程变得更加复杂 :)</p>
+<hr>
+<h3 id="RtlVirtualUnwind"><a href="#RtlVirtualUnwind" class="headerlink" title="RtlVirtualUnwind"></a>RtlVirtualUnwind</h3><blockquote>
+<p>异常可能发生在极其复杂的函数中，此时栈和寄存器状态一片混乱。为了将执行权交还给异常处理器，我们必须恢复栈的状态。</p>
+</blockquote>
+<p><strong>栈展开（Stack Unwinding）</strong> 确保即使在异常发生时，程序也能通过<strong>系统地回溯函数帧、执行清理处理器并恢复程序状态</strong>来维持程序的完整性和资源管理。</p>
+<p>前面我们简要提到了 <code>UnwindData</code> 和 <code>UNWIND_INFO</code>。<code>RUNTIME_FUNCTION</code> 中的 <code>UnwindData</code> 包含了指向 <code>UNWIND_INFO</code> 结构体的偏移。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">union</span> _<span class="hljs-title">UNWIND_CODE</span> &#123;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>        UBYTE CodeOffset;<br>        UBYTE UnwindOp:<span class="hljs-number">4</span>;<br>        UBYTE OpInfo:<span class="hljs-number">4</span>;<br>    &#125;;<br>    USHORT FrameOffset;<br>&#125; UNWIND_CODE, *PUNWIND_CODE;<br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">UNWIND_INFO</span> &#123;</span><br>    UBYTE Version:<span class="hljs-number">3</span>;<br>    UBYTE Flags:<span class="hljs-number">5</span>;<br>    UBYTE SizeOfProlog;<br>    UBYTE CountOfCodes;<br>    UBYTE FrameRegister:<span class="hljs-number">4</span>;<br>    UBYTE FrameOffset:<span class="hljs-number">4</span>;<br>    UNWIND_CODE UnwindCode[<span class="hljs-number">1</span>];<br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">    union &#123;</span><br><span class="hljs-comment">        OPTIONAL ULONG ExceptionHandler;</span><br><span class="hljs-comment">        OPTIONAL ULONG FunctionEntry;</span><br><span class="hljs-comment">    &#125;;</span><br><span class="hljs-comment">    OPTIONAL ULONG ExceptionData[];</span><br><span class="hljs-comment">    */</span><br>&#125; UNWIND_INFO, *PUNWIND_INFO;<br><br></code></pre></td></tr></table></figure>
+
+<p>简而言之，<code>UNWIND_INFO</code> 包含一个 <code>UNWIND_CODE</code> 数组，定义了一组指令，用于在将执行权交还给 <code>ExceptionHandler</code> 之前恢复栈和寄存器的状态。</p>
+<p>Unwind 操作码的详细文档可以参考 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/cpp/build/exception-handling-x64#unwind-codes">Microsoft 官方文档</a>。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><code class="hljs powershell">/* <span class="hljs-keyword">Process</span> the remaining unwind ops */<br><span class="hljs-keyword">while</span> (i &lt; UnwindInfo-&gt;CountOfCodes)<br>&#123;<br>    UnwindCode = UnwindInfo-&gt;UnwindCode[<span class="hljs-type">i</span>];<br>    <span class="hljs-keyword">switch</span> (UnwindCode.UnwindOp)<br>    &#123;<br>        case UWOP_PUSH_NONVOL:<br>            Reg = UnwindCode.OpInfo;<br>            PopReg(Context, ContextPointers, Reg);<br>            i++;<br>            <span class="hljs-keyword">break</span>;<br><br>        case UWOP_ALLOC_LARGE:<br>            <span class="hljs-keyword">if</span> (UnwindCode.OpInfo)<br>            &#123;<br>                Offset = *(ULONG*)(&amp;UnwindInfo-&gt;UnwindCode[<span class="hljs-type">i</span>+<span class="hljs-number">1</span>]);<br>                Context-&gt;Rsp += Offset;<br>                i += <span class="hljs-number">3</span>;<br>            &#125;<br>            <span class="hljs-keyword">else</span><br>            &#123;<br>                Offset = UnwindInfo-&gt;UnwindCode[<span class="hljs-type">i</span>+<span class="hljs-number">1</span>].FrameOffset;<br>                Context-&gt;Rsp += Offset * <span class="hljs-number">8</span>;<br>                i += <span class="hljs-number">2</span>;<br>            &#125;<br>            <span class="hljs-keyword">break</span>;<br><br>        case UWOP_ALLOC_SMALL:<br>            Context-&gt;Rsp += (UnwindCode.OpInfo + <span class="hljs-number">1</span>) * <span class="hljs-number">8</span>;<br>            i++;<br>            <span class="hljs-keyword">break</span>;<br><br>        case UWOP_SET_FPREG:<br>            Reg = UnwindInfo-&gt;FrameRegister;<br>            Context-&gt;Rsp = GetReg(Context, Reg) - UnwindInfo-&gt;FrameOffset * <span class="hljs-number">16</span>;<br>            i++;<br>            <span class="hljs-keyword">break</span>;<br><br>        case UWOP_SAVE_NONVOL:<br>            Reg = UnwindCode.OpInfo;<br>            Offset = UnwindInfo-&gt;UnwindCode[<span class="hljs-type">i</span> + <span class="hljs-number">1</span>].FrameOffset;<br>            SetRegFromStackValue(Context, ContextPointers, Reg, (DWORD64*)Context-&gt;Rsp + Offset);<br>            i += <span class="hljs-number">2</span>;<br>            <span class="hljs-keyword">break</span>;<br><br>        case UWOP_SAVE_NONVOL_FAR:<br>            Reg = UnwindCode.OpInfo;<br>            Offset = *(ULONG*)(&amp;UnwindInfo-&gt;UnwindCode[<span class="hljs-type">i</span> + <span class="hljs-number">1</span>]);<br>            SetRegFromStackValue(Context, ContextPointers, Reg, (DWORD64*)Context-&gt;Rsp + Offset);<br>            i += <span class="hljs-number">3</span>;<br>            <span class="hljs-keyword">break</span>;<br><br>        case UWOP_EPILOG:<br>            i += <span class="hljs-number">1</span>;<br>            <span class="hljs-keyword">break</span>;<br><br>        case UWOP_SPARE_CODE:<br>            ASSERT(FALSE);<br>            i += <span class="hljs-number">2</span>;<br>            <span class="hljs-keyword">break</span>;<br><br>        case UWOP_SAVE_XMM128:<br>            Reg = UnwindCode.OpInfo;<br>            Offset = UnwindInfo-&gt;UnwindCode[<span class="hljs-type">i</span> + <span class="hljs-number">1</span>].FrameOffset;<br>            SetXmmRegFromStackValue(Context, ContextPointers, Reg, (M128A*)Context-&gt;Rsp + Offset);<br>            i += <span class="hljs-number">2</span>;<br>            <span class="hljs-keyword">break</span>;<br><br>        case UWOP_SAVE_XMM128_FAR:<br>            Reg = UnwindCode.OpInfo;<br>            Offset = *(ULONG*)(&amp;UnwindInfo-&gt;UnwindCode[<span class="hljs-type">i</span> + <span class="hljs-number">1</span>]);<br>            SetXmmRegFromStackValue(Context, ContextPointers, Reg, (M128A*)Context-&gt;Rsp + Offset);<br>            i += <span class="hljs-number">3</span>;<br>            <span class="hljs-keyword">break</span>;<br><br>        case UWOP_PUSH_MACHFRAME:<br>            /* OpInfo is <span class="hljs-number">1</span>, when an error code was pushed, otherwise <span class="hljs-number">0</span>. */<br>            Context-&gt;Rsp += UnwindCode.OpInfo * sizeof(DWORD64);<br><br>            /* Now pop the MACHINE_FRAME (RIP/RSP only. And yes, <span class="hljs-string">&quot;magic numbers&quot;</span>, deal with it) */<br>            Context-&gt;Rip = *(PDWORD64)(Context-&gt;Rsp + <span class="hljs-number">0</span>x00);<br>            Context-&gt;Rsp = *(PDWORD64)(Context-&gt;Rsp + <span class="hljs-number">0</span>x18);<br>            ASSERT((i + <span class="hljs-number">1</span>) == UnwindInfo-&gt;CountOfCodes);<br>            goto <span class="hljs-keyword">Exit</span>;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="与-32-位-SEH-的对比"><a href="#与-32-位-SEH-的对比" class="headerlink" title="与 32 位 SEH 的对比"></a>与 32 位 SEH 的对比</h3><p>如你所见，64 位 SEH 处理器**几乎总是（默认情况下）**存储在编译时嵌入的只读异常目录中。</p>
+<p>而 32 位 SEH 处理器则存储在运行时的栈上，形成一个异常处理器链表。每个使用 SEH 的函数都必须运行如下汇编代码来<strong>安装</strong>处理器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs nasm">push    DWORD PTR fs:[0]      # 保存当前处理器<br>push    &lt;exception_handler&gt;    # 压入新处理器的地址<br>mov     DWORD PTR fs:[0], esp # 将 SEH 链指向新记录<br><br></code></pre></td></tr></table></figure>
+
+<p>当异常发生时，系统从最新到最旧遍历该链，直到找到一个处理器。每个函数在返回前必须解除其处理器的链接。</p>
+<hr>
+<h2 id="SEH-与-VEH-的对比"><a href="#SEH-与-VEH-的对比" class="headerlink" title="SEH 与 VEH 的对比"></a>SEH 与 VEH 的对比</h2><p>尽管 SEH 和 VEH 的目标都是处理异常，但它们的实现方式差异巨大。</p>
+<hr>
+<h3 id="向量化异常处理（VEH）"><a href="#向量化异常处理（VEH）" class="headerlink" title="向量化异常处理（VEH）"></a>向量化异常处理（VEH）</h3><p>关于 <code>VEH</code>，最重要的是它<strong>在整个进程范围内监控异常</strong>，并通过在运行时调用 <code>AddVectoredExceptionHandler</code> 函数来注册。</p>
+<p>以下是一个使用 VEH 的示例程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;windows.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><br>LONG WINAPI <span class="hljs-title function_">VectoredHandler</span><span class="hljs-params">(PEXCEPTION_POINTERS pExceptionInfo)</span> &#123;<br>    <span class="hljs-comment">// 检查是否为访问违规</span><br>    <span class="hljs-keyword">if</span> (pExceptionInfo-&gt;ExceptionRecord-&gt;ExceptionCode == EXCEPTION_ACCESS_VIOLATION) &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Access Violation Detected!\\n&quot;</span>);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Violation Address: 0x%p\\n&quot;</span>, pExceptionInfo-&gt;ExceptionRecord-&gt;ExceptionAddress);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Memory Address: 0x%p\\n&quot;</span>, (<span class="hljs-type">void</span>*)pExceptionInfo-&gt;ExceptionRecord-&gt;ExceptionInformation[<span class="hljs-number">1</span>]);<br>        <span class="hljs-comment">// 返回 EXCEPTION_CONTINUE_SEARCH 让其他处理器处理</span><br>        <span class="hljs-keyword">return</span> EXCEPTION_CONTINUE_SEARCH;<br>    &#125;<br>    <span class="hljs-keyword">return</span> EXCEPTION_CONTINUE_EXECUTION;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-comment">// 安装我们的 VEH，第二个参数为 TRUE 表示将其添加到 VEH 链的前端</span><br>    PVOID handler = AddVectoredExceptionHandler(<span class="hljs-number">1</span>, VectoredHandler);<br>    <span class="hljs-comment">// 触发访问违规</span><br>    <span class="hljs-type">int</span>* p = <span class="hljs-literal">NULL</span>;<br>    *p = <span class="hljs-number">42</span>;  <span class="hljs-comment">// 这将导致访问违规</span><br>    <span class="hljs-comment">// 由于崩溃，我们不会执行到这里</span><br>    RemoveVectoredExceptionHandler(handler);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>当 <code>VEH</code> 处理器被注册时，它会被添加到异常链的末尾。</p>
+<p>当异常发生时，系统从链表头部开始遍历，寻找合适的处理器。如果找不到，进程将被终止。</p>
+<hr>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>本文并不全面，<strong>绝对没有涵盖-Windows-异常处理的所有细节</strong>。如有任何不准确之处，请联系我或者留言。</p>
+<hr>
+<h2 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h2><p>以下是一些关于-Windows-异常处理内部机制及其在安全领域应用的优秀文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/security/blog/2023/08/01/using-veh-for-defense-evasion-process-injection/">Using VEH for Defense Evasion Process Injection, Security Intelligence</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=J33J2L4VdMg">Exception Oriented Programming: Abusing Exceptions for Code Execution, Bill Demirkapi</a></li>
+<li><a target="_blank" rel="noopener" href="https://mauriceheumann.com/posts/a-journey-through-kiuserexceptiondispatcher/">A Journey through KiUserExceptionDispatcher, Maurice Heumann</a></li>
+</ul>
+<hr>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/cpp/build/exception-handling-x64">Microsoft Docs - Exception Handling (x64)</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/reactos/reactos/blob/master/reactos/lib/rtl/amd64/virtunwind.c">ReactOS GitHub - RtlVirtualUnwind</a></li>
+<li><a target="_blank" rel="noopener" href="https://ntcore.com/?page_id=388">CFF Explorer - NTCore</a></li>
+<li><a target="_blank" rel="noopener" href="https://hex-rays.com/ida-pro/">IDA Pro - Hex-Rays</a></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>深入解析现代-Windows-结构化异常处理（SEH）（x64）</div>
+      <div>http://example.com/2025/10/31/深入解析现代-Windows-结构化异常处理（SEH）（x64）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jentle</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>October 31, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/10/23/EtherHiding%EF%BC%9AAPT%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E9%9A%90%E8%97%8F%E5%8C%BA%E5%9D%97%E9%93%BE%E9%87%8C/" title="EtherHiding：APT恶意软件隐藏区块链里">
+                        <span class="hidden-mobile">EtherHiding：APT恶意软件隐藏区块链里</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Hipepper/UtterancBlog');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/Hipepper" target="_blank" rel="nofollow noopener"><span>Github</span></a> <i class="iconfont icon-love"></i> <a href="https://mp.weixin.qq.com/s/WZSeu6y5ckuo958f-yV3Kg" target="_blank" rel="nofollow noopener"><span>公众号</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>
