@@ -1,0 +1,966 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/dog2.jpg">
+  <link rel="icon" href="/img/dog2.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jentle">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="原文地址：https:&#x2F;&#x2F;www.microsoft.com&#x2F;en-us&#x2F;security&#x2F;blog&#x2F;2026&#x2F;05&#x2F;07&#x2F;prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks&#x2F; 这篇文章是我基于微软安全团队原始研究做的中文转写与技术整理。文中配图均保留自原博客，并按原始论证链路穿插到正文中，方便直接在博客里阅读和复盘。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="当Prompt变成Shell：我读微软关于AI-Agent框架RCE漏洞的一篇研究">
+<meta property="og:url" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/index.html">
+<meta property="og:site_name" content="TIPFactory">
+<meta property="og:description" content="原文地址：https:&#x2F;&#x2F;www.microsoft.com&#x2F;en-us&#x2F;security&#x2F;blog&#x2F;2026&#x2F;05&#x2F;07&#x2F;prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks&#x2F; 这篇文章是我基于微软安全团队原始研究做的中文转写与技术整理。文中配图均保留自原博客，并按原始论证链路穿插到正文中，方便直接在博客里阅读和复盘。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/01-hero.jpg">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/02-figure1.webp">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/03-figure2.webp">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/04-figure3.webp">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/05-figure4.webp">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/06-figure5.webp">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/07-figure6.webp">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/08-figure7.webp">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/09-figure8.webp">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/10-figure9.webp">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/11-figure10.webp">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/12-figure11.webp">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/13-figure12.webp">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/14-figure13.webp">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/15-figure14.webp">
+<meta property="og:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/16-figure15.webp">
+<meta property="article:published_time" content="2026-05-08T08:05:00.000Z">
+<meta property="article:modified_time" content="2026-05-08T08:05:10.029Z">
+<meta property="article:author" content="Jentle">
+<meta property="article:tag" content="AI Agent">
+<meta property="article:tag" content="提示词注入">
+<meta property="article:tag" content="RCE">
+<meta property="article:tag" content="Semantic Kernel">
+<meta property="article:tag" content="LLM安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/01-hero.jpg">
+  
+  
+  
+  <title>当Prompt变成Shell：我读微软关于AI-Agent框架RCE漏洞的一篇研究 - TIPFactory</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="TIPFactory" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TIPFactory</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="当Prompt变成Shell：我读微软关于AI-Agent框架RCE漏洞的一篇研究"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-05-08 16:05" pubdate>
+          May 8, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          36 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">当Prompt变成Shell：我读微软关于AI-Agent框架RCE漏洞的一篇研究</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>原文地址：<br><a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/">https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/</a></p>
+<p>这篇文章是我基于微软安全团队原始研究做的中文转写与技术整理。文中配图均保留自原博客，并按原始论证链路穿插到正文中，方便直接在博客里阅读和复盘。</p>
+</blockquote>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/01-hero.jpg"></p>
+<p>我读完微软这篇文章后，一个最直接的感受是：<strong>AI Agent 的安全问题，已经不能再被理解成“模型说错话”这么简单了。</strong></p>
+<p>一旦模型被接上插件、代码执行器、搜索能力、文件读写能力、向量检索能力，它面对的就不再只是“内容风险”，而是<strong>执行风险</strong>。这篇研究最有价值的地方，不是又证明了 prompt injection 很危险，而是它把一个很多人嘴上都在说、但落到工程里常常模糊不清的判断讲透了：</p>
+<p><strong>当自然语言能稳定映射到工具参数时，Prompt 就可能成为 Shell 的前置层。</strong></p>
+<p>微软这次选取的研究对象是 <code>Semantic Kernel</code>。如果把 LangChain、CrewAI、Semantic Kernel 这类框架视为 Agent 世界里的“操作系统层”，那它们一旦在“模型输出 → 工具参数 → 本地执行”这条链路上出现设计缺口，影响就不会停留在单个 demo，而是会蔓延到大量建立在其上的 AI 应用。</p>
+<h2 id="我先说结论：这篇研究真正想提醒我们的是什么？"><a href="#我先说结论：这篇研究真正想提醒我们的是什么？" class="headerlink" title="我先说结论：这篇研究真正想提醒我们的是什么？"></a>我先说结论：这篇研究真正想提醒我们的是什么？</h2><p>在我的理解里，这篇文章想传达三件事：</p>
+<ol>
+<li><strong>模型本身并不是漏洞点。</strong><br>模型是在按设计工作：理解语言、匹配工具、填充参数。</li>
+<li><strong>真正的漏洞常出现在框架和工具层对“模型产出”的过度信任。</strong><br>只要某个参数最终进入 <code>eval()</code>、文件写入、下载、命令调用、路径拼接，这条链就可能变成 exploit path。</li>
+<li><strong>LLM 不是安全边界。</strong><br>你不能把“模型应该不会这么做”当成防护策略，必须用传统安全工程的思路去审视 Agent：输入校验、最小权限、路径约束、执行隔离、端点检测、运行时审计，一个都不能少。</li>
+</ol>
+<h2 id="背景：微软在-Semantic-Kernel-里找到了两条非常典型的漏洞链"><a href="#背景：微软在-Semantic-Kernel-里找到了两条非常典型的漏洞链" class="headerlink" title="背景：微软在 Semantic Kernel 里找到了两条非常典型的漏洞链"></a>背景：微软在 Semantic Kernel 里找到了两条非常典型的漏洞链</h2><p>微软在研究 <code>Semantic Kernel</code> 时披露了两个核心漏洞：</p>
+<ul>
+<li><code>CVE-2026-26030</code>：<code>In-Memory Vector Store</code> 相关路径可被提示词注入驱动，最终演变为主机级 RCE。</li>
+<li><code>CVE-2026-25592</code>：<code>SessionsPythonPlugin</code> 暴露出的文件写入能力可被模型调用，进而把“沙箱里生成的恶意脚本”落到宿主机危险路径，实现逃逸后的持久化与执行。</li>
+</ul>
+<p>文章最震撼的一句其实是：<strong>只靠一条 prompt，就足以让运行 Agent 的设备弹出 <code>calc.exe</code>。</strong></p>
+<p>这并不是浏览器 0day、内存破坏或者恶意附件造成的，而是 Agent 做了它“被允许做”的事：解析自然语言、选工具、把参数送进代码路径。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/02-figure1.webp"></p>
+<p><em>图 1：微软给出的整体示意图，展示了 <code>CVE-2026-26030</code> 如何从本地模型交互一路走到代码执行。</em></p>
+<h2 id="代表性案例：CVE-2026-26030-如何把提示词注入推进到-RCE"><a href="#代表性案例：CVE-2026-26030-如何把提示词注入推进到-RCE" class="headerlink" title="代表性案例：CVE-2026-26030 如何把提示词注入推进到 RCE"></a>代表性案例：CVE-2026-26030 如何把提示词注入推进到 RCE</h2><p>这个案例之所以值得反复看，是因为它特别像很多团队日常会写出来的“正常功能”。</p>
+<p>微软为了演示这条链，构建了一个“酒店查询 Agent”：</p>
+<ul>
+<li>用 <code>In-Memory Vector Store</code> 存放酒店数据；</li>
+<li>对外暴露 <code>search_hotels(city=...)</code> 这样的查询函数；</li>
+<li>当用户说“帮我找巴黎的酒店”时，模型就会调用这个搜索插件；</li>
+<li>插件再做过滤与 embedding 相似度计算，最终返回结果。</li>
+</ul>
+<p>这个设计本身看起来完全合理，甚至很典型。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/03-figure2.webp"></p>
+<p><em>图 2：微软构造的 Semantic Kernel 酒店查询 Agent，背后接了 In-Memory Vector collection。</em></p>
+<h3 id="问题-1：默认过滤逻辑把模型控制的参数直接拼进了-Python-lambda"><a href="#问题-1：默认过滤逻辑把模型控制的参数直接拼进了-Python-lambda" class="headerlink" title="问题 1：默认过滤逻辑把模型控制的参数直接拼进了 Python lambda"></a>问题 1：默认过滤逻辑把模型控制的参数直接拼进了 Python lambda</h3><p>微软指出，默认过滤函数最终会形成类似下面这种逻辑：</p>
+<ul>
+<li>输入正常城市名时，会生成一个等价于 <code>lambda x: x.city == &#39;Paris&#39;</code> 的表达式；</li>
+<li>这个表达式随后进入 <code>eval()</code> 执行。</li>
+</ul>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/04-figure3.webp"></p>
+<p><em>图 3：原文中的默认过滤函数定义。</em></p>
+<p>看到这里，问题其实已经很明确了：</p>
+<p><strong>一旦 <code>kwargs[param.name]</code> 完全由模型控制，且没有严格清洗，那么这就是一个经典的注入落点。</strong></p>
+<p>也就是说，攻击者不需要“攻破模型”，只需要通过提示词注入让模型把一个恶意字符串作为 <code>city</code> 参数传进去，就有机会把“数据查询”改写成“可执行表达式”。</p>
+<h3 id="问题-2：开发者意识到了风险，但-blocklist-思路依然挡不住动态语言"><a href="#问题-2：开发者意识到了风险，但-blocklist-思路依然挡不住动态语言" class="headerlink" title="问题 2：开发者意识到了风险，但 blocklist 思路依然挡不住动态语言"></a>问题 2：开发者意识到了风险，但 blocklist 思路依然挡不住动态语言</h3><p>文章里提到，框架其实并不是完全没防护。它做了几层检查：</p>
+<ol>
+<li>只允许 lambda 表达式；</li>
+<li>解析 AST，阻断明显危险标识符；</li>
+<li>执行时移除一部分内建函数能力。</li>
+</ol>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/05-figure4.webp"></p>
+<p><em>图 4：原文给出的 blocklist &#x2F; AST 校验实现。</em></p>
+<p>但微软团队也很直白地点出了问题：</p>
+<p><strong>在 Python 这种动态语言里，用 blocklist 去防“表达式级代码注入”，天然就脆。</strong></p>
+<p>因为攻击者可以：</p>
+<ul>
+<li>用你没列进黑名单的属性名绕过；</li>
+<li>用不同语法路径重新拿回危险能力；</li>
+<li>通过类型系统、类层级、运行时特性，间接摸到本该被禁掉的对象；</li>
+<li>利用 AST 检测盲区（例如某些下标访问、替代写法）绕过节点级检查。</li>
+</ul>
+<p>这也是我特别认同这篇文章的一点：<strong>它不是在骂某一行代码写得蠢，而是在指出一种错误的防守范式。</strong></p>
+<h2 id="攻击是怎么成立的？"><a href="#攻击是怎么成立的？" class="headerlink" title="攻击是怎么成立的？"></a>攻击是怎么成立的？</h2><p>微软展示了它们设计的恶意 prompt。核心目标不是“让模型输出敏感内容”，而是<strong>逼着模型去调用 <code>search_hotels()</code>，并把恶意参数塞进去</strong>。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/06-figure5.webp"></p>
+<p><em>图 5：原文中的恶意 prompt 示例，要求 Agent 以恶意参数调用 <code>search_hotels</code>。</em></p>
+<p>随后，Agent 真的触发了对应的工具调用。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/07-figure6.webp"></p>
+<p><em>图 6：模型最终发起了携带恶意参数的 <code>search_hotels</code> 调用。</em></p>
+<p>接下来发生的事情，就是整个漏洞链里最关键的一步：</p>
+<ul>
+<li>恶意参数逃逸出原本的模板字符串；</li>
+<li>进入 <code>eval()</code> 执行环境；</li>
+<li>再借助 Python 的类型系统和导入器链路，重新拿到执行系统命令所需的能力；</li>
+<li>最终触发任意命令执行。</li>
+</ul>
+<p>换句话说，这不是“模型自己学会了攻击”，而是：</p>
+<p><strong>模型帮攻击者把一条精心构造的输入，成功送达了本来就危险的执行上下文。</strong></p>
+<h2 id="为什么原有防护没挡住？"><a href="#为什么原有防护没挡住？" class="headerlink" title="为什么原有防护没挡住？"></a>为什么原有防护没挡住？</h2><p>微软把绕过原因拆得很清楚。我把它整理成更适合工程复盘的四点：</p>
+<h3 id="1）危险名字列得不全"><a href="#1）危险名字列得不全" class="headerlink" title="1）危险名字列得不全"></a>1）危险名字列得不全</h3><p>攻击链里用到的一些关键属性&#x2F;方法，根本不在 blocklist 里。只要黑名单不完整，攻击者就总能找到新的路径。</p>
+<h3 id="2）结构检查通过了，但语义是恶意的"><a href="#2）结构检查通过了，但语义是恶意的" class="headerlink" title="2）结构检查通过了，但语义是恶意的"></a>2）结构检查通过了，但语义是恶意的</h3><p>攻击 payload 仍然被包装成“合法 lambda 表达式”，因此“只允许 lambda”这条规则在结构上是通过的。</p>
+<h3 id="3）清空-builtins-不等于安全"><a href="#3）清空-builtins-不等于安全" class="headerlink" title="3）清空 __builtins__ 不等于安全"></a>3）清空 <code>__builtins__</code> 不等于安全</h3><p>哪怕把内建函数删掉，只要攻击者还能从对象图、类型系统、类层级、导入器链路里摸回危险能力，保护就只是表面上的。</p>
+<h3 id="4）AST-检查存在盲区"><a href="#4）AST-检查存在盲区" class="headerlink" title="4）AST 检查存在盲区"></a>4）AST 检查存在盲区</h3><p>如果校验只盯着 <code>ast.Name</code>、<code>ast.Attribute</code> 这类节点，而忽略其他访问路径，那么攻击者完全可以换一种写法继续往前走。</p>
+<h2 id="这个漏洞后来怎么修？"><a href="#这个漏洞后来怎么修？" class="headerlink" title="这个漏洞后来怎么修？"></a>这个漏洞后来怎么修？</h2><p>微软在负责任披露后，Semantic Kernel 团队做了四层加固。我觉得这部分是最值得开发者直接抄作业的：</p>
+<ul>
+<li><strong>AST 节点白名单</strong>：只允许比较、布尔逻辑、算术、字面量等安全构造；</li>
+<li><strong>函数调用白名单</strong>：不是“出现调用就算了”，而是继续核验“调的是不是被允许的函数”；</li>
+<li><strong>危险属性阻断</strong>：重点封堵类层级遍历和对象逃逸常用路径；</li>
+<li><strong>名称节点限制</strong>：把裸标识符压缩到最小范围，例如只允许 lambda 参数本身。</li>
+</ul>
+<p>这背后的思路非常重要：</p>
+<p><strong>不要问“还能补哪些黑名单”，而要问“这个执行面里到底允许什么”。</strong></p>
+<p>也就是说，真正有效的路线通常不是 blocklist，而是 allowlist + capability minimization。</p>
+<h3 id="谁会受影响？"><a href="#谁会受影响？" class="headerlink" title="谁会受影响？"></a>谁会受影响？</h3><p>微软给出的判断条件很清楚。如果你的 Agent 同时满足以下条件，就需要重点看：</p>
+<ul>
+<li>使用 Python 版 <code>semantic-kernel</code>；</li>
+<li>版本早于 <code>1.39.4</code>；</li>
+<li>使用了 <code>In-Memory Vector Store</code>，并依赖其过滤能力作为搜索插件后端。</li>
+</ul>
+<p>如果命中这些条件，最直接的动作就是升级到 <code>1.39.4</code> 或更高版本。</p>
+<p>但我觉得这篇文章另一个很有价值的提醒是：<strong>修补之后，还得追问“在修补之前有没有已经被打过”。</strong></p>
+<p>所以微软建议把排查重点放到“脆弱版本部署开始”到“升级完成”之间的窗口里，去看：</p>
+<ul>
+<li>Agent 宿主进程是否生成过异常子进程；</li>
+<li>是否有异常外连；</li>
+<li>是否出现异常持久化痕迹；</li>
+<li>是否生成过可疑脚本或工具链落地文件。</li>
+</ul>
+<p>这其实已经完全回到了传统主机安全与检测响应的范畴。</p>
+<h2 id="第二条链：CVE-2026-25592-把“沙箱内执行”推成“宿主机写文件”"><a href="#第二条链：CVE-2026-25592-把“沙箱内执行”推成“宿主机写文件”" class="headerlink" title="第二条链：CVE-2026-25592 把“沙箱内执行”推成“宿主机写文件”"></a>第二条链：CVE-2026-25592 把“沙箱内执行”推成“宿主机写文件”</h2><p>如果说前一个漏洞强调的是“参数注入走到 <code>eval()</code>”，那第二个漏洞更像是<strong>Agent 工具暴露边界错误</strong>带来的后果。</p>
+<p>Semantic Kernel 自带一个 <code>SessionsPythonPlugin</code>，它允许 Agent 在 Azure Container Apps 的动态会话沙箱里执行 Python 代码。正常安全模型是这样的：</p>
+<ul>
+<li>代码运行在隔离容器里；</li>
+<li>容器有自己的文件系统；</li>
+<li>宿主机与容器之间有边界；</li>
+<li><code>UploadFile</code> &#x2F; <code>DownloadFile</code> 这类能力本来只是帮助跨边界搬运数据。</li>
+</ul>
+<p>表面上看，这个设计也很合理。</p>
+<h3 id="真正的问题：一个本不该暴露给模型的下载函数，被注册成了可调用工具"><a href="#真正的问题：一个本不该暴露给模型的下载函数，被注册成了可调用工具" class="headerlink" title="真正的问题：一个本不该暴露给模型的下载函数，被注册成了可调用工具"></a>真正的问题：一个本不该暴露给模型的下载函数，被注册成了可调用工具</h3><p>在 .NET SDK 里，<code>DownloadFileAsync</code> 被错误地加上了 <code>[KernelFunction]</code> 属性。这意味着它被正式宣传给了模型：</p>
+<ul>
+<li>这是一个可调用工具；</li>
+<li>这是它的参数 schema；</li>
+<li>你可以用它。</li>
+</ul>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/08-figure7.webp"></p>
+<p>当这一步发生之后，<code>localFilePath</code> 这种直接决定“宿主机把文件写到哪里”的参数，也就变成了<strong>模型可控输入</strong>。</p>
+<p>于是问题就从“沙箱很安全”一下子变成了：</p>
+<p><strong>攻击者不需要打穿 hypervisor，不需要利用容器逃逸，只需要让模型替他调用这个工具。</strong></p>
+<h2 id="第二条攻击链是怎么串起来的？"><a href="#第二条攻击链是怎么串起来的？" class="headerlink" title="第二条攻击链是怎么串起来的？"></a>第二条攻击链是怎么串起来的？</h2><p>微软把这条链拆成了三个步骤，我觉得非常适合作为你审计自家 Agent 时的 checklist。</p>
+<h3 id="第一步：在沙箱里生成恶意载荷"><a href="#第一步：在沙箱里生成恶意载荷" class="headerlink" title="第一步：在沙箱里生成恶意载荷"></a>第一步：在沙箱里生成恶意载荷</h3><p>攻击者先通过 prompt injection，诱导 Agent 使用 <code>ExecuteCode</code> 工具，在容器内生成脚本或 payload。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/09-figure8.webp"></p>
+<p>这时候载荷还被关在沙箱里，单独看似乎没什么问题。</p>
+<h3 id="第二步：再利用下载工具，把沙箱里的文件写到宿主机危险路径"><a href="#第二步：再利用下载工具，把沙箱里的文件写到宿主机危险路径" class="headerlink" title="第二步：再利用下载工具，把沙箱里的文件写到宿主机危险路径"></a>第二步：再利用下载工具，把沙箱里的文件写到宿主机危险路径</h3><p>随后，攻击者继续注入一条指令，让模型调用 <code>DownloadFileAsync</code>，把刚才生成的文件拉到宿主机指定目录。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/10-figure9.webp"></p>
+<p>Agent 随后发起了真正的下载调用。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/11-figure10.webp"></p>
+<p>在微软的例子里，这个目标路径指向了 Windows 的 <code>Startup</code> 目录。这样一来，文件虽然最初诞生于容器，但最终落点已经是宿主机的自启动位置。</p>
+<h3 id="第三步：等待宿主机执行"><a href="#第三步：等待宿主机执行" class="headerlink" title="第三步：等待宿主机执行"></a>第三步：等待宿主机执行</h3><p>当用户下次登录时，脚本被自动执行，完整 RCE 也就落地了。</p>
+<p>这条链条最值得警惕的地方在于：</p>
+<p><strong>沙箱本身不一定被“攻破”了，但它的价值被暴露给模型的桥接工具直接抵消了。</strong></p>
+<p>所以很多团队今天谈 Agent 隔离时，容易把注意力过多放在“代码在哪个容器里跑”，却忽略了一个更根本的问题：</p>
+<blockquote>
+<p>模型到底还能调用哪些跨边界工具？这些工具的参数是不是完全可信？</p>
+</blockquote>
+<h2 id="这个问题后来怎么补？"><a href="#这个问题后来怎么补？" class="headerlink" title="这个问题后来怎么补？"></a>这个问题后来怎么补？</h2><p>Semantic Kernel 的修复很直接，也很有代表性。</p>
+<p>首先，它把根因切掉了：<strong>移除 <code>[KernelFunction]</code>，让这个函数不再暴露给模型。</strong></p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/12-figure11.webp"></p>
+<p>一旦模型再也看不到这个工具，prompt injection 自然也就没法直接打到这条危险路径上。</p>
+<p>其次，它又补了传统工程防线：</p>
+<ul>
+<li>对下载目标路径做规范化处理；</li>
+<li>做目录白名单匹配；</li>
+<li>保证目标路径必须落在允许范围内。</li>
+</ul>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/13-figure12.webp"></p>
+<p><em>图 12：原文说明，对上传&#x2F;下载都增加了 opt-in 式路径保护。</em></p>
+<p>如果你的 Agent 使用的是早于 <code>1.71.0</code> 的 Semantic Kernel .NET SDK，那么这条问题链就需要重点关注。</p>
+<h2 id="我读完之后最认同的一句话：LLM-不是安全边界"><a href="#我读完之后最认同的一句话：LLM-不是安全边界" class="headerlink" title="我读完之后最认同的一句话：LLM 不是安全边界"></a>我读完之后最认同的一句话：LLM 不是安全边界</h2><p>这一点，微软在文中讲得非常彻底。</p>
+<p>过去 Web 安全里，我们早就知道：</p>
+<ul>
+<li>不可信输入不能直接进 SQL；</li>
+<li>不可信输入不能直接进文件系统 API；</li>
+<li>不可信输入不能直接进命令执行路径。</li>
+</ul>
+<p>今天 Agent 时代，本质上只是把“输入形式”从表单、URL、JSON，换成了<strong>自然语言</strong>。但它依然是不可信输入。</p>
+<p>也就是说，只要模型能影响：</p>
+<ul>
+<li>文件路径；</li>
+<li>下载目标；</li>
+<li>shell 命令；</li>
+<li>过滤表达式；</li>
+<li>代码执行器入参；</li>
+<li>插件函数参数；</li>
+</ul>
+<p>那这些值就必须被视为<strong>攻击者可控数据</strong>。</p>
+<p>微软把这个问题归纳得很准确：</p>
+<ul>
+<li>这不是 AI 模型自己“出 bug”；</li>
+<li>而是 Agent 架构和工具设计让“模型驱动执行”变成了可滥用能力；</li>
+<li>一旦工具连接到真实系统，prompt injection 的影响就会从“聊天机器人误答”升级成“文件写入、数据窃取、RCE”。</li>
+</ul>
+<h2 id="从防守视角看，我认为这篇文章给了-5-个可立即落地的检查点"><a href="#从防守视角看，我认为这篇文章给了-5-个可立即落地的检查点" class="headerlink" title="从防守视角看，我认为这篇文章给了 5 个可立即落地的检查点"></a>从防守视角看，我认为这篇文章给了 5 个可立即落地的检查点</h2><h3 id="1）把所有模型可控参数都当成-attacker-controlled-input"><a href="#1）把所有模型可控参数都当成-attacker-controlled-input" class="headerlink" title="1）把所有模型可控参数都当成 attacker-controlled input"></a>1）把所有模型可控参数都当成 attacker-controlled input</h3><p>不要因为参数来自 tool call schema，就默认它“比普通用户输入更可信”。本质上它仍是模型中转后的不可信数据。</p>
+<h3 id="2）优先做-allowlist，而不是继续堆-blocklist"><a href="#2）优先做-allowlist，而不是继续堆-blocklist" class="headerlink" title="2）优先做 allowlist，而不是继续堆 blocklist"></a>2）优先做 allowlist，而不是继续堆 blocklist</h3><p>尤其在 Python、JavaScript 这类动态语言里，表达式执行和对象访问能力非常灵活，单靠黑名单很容易被绕开。</p>
+<h3 id="3）重新审视“本不该给模型”的工具"><a href="#3）重新审视“本不该给模型”的工具" class="headerlink" title="3）重新审视“本不该给模型”的工具"></a>3）重新审视“本不该给模型”的工具</h3><p>很多问题不是出在核心业务逻辑，而是某个辅助方法、桥接函数、下载函数、调试函数、批处理函数，意外地被注册成了可调用工具。</p>
+<h3 id="4）把端点检测接回-Agent-宿主"><a href="#4）把端点检测接回-Agent-宿主" class="headerlink" title="4）把端点检测接回 Agent 宿主"></a>4）把端点检测接回 Agent 宿主</h3><p>如果 Agent 理论上只是做检索、归档、搜索、问答，那它突然：</p>
+<ul>
+<li>拉起 <code>cmd.exe</code> &#x2F; <code>powershell.exe</code>；</li>
+<li>写入启动目录；</li>
+<li>产生异常子进程；</li>
+<li>发起不符合业务语义的外连；</li>
+</ul>
+<p>这就应该被当成高优先级安全事件看待。</p>
+<h3 id="5）不要把“有沙箱”当成万灵药"><a href="#5）不要把“有沙箱”当成万灵药" class="headerlink" title="5）不要把“有沙箱”当成万灵药"></a>5）不要把“有沙箱”当成万灵药</h3><p>真正要问的是：</p>
+<ul>
+<li>模型是否能调用跨越沙箱边界的工具？</li>
+<li>工具是否能接触宿主机路径？</li>
+<li>参数有没有最小化、白名单化和路径规范化？</li>
+<li>下载&#x2F;上传是否被限制在明确的受控目录内？</li>
+</ul>
+<h2 id="原文最后还给了一个-CTF，这个设计挺有意思"><a href="#原文最后还给了一个-CTF，这个设计挺有意思" class="headerlink" title="原文最后还给了一个 CTF，这个设计挺有意思"></a>原文最后还给了一个 CTF，这个设计挺有意思</h2><p>微软把其中一个脆弱案例打包成了一个可交互的 CTF，核心目标是让研究人员在受控环境里亲手感受：</p>
+<ul>
+<li>prompt injection 怎么越过“语言层”；</li>
+<li>工具调用怎么成为真正的 exploit primitive；</li>
+<li>为什么“让模型调工具”这件事，本质上已经进入系统安全问题域。</li>
+</ul>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/14-figure13.webp"></p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/15-figure14.webp"></p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" srcset="/img/loading.gif" lazyload data-original="/2026/05/08/ms-agent-rce-semantickernel-study/16-figure15.webp"></p>
+<p>原始 CTF 地址：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/amiteliahu/AIAgentCTF/tree/main/CVE-2026-26030">https://github.com/amiteliahu/AIAgentCTF/tree/main/CVE-2026-26030</a></li>
+</ul>
+<h2 id="最后总结一下"><a href="#最后总结一下" class="headerlink" title="最后总结一下"></a>最后总结一下</h2><p>如果只看标题，很多人可能会把这篇文章理解成“微软又报了两个 CVE”。</p>
+<p>但在我看来，这篇文章真正重要的意义是：它把 Agent 安全里一个正在被快速放大的现实讲清楚了——</p>
+<p><strong>当 Prompt 可以稳定驱动工具调用时，语言就不再只是语言，它已经开始接近执行入口。</strong></p>
+<p>所以今天讨论 AI Agent 安全，已经不能只盯着：</p>
+<ul>
+<li>jailbreak 成不成功；</li>
+<li>回复有没有越权；</li>
+<li>模型有没有泄露提示词。</li>
+</ul>
+<p>更要盯着：</p>
+<ul>
+<li>prompt 是否能改写工具参数；</li>
+<li>工具参数是否进入危险 sink；</li>
+<li>框架是否把内部 helper 暴露成了模型工具；</li>
+<li>隔离边界是否被“桥接函数”无声打通；</li>
+<li>宿主机侧是否具备足够的运行时检测能力。</li>
+</ul>
+<p>如果你的团队正在做 Agent 化改造，我会建议把这篇研究当成一份非常典型的审计样本：<strong>不是为了照抄某个 exploit，而是为了重新定义你的安全建模方式。</strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI%E5%AE%89%E5%85%A8/" class="category-chain-item">AI安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI-Agent/" class="print-no-link">#AI Agent</a>
+      
+        <a href="/tags/%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%B3%A8%E5%85%A5/" class="print-no-link">#提示词注入</a>
+      
+        <a href="/tags/RCE/" class="print-no-link">#RCE</a>
+      
+        <a href="/tags/Semantic-Kernel/" class="print-no-link">#Semantic Kernel</a>
+      
+        <a href="/tags/LLM%E5%AE%89%E5%85%A8/" class="print-no-link">#LLM安全</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>当Prompt变成Shell：我读微软关于AI-Agent框架RCE漏洞的一篇研究</div>
+      <div>http://example.com/2026/05/08/ms-agent-rce-semantickernel-study/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jentle</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 8, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/01/07/%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90AuraStealer-MaaS%E6%B7%B7%E6%B7%86%E4%B8%8E%E5%AF%B9%E6%8A%97%E6%8A%80%E6%9C%AF/" title="深入分析AuraStealer MaaS混淆与对抗技术">
+                        <span class="hidden-mobile">深入分析AuraStealer MaaS混淆与对抗技术</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Hipepper/UtterancBlog');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/Hipepper" target="_blank" rel="nofollow noopener"><span>Github</span></a> <i class="iconfont icon-love"></i> <a href="https://mp.weixin.qq.com/s/WZSeu6y5ckuo958f-yV3Kg" target="_blank" rel="nofollow noopener"><span>公众号</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>
